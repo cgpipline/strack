@@ -54,7 +54,7 @@ class CallbackController extends Controller
                     $this->redirect($handleData['param']['url']);
                 } else {
                     // 跳转到首页
-                    $this->redirect('/schedule/index');
+                    $this->redirect('/project/index');
                 }
             } else {
                 // 未绑定
@@ -94,7 +94,7 @@ class CallbackController extends Controller
                     $this->redirect($handleData['param']['url']);
                 } else {
                     // 跳转到首页
-                    $this->redirect('/schedule/index');
+                    $this->redirect('/project/index');
                 }
             } else {
                 // 未绑定

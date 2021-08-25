@@ -297,7 +297,7 @@ class ViewController extends VerifyController
 
         switch ($param["menu_name"]) {
             case "project_manage":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "project_manage") {
@@ -309,7 +309,7 @@ class ViewController extends VerifyController
                 //$this->appendCloudDiskMenu($menuList);
                 break;
             case "project_create":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report", "project_create"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage", "project_create"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "project_create") {
@@ -321,14 +321,14 @@ class ViewController extends VerifyController
                 break;
             case "cloud_disk":
                 //$this->appendCloudDiskMenu($menuList, 'yes');
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     array_push($menuList, $menuData);
                 }
                 break;
             case "workbench":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "workbench", "project_manage", "report"]);
+                $authMenuList = $this->checkUserMenuAuth(["workbench", "project_manage"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "workbench") {
@@ -340,7 +340,7 @@ class ViewController extends VerifyController
                 //$this->appendCloudDiskMenu($menuList);
                 break;
             case "my_account":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report", "my_account"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage", "my_account"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "my_account") {
@@ -352,7 +352,7 @@ class ViewController extends VerifyController
                 //$this->appendCloudDiskMenu($menuList);
                 break;
             case "help":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report", "help"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage",  "help"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "help") {
@@ -363,7 +363,7 @@ class ViewController extends VerifyController
                 }
                 break;
             case "schedule":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "schedule") {
@@ -374,7 +374,7 @@ class ViewController extends VerifyController
                 }
                 break;
             case "report":
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "report") {
@@ -414,14 +414,14 @@ class ViewController extends VerifyController
                 break;
             case "error":
                 // 错误显示页面
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage"]);
                 foreach ($authMenuList as $item) {
                     array_push($menuList, $fixedMenuData[$item]);
                 }
                 break;
             default:
                 // 默认都是后台页面
-                $authMenuList = $this->checkUserMenuAuth(['schedule', "project_manage", "report", "admin"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage", "admin"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "admin") {
