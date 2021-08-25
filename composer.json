@@ -4,14 +4,10 @@
         "classmap": ["app","core/Library"]
     },
     "require": {
-        "mpdf/mpdf": "v7.1.6",
-        "predis/predis": "v1.1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "strack/oauth": "dev-master",
-        "league/oauth2-server": "7.3.2",
         "webpatser/laravel-uuid": "^3.0.1",
         "toohamster/ws-http" : "1.0.2",
-        "symfony/expression-language": "^4.2",
         "overtrue/easy-sms": "^1.1",
         "pragmarx/google2fa-qrcode": "^1.0",
         "robmorgan/phinx": "^0.10.6",

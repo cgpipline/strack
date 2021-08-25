@@ -2,7 +2,6 @@
 
 namespace Admin\Controller;
 
-use Common\Service\LicenseService;
 use Common\Service\MediaService;
 use Common\Service\OptionsService;
 
@@ -63,28 +62,6 @@ class AboutController extends AdminController
             'server_list' => $serverList
         ];
 
-        return json($resData);
-    }
-
-    /**
-     * 许可证请求
-     * @return \Think\Response
-     */
-    public function getLicenseRequest()
-    {
-        $licenseService = new LicenseService();
-        $licenseRequest = $licenseService->generatingRequestCode();
-        return json(success_response('', $licenseRequest));
-    }
-
-    /**
-     * 更新系统许可
-     */
-    public function updateLicense()
-    {
-        $param = $this->request->param();
-        $licenseService = new LicenseService();
-        $resData = $licenseService->updateLicense($param["license"]);
         return json($resData);
     }
 }

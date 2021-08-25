@@ -9,18 +9,17 @@
 
 namespace Common\Service;
 
+use Common\Model\DepartmentManageModel;
 use Common\Model\DepartmentModel;
+use Common\Model\PasswordHistoryModel;
 use Common\Model\ProjectMemberModel;
-use Common\Model\ProjectModel;
 use Common\Model\RoleUserModel;
 use Common\Model\SmsModel;
-use Common\Model\UserModel;
-use Common\Model\PasswordHistoryModel;
 use Common\Model\UserConfigModel;
+use Common\Model\UserModel;
 use Common\Model\ViewModel;
 use Common\Model\ViewUseModel;
 use Org\Util\Pinyin;
-use Common\Model\DepartmentManageModel;
 
 class UserService
 {
@@ -432,56 +431,51 @@ class UserService
         $message = '';
 
         //新增用户操作首先要判断是否超过了许可数量
-        $licenseService = new LicenseService();
-        if ($licenseService->checkMaxUserLicenseNumber()) {
-            // 实例化主模块Model
-            $createModel = D("Common/" . camelize($moduleCode), "Model");
-            //开启事务
-            $createModel->startTrans();
-            try {
-                foreach ($param as $key => $item) {
-                    // 如果当前的key等于当前模块，直接调用添加，否则，将当前模块添加完成的主键ID保存到数据里面
-                    if ($key == $moduleCode) {
-                        $masterData = $createModel->addItem($item);
-                        if (!$masterData) {
-                            throw new \Exception($createModel->getError());
-                        }
-                    } else {
-                        $otherModel = D("Common/" . camelize($key));
-                        if ($item['field_type'] == "built_in") {
-                            $item['user_id'] = $masterData['id'];
-                        } else { // 如果为自定义字段表时，关联条件为link_id
-                            $item['link_id'] = $masterData['id'];
-                        }
-                        // 执行添加数据
-                        $resData = $otherModel->addItem($item);
-                        if (!$resData) {
-                            throw new \Exception($createModel->getError());
-                        }
+
+        // 实例化主模块Model
+        $createModel = D("Common/" . camelize($moduleCode), "Model");
+        //开启事务
+        $createModel->startTrans();
+        try {
+            foreach ($param as $key => $item) {
+                // 如果当前的key等于当前模块，直接调用添加，否则，将当前模块添加完成的主键ID保存到数据里面
+                if ($key == $moduleCode) {
+                    $masterData = $createModel->addItem($item);
+                    if (!$masterData) {
+                        throw new \Exception($createModel->getError());
+                    }
+                } else {
+                    $otherModel = D("Common/" . camelize($key));
+                    if ($item['field_type'] == "built_in") {
+                        $item['user_id'] = $masterData['id'];
+                    } else { // 如果为自定义字段表时，关联条件为link_id
+                        $item['link_id'] = $masterData['id'];
+                    }
+                    // 执行添加数据
+                    $resData = $otherModel->addItem($item);
+                    if (!$resData) {
+                        throw new \Exception($createModel->getError());
                     }
                 }
-
-                // 保存用户当前密码
-                $passwordHistoryModel = new PasswordHistoryModel();
-                $passwordHistoryData = $passwordHistoryModel->addItem(['user_id' => $masterData['id'], 'password' => $masterData['password']]);
-
-                // 保存用户当前密码报错
-                if (!$passwordHistoryData) {
-                    throw new \Exception($passwordHistoryModel->getError());
-                }
-
-                // 提交事物
-                $createModel->commit();
-                $message = $createModel->getSuccessMassege();
-            } catch (\Exception $e) {
-                // 事物回滚
-                $createModel->rollback();
-                // 添加用户失败错误码 - 004
-                throw_strack_exception($createModel->getError(), 229004);
             }
-        } else {
-            // 添加用户失败错误码 - 005
-            throw_strack_exception(L("User_Over_Allow_Number"), 229005);
+
+            // 保存用户当前密码
+            $passwordHistoryModel = new PasswordHistoryModel();
+            $passwordHistoryData = $passwordHistoryModel->addItem(['user_id' => $masterData['id'], 'password' => $masterData['password']]);
+
+            // 保存用户当前密码报错
+            if (!$passwordHistoryData) {
+                throw new \Exception($passwordHistoryModel->getError());
+            }
+
+            // 提交事物
+            $createModel->commit();
+            $message = $createModel->getSuccessMassege();
+        } catch (\Exception $e) {
+            // 事物回滚
+            $createModel->rollback();
+            // 添加用户失败错误码 - 004
+            throw_strack_exception($createModel->getError(), 229004);
         }
 
         // 返回成功数据
@@ -668,8 +662,7 @@ class UserService
     {
         //判断是否存在修改用户状态操作，存在则需要判断当前激活账号是否已经超过许可用户数量
         if (array_key_exists("status", $param)) {
-            $licenseService = new LicenseService();
-            if ($param["status"] === "in_service" && !$licenseService->checkMaxUserLicenseNumber()) {
+            if ($param["status"] === "in_service") {
                 // 更新用户系统配置失败错误码 - 005
                 throw_strack_exception(L("User_Over_Allow_Number"), 229007);
             }

@@ -9,7 +9,6 @@ use Common\Controller\VerifyController;
 use Common\Model\BaseModel;
 use Common\Model\EntityModel;
 use Common\Model\ModuleModel;
-use Common\Model\ProjectMemberModel;
 use Common\Model\ProjectModel;
 use Common\Model\RoleModel;
 use Common\Model\VariableValueModel;
@@ -18,7 +17,6 @@ use Common\Service\BaseService;
 use Common\Service\CommonService;
 use Common\Service\EntityService;
 use Common\Service\HorizontalService;
-use Common\Service\LicenseService;
 use Common\Service\MediaService;
 use Common\Service\MemberService;
 use Common\Service\MessageService;
@@ -356,8 +354,7 @@ class WidgetController extends VerifyController
         $timeLogData = $timeLogService->getCurrentTimerNumber($userId);
 
         // 获取license信息
-        $licenseService = new LicenseService();
-        $currentLicenseData = $licenseService->getBaseLicenseData();
+        $currentLicenseData = [];
         $currentLicenseData["last_notice_date"] = strtotime(date('Y-m-d' . ' 00:00:00', time()));
 
         // 获取是否是示例项目
