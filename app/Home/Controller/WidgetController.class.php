@@ -34,7 +34,6 @@ use Common\Service\TimelogService;
 use Common\Service\UserService;
 use Common\Service\VariableService;
 use Common\Service\ViewService;
-use Common\Service\XzService;
 use Think\Request;
 
 
@@ -293,18 +292,6 @@ class WidgetController extends VerifyController
         $param = $this->request->param();
         $projectService = new ProjectService();
         $resData = $projectService->getProjectStatusCombobox($param);
-        return json($resData);
-    }
-
-    /**
-     * 获取项目状态Combobox列表
-     * @return array|mixed
-     * @throws \Ws\Http\Exception
-     */
-    public function getXzProjectCombobox()
-    {
-        $xzService = new XzService();
-        $resData = $xzService->getXzProjectList();
         return json($resData);
     }
 
@@ -830,16 +817,6 @@ class WidgetController extends VerifyController
                         foreach ($iconData as $item) {
                             array_push($resData, ["id" => $item["id"], "name" => $item["icon"]]);
                         }
-                        break;
-                    case 'xz_storesea':
-                        // 从1.0 协作平台取公海任务列表
-                        $xzService = new XzService();
-                        $resData = $xzService->getXzProjectList();
-                        break;
-                    case 'xz_group':
-                        // 从1.0 协作平台取团队列表
-                        $xzService = new XzService();
-                        $resData = $xzService->getXzGroupList();
                         break;
                     case 'task_repeat':
                         // 当前任务，重复配置

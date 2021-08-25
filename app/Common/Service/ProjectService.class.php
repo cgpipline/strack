@@ -1405,16 +1405,6 @@ class ProjectService
             $data['project_end_time'] = $projectData['end_time'];
             $data['project_created'] = $projectData['created'];
             $data['project_created_by'] = $createdByName;
-
-            // 远程获取楼栋信息
-            $xzService = new XzService();
-            $xzData = $xzService->getOwnerInfo($projectData['xz_project_id']);
-
-            if (!empty($xzData)) {
-                $data['building_name'] = $xzData['building_name'];
-                $data['building_area'] = $xzData['building_area'];
-                $data['building_number'] = $xzData['building_number'];
-            }
         }
 
 
