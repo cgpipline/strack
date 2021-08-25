@@ -37,17 +37,6 @@
                     <!--about version-->
                 </div>
             </div>
-            <!--<div id="update_system" class="admin-ab-ver" style="display: none">
-                <div class="about-ver-name">
-                    {$Think.lang.Have_New_Version}
-                </div>
-                <div class="about-ver-num">
-                    <a href="javascript:;" id="last_version" class="st-dialog-button st-button-base button-dgcel" onclick="obj.upgrade_system();">
-                        3.0.0 Release
-                    </a>
-                </div>
-            </div>
-             -->
             <div class="admin-ab-ver">
                 <div class="about-ver-name">
                     {$Think.lang.Server_Status}
@@ -55,30 +44,6 @@
                 <div id="server_list" class="admin-server-sta">
                     <!--服务器状态列表-->
                     <div class="datagrid-empty-no">{$Think.lang.No_Server_Available}</div>
-                </div>
-            </div>
-            <div class="admin-ab-ver">
-                <div class="about-ver-name">
-                    {$Think.lang.License}
-                </div>
-                <div class="about-ver-num">
-                    <input id="request_data" type="text" style="position: absolute;top:-9999px"/>
-                    <li id="about_lic"></li>
-                    <li id="about_lic_nc"></li>
-
-                    <div class="about-bnt">
-                        <eq name="view_rules.copy_license_request" value="yes">
-                            <a href="javascript:;" id="copy_request" class="st-dialog-button st-button-base button-dgcel" data-clipboard-action="copy" data-clipboard-target="#request_data" onclick="obj.copy_request();">
-                                {$Think.lang.Copy_License_Request}
-                            </a>
-                        </eq>
-                        <eq name="view_rules.license_update" value="yes">
-                            <a href="javascript:;" class="st-dialog-button st-button-base button-dgcel" onclick="obj.update_license();">
-                                {$Think.lang.License_Update}
-                            </a>
-                        </eq>
-                    </div>
-
                 </div>
             </div>
 		</div>

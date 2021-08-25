@@ -55,40 +55,12 @@ class AboutController extends AdminController
         // 获取当前版本号
         $strackVersionConfig = $optionsService->getOptionsData('system_version');
 
-        // 获取 License 信息
-        $licenseService = new LicenseService();
-        $getLicenseData = $licenseService->getBaseLicenseData();
 
-        if (!$getLicenseData) {
-            $licenseData = [
-                "info" => L("License_Null"),
-                "request" => '',
-                "notice" => '',
-            ];
-        } else {
-            if ($getLicenseData["user_number"] >= 999999) {
-                // 不限制使用人数
-                $licenseInfo = L("License_Allow_Infinite");
-            } else {
-                $licenseInfo = L("License_Allow_Numbers_Before") . $getLicenseData["user_number"] . L("License_Allow_Numbers_After");
-            }
-            $licenseNotice = L("Expires") . " " . $getLicenseData["expiry_date"] . L("License_Notice");
-            $licenseData = [
-                "info" => $licenseInfo,
-                "request" => L("License_Active"),
-                "notice" => $licenseNotice,
-            ];
-        }
-
-        // 获取 License 请求码
-        $licenseRequest = $licenseService->generatingRequestCode();
 
         $resData = [
             'strack_version' => $strackVersionConfig["version"],
             'package_version' => C("STRACK_VERSION"),
-            'server_list' => $serverList,
-            'license_status' => $licenseData,
-            'license_request' => $licenseRequest,
+            'server_list' => $serverList
         ];
 
         return json($resData);
