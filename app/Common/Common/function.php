@@ -1093,19 +1093,6 @@ function fill_text_default_val($value = '')
 }
 
 /**
- * 检查关联项目id
- * @param $value
- * @return string
- */
-function check_xz_project_id($value = '')
-{
-    if (empty($value)) {
-        return 0;
-    }
-    return $value;
-}
-
-/**
  * 格式化版本号
  * @param $version
  * @return string
