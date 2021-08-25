@@ -2,7 +2,7 @@
 <?php
 
 // 定义项目路径
-define('APP_PATH', __DIR__ . '/App/');
+define('APP_PATH', __DIR__ . '/app/');
 
 // 定义缓存目录
 define('RUNTIME_PATH', __DIR__ . '/runtime/');
@@ -18,8 +18,8 @@ define('SWOOLE_JOBS_ROOT_PATH', __DIR__);
 date_default_timezone_set('Asia/Shanghai');
 
 // 加载基础文件
-require __DIR__ . '/Core/Base.php';
-$config = require_once SWOOLE_JOBS_ROOT_PATH . '/App/Common/Conf/swoole_jobs.php';
+require __DIR__ . '/core/Base.php';
+$config = require_once SWOOLE_JOBS_ROOT_PATH . '/app/Common/Conf/swoole_jobs.php';
 
 $console = new \Kcloze\Jobs\Console($config);
 $console->run();

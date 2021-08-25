@@ -34,10 +34,10 @@ return array(
         '__UI_CSS__' => __ROOT__ . '/public/themes',
         '__JSUI_LANG__' => __ROOT__ . '/public/lang',
         '__COLPICK__' => __ROOT__ . '/public/js/colpick',
-        '__UPLOADS__' => __ROOT__ . '/Uploads',
-        '__PROJ_THUMB__' => __ROOT__ . '/Uploads/ProjectThumb',
-        '__TASK_THUMB__' => __ROOT__ . '/Uploads/TaskThumb',
-        '__ITEM_THUMB__' => __ROOT__ . '/Uploads/ItemThumb'
+        '__UPLOADS__' => __ROOT__ . '/uploads',
+        '__PROJ_THUMB__' => __ROOT__ . '/uploads/ProjectThumb',
+        '__TASK_THUMB__' => __ROOT__ . '/uploads/TaskThumb',
+        '__ITEM_THUMB__' => __ROOT__ . '/uploads/ItemThumb'
     ),
 
     //Trace调试

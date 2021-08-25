@@ -80,7 +80,7 @@ class ExcelController extends VerifyController
         }
 
         // 导出路径
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . "/Uploads/excel/download";
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . "/uploads/excel/download";
         //格式化Excel名称
         $replace = ["(", ")", "*", ':', '/', '\\', '?', '[', ']', '.'];
         $replaceList = array_fill_keys($replace, "");
@@ -132,7 +132,7 @@ class ExcelController extends VerifyController
         if (in_array($extension, ['csv', 'xls', 'xlsx'])) {
             $importExcelService = new ImportExcelService();
             // 上传文件到临时目录
-            $tempExcelRelativePath = "/Uploads/temp/excel/excel_{$param['batch_number']}/";
+            $tempExcelRelativePath = "/uploads/temp/excel/excel_{$param['batch_number']}/";
             $tempExcelPath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . $tempExcelRelativePath;
             create_directory($tempExcelPath);
             $excelTempName = 'excel_' . string_random(8);

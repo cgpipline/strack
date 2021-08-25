@@ -524,7 +524,7 @@ class ExportExcelService
         //默认图像
         $defaultPicture = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . "/public/images/excel/excel_tasks.png";
         //保存图片目录
-        $tempExcelPath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . '/Uploads/temp/excel/download/images/';
+        $tempExcelPath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . '/uploads/temp/excel/download/images/';
         $tempDirectoryName = $tempExcelPath . 'excel_image_temp/';
         create_directory($tempDirectoryName);
         $image = new Image();

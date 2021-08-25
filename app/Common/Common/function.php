@@ -832,7 +832,7 @@ function fill_imgfile_content($img, $tpye, $fileNameRandom)
     $data = base64_decode($base64Body);
     //生成上传路径
     $imageSERVER = $_SERVER['DOCUMENT_ROOT'];
-    $fileName = $imageSERVER . __ROOT__ . "/Uploads/temp/" . $fileNameRandom . '.' . $tpye;
+    $fileName = $imageSERVER . __ROOT__ . "/uploads/temp/" . $fileNameRandom . '.' . $tpye;
     file_put_contents($fileName, $data);
     $response = array(
         "full_path" => $fileName,

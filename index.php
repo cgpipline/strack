@@ -6,7 +6,7 @@ if (version_compare(PHP_VERSION, '7.0.0', '<')) {
 }
 
 // 定义应用目录
-define('APP_PATH', __DIR__ . '/App/');
+define('APP_PATH', __DIR__ . '/app/');
 
 // 定义缓存目录
 define('RUNTIME_PATH', __DIR__ . '/runtime/');
@@ -18,4 +18,4 @@ define("TMPL_PATH", __DIR__ . '/tpl/');
 define('APP_DEBUG', true);
 
 // 引入入口文件
-require __DIR__ . '/Core/Strack.php';
+require __DIR__ . '/core/Strack.php';

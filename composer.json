@@ -1,7 +1,7 @@
 {
     "name": "cgmes/strack",
     "autoload": {
-        "classmap": ["App","Core/Library"]
+        "classmap": ["app","core/Library"]
     },
     "require": {
         "mpdf/mpdf": "v7.1.6",

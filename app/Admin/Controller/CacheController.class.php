@@ -80,7 +80,7 @@ class CacheController extends AdminController
     protected function getUploadTempSize()
     {
         $basePath = $this->getBasePath();
-        $logsPath = "{$basePath}/Uploads/temp/";
+        $logsPath = "{$basePath}/uploads/temp/";
         create_directory($logsPath);
         return $this->formatDiskSize(get_directory_size($logsPath));
     }
@@ -153,7 +153,7 @@ class CacheController extends AdminController
     {
         $basePath = $this->getBasePath();
         // 清空 excel 临时文件
-        delete_directory("{$basePath}/Uploads/temp/excel/");
+        delete_directory("{$basePath}/uploads/temp/excel/");
         return json(success_response(L("Clear_Upload_Cache_SC")));
     }
 }
