@@ -34,6 +34,7 @@ class EventBehavior
             "params" => $params
         ];
 
+        // 异步处理 TODO
         $eventLogService = new EventLogService();
         $eventLogService->addInsideEventLog($eventData["event_from"], $eventData["params"], $eventData["user_info"]);
 

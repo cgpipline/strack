@@ -18,7 +18,7 @@ return [
         ],
         'qcloud' => [
             'sdk_app_id' => '1400184248', // SDK APP ID
-            'app_key' => '65891a2b4af100ff72f4b2346bcda87d', // APP KEY
+            'app_key' => '', // APP KEY
             'sign_name' => '', // 短信签名，如果使用默认签名，该字段可缺省（对应官方文档中的sign）
         ]
     ],
