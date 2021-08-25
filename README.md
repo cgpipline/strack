@@ -19,7 +19,7 @@ weijer | 核心开发者
 - [ ] 编写使用文档
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
-- [ ] 重写 pyqt client 客户端
+- [ ] 重写 PYQT client 客户端
 
 
 
