@@ -522,7 +522,7 @@ class ExportExcelService
     private function downloadImage(&$data, $width = 140, $height = 55)
     {
         //默认图像
-        $defaultPicture = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . "/Public/images/excel/excel_tasks.png";
+        $defaultPicture = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . "/public/images/excel/excel_tasks.png";
         //保存图片目录
         $tempExcelPath = $_SERVER['DOCUMENT_ROOT'] . __ROOT__ . '/Uploads/temp/excel/download/images/';
         $tempDirectoryName = $tempExcelPath . 'excel_image_temp/';

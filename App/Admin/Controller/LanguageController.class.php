@@ -66,7 +66,7 @@ class LanguageController extends AdminController
      */
     protected function writeTolanguageHtmlFile($baseConfig)
     {
-        $langFolder = ROOT_PATH . 'tpl/Public/lang.tpl';
+        $langFolder = ROOT_PATH . 'tpl/public/lang.tpl';
         $langStringList = [];
         foreach ($baseConfig as $key => $value) {
             $langStringList[string_initial_letter($key, '_')] = '{$Think.lang.' . $key . '}';

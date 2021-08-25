@@ -531,7 +531,7 @@ class Cx extends TagLib
         } else {
             // 命名空间导入模式 默认是js
             $type     = $type ? $type : (!empty($tag['type']) ? strtolower($tag['type']) : 'js');
-            $basepath = !empty($tag['basepath']) ? $tag['basepath'] : __ROOT__ . '/Public';
+            $basepath = !empty($tag['basepath']) ? $tag['basepath'] : __ROOT__ . '/public';
             // 命名空间方式导入外部文件
             $array = explode(',', $file);
             foreach ($array as $val) {

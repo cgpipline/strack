@@ -109,7 +109,7 @@ class ActionService
 
             // 没有缩略图填充默认图标
             if (!isset($actionItem['thumb'])) {
-                $actionItem['thumb'] = __ROOT__ . '/Public/images/action_default_icon.png';
+                $actionItem['thumb'] = __ROOT__ . '/public/images/action_default_icon.png';
             }
 
             // 判断是否常用动作
