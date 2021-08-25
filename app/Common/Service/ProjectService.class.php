@@ -1265,31 +1265,6 @@ class ProjectService
     }
 
     /**
-     * 通过任务id查找项目绑定的公海任务id
-     * @param $baseId
-     * @return int
-     */
-    public function getXzProjectIdByBaseId($baseId)
-    {
-        $baseModel = new BaseModel();
-        $projectData = $baseModel->alias("base")
-            ->join("LEFT JOIN strack_project project ON project.id = base.project_id")
-            ->where([
-                "base.id" => $baseId
-            ])
-            ->field("
-                project.xz_project_id
-            ")
-            ->find();
-
-        if (!empty($projectData['xz_project_id'])) {
-            return $projectData['xz_project_id'];
-        }
-
-        return 0;
-    }
-
-    /**
      * 获取所有项目任务状态交集列表
      * @return array|mixed
      */

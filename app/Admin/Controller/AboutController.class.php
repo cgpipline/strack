@@ -68,7 +68,7 @@ class AboutController extends AdminController
 
     /**
      * 许可证请求
-     * @return array
+     * @return \Think\Response
      */
     public function getLicenseRequest()
     {

@@ -10,7 +10,7 @@ return array(
     "STRACK_INSTALL_VERSION" => Env::get("version"),    //系统安装版本版本
     "STRACK_VERSION" => "3.1.3 Released",    //当前系统版本
     'SHOW_THEME' => Env::get("show_theme"),    //系统版权
-    'LOAD_EXT_CONFIG' => ['JOBS' => 'swoole_jobs', 'SMS' => 'sms'],
+    'LOAD_EXT_CONFIG' => ['SMS' => 'sms'],
 
     //开启语言包
     'LANG_SWITCH_ON' => true,
@@ -180,12 +180,6 @@ return array(
         'callback_url' => Env::get("strack_oauth_callback_url"),
         'oss_open' => Env::get("strack_oauth_oss_onpen"),
     ],
-
-    'jgy_xz_url' => Env::get("jgy_xz_url"),
-
-    'jgy_xz_source_related' => Env::get("jgy_xz_source_related"),
-    'jgy_xz_source_item' => Env::get("jgy_xz_source_item"),
-
     // web url
     'web_url' => Env::get("web_url")
 );
