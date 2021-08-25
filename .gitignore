@@ -1,6 +1,5 @@
 .idea/*
-/Runtime/*
-/Runtime-test/*
+/runtime/*
 /Uploads/*
 /vendor/*
 /node_modules/*

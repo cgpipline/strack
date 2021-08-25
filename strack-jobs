@@ -5,7 +5,7 @@
 define('APP_PATH', __DIR__ . '/App/');
 
 // 定义缓存目录
-define('RUNTIME_PATH', __DIR__ . '/Runtime/');
+define('RUNTIME_PATH', __DIR__ . '/runtime/');
 
 define('APP_MODE', 'cli');
 

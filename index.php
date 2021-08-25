@@ -9,7 +9,7 @@ if (version_compare(PHP_VERSION, '7.0.0', '<')) {
 define('APP_PATH', __DIR__ . '/App/');
 
 // 定义缓存目录
-define('RUNTIME_PATH', __DIR__ . '/Runtime/');
+define('RUNTIME_PATH', __DIR__ . '/runtime/');
 
 // 定义模板文件默认目录
 define("TMPL_PATH", __DIR__ . '/tpl/');

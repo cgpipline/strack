@@ -56,7 +56,7 @@ class CacheController extends AdminController
     protected function getSystemCacheSize()
     {
         $basePath = $this->getBasePath();
-        $cachePath = "{$basePath}/Runtime/Cache/";
+        $cachePath = "{$basePath}/runtime/Cache/";
         create_directory($cachePath);
         return $this->formatDiskSize(get_directory_size($cachePath));
     }
@@ -68,7 +68,7 @@ class CacheController extends AdminController
     protected function getSystemLogsSize()
     {
         $basePath = $this->getBasePath();
-        $logsPath = "{$basePath}/Runtime/Logs/";
+        $logsPath = "{$basePath}/runtime/Logs/";
         create_directory($logsPath);
         return $this->formatDiskSize(get_directory_size($logsPath));
     }
@@ -130,7 +130,7 @@ class CacheController extends AdminController
     public function clearSystemCache()
     {
         $basePath = $this->getBasePath();
-        delete_directory("{$basePath}/Runtime/Cache/");
+        delete_directory("{$basePath}/runtime/Cache/");
         return json(success_response(L("Clear_System_Cache_SC")));
     }
 
@@ -141,7 +141,7 @@ class CacheController extends AdminController
     public function clearSystemLogsCache()
     {
         $basePath = $this->getBasePath();
-        delete_directory("{$basePath}/Runtime/Logs/");
+        delete_directory("{$basePath}/runtime/Logs/");
         return json(success_response(L("Clear_System_Log_SC")));
     }
 
