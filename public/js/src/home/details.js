@@ -862,7 +862,7 @@ $(function () {
      */
     function show_or_hide_single_grid(param) {
 
-        $("#single_grid_create_horizontal").hide();
+        $("#single_grid_create_horizontal,#single_grid_related_horizontal").hide();
 
         if(param.create === "yes"){
             $("#single_grid_create_bnt").show();

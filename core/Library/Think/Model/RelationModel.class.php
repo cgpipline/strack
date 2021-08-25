@@ -2073,7 +2073,8 @@ class RelationModel extends Model
      */
     private function buildWidgetFilter($item)
     {
-        switch ($item["editor"]) {
+        $editor = !empty($item["editor"]) ? $item["editor"] : "";
+        switch ($editor) {
             case "text":
             case "textarea":
             case "timespinner":
@@ -2109,11 +2110,12 @@ class RelationModel extends Model
                 }
                 break;
             default:
-                if ($item['field'] === 'id' && $item['field_type'] === 'built_in') {
+                if (!empty($item['condition'] ) && !empty($item["value"]) && $item['field_type'] === 'built_in') {
                     $filter = [$item["condition"], $item["value"]];
                 } else {
                     $filter = [];
                 }
+
                 break;
         }
         return $filter;
@@ -2434,16 +2436,20 @@ class RelationModel extends Model
             $relationStructureFilterMap = $this->getSchemaHasManyMap($relationStructure);
 
             foreach ($filter as $key => $item) {
+
                 if (!in_array(strval($key), ["multiple", "logic", "_logic", "number"])) {
                     // 获取映射键值
                     if (array_key_exists($item["module_code"], $relationStructureFilterMap)) {
                         switch ($relationStructureFilterMap[$item["module_code"]]["mapping_type"]) {
                             case "master":
                                 // 当前模块过滤条件
-                                if ($item["field_type"] === "custom") {
+                                if (!empty($item["field_type"]) && $item["field_type"] === "custom") {
                                     // 判断是否是自定义字段
                                     $filterKey = "{$currentModule}_{$item["field"]}.value";
                                 } else {
+                                    if(empty($item["field_type"])){
+                                        $item["field_type"] = "built_in";
+                                    }
                                     $filterKey = $currentModule . '.' . $item["field"];
                                 }
 
