@@ -11,7 +11,6 @@ use Common\Service\ProjectService;
 use Think\Controller;
 use Think\Request;
 use Common\Service\UserService;
-use Common\Service\LicenseService;
 use Common\Service\AuthService;
 
 class VerifyController extends Controller
@@ -428,33 +427,6 @@ class VerifyController extends Controller
         }
     }
 
-    /**
-     * 验证授权许可
-     * @return bool
-     */
-    protected function checkLicense()
-    {
-
-        $licenseService = new LicenseService();
-        if (in_array($this->fullController, ["api/user/create", "api/user/update"])) {
-            // api user 创建更新方法，增加许可数量 +1
-            $licenseService->setUpdateUserModeActive();
-        }
-
-        if (in_array($this->fullController, ["home/widget/updateitemdialog"])) {
-            // 后台用户创建更新方法，增加许可数量 +1
-            if (IS_AJAX || IS_POST) {
-                if (array_key_exists("referer", $this->header)) {
-                    $refererPageData = get_ajax_url_referer($this->header["referer"]);
-                    if ($refererPageData["page"] === "admin_account_index") {
-                        $licenseService->setUpdateUserModeActive();
-                    }
-                }
-            }
-        }
-        return $licenseService->checkLicense();
-    }
-
 
     /**
      * 检测用户登录状态
@@ -475,21 +447,7 @@ class VerifyController extends Controller
         $this->header = $this->request->header();
 
         // 验证授权许可
-//        $checkLicense = $this->checkLicense();
         $checkLicense = true;
-
-        // 无效许可且不在license页面
-//        if (!$checkLicense && $this->currentController !== "license") {
-//            switch ($this->currentModule) {
-//                case "api":
-//                    throw_strack_exception(L("License_Format_Error"));
-//                    break;
-//                default:
-//                    $this->redirect('/license');
-//                    break;
-//            }
-//            return false;
-//        }
 
         // 在许可期内跳转到登录页面
         if ($checkLicense && $this->currentController === "license") {
