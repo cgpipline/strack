@@ -8,8 +8,6 @@
 // +----------------------------------------------------------------------
 namespace Common\Service;
 
-use Common\Model\NoteModel;
-use Common\Model\ProjectModel;
 use Common\Model\SmsModel;
 use Common\Model\UserModel;
 use Org\Util\Pinyin;
