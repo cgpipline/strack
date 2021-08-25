@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <!-- Site Properties -->
+  <title>Demo - Gitee::Frontend</title>
+  <link rel="stylesheet" href="css/src/strak.main.css">
+  <link rel="stylesheet" href="themes/white/strack.ui.css">
+  <link rel="stylesheet" href="css/src/strackfont.css">
+  <link rel="stylesheet" href="css/src/lightgallery.css">
+  <link rel="stylesheet" href="css/build/animation.min.css">
+
+  <script type="text/javascript">
+    var StrackLang = {
+
+    };
+  </script>
+
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/src/strackui.js"></script>
+  <script type="text/javascript" src="js/src/kanban.js"></script>
+  <script type="text/javascript" src="js/src/strackui.ext.js"></script>
+  <script type="text/javascript" src="lang/ui.lang.zh_CN.js"></script>
+
+  <style>
+    .boards-list {
+      height: 640px;
+      width: 100%;
+      padding-bottom: 1em;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body style="overflow: auto">
+
+  <div >
+    <div id="js-member-boards"></div>
+  </div>
+
+  <script>
+      var issueStates = {
+          open: {
+              id: 'open',
+              name: '待处理',
+              icon: 'icon question circle outline',
+              color: '#28a745'
+          },
+          closed: {
+              id: 'closed',
+              name: '已完成',
+              icon: 'icon check circle outline',
+              color: '#6f4fff'
+          },
+          rejected: {
+              id: 'rejected',
+              name: '已拒绝',
+              icon: 'icon ban',
+              color: '#cb2431',
+          }
+      }
+      var issueTypes = [
+          {
+              id: 1,
+              states: ['open', 'closed', 'rejected'].map(function (state) {
+                  return issueStates[state]
+              })
+          }
+      ]
+  </script>
+
+<script>
+  function initMemberBoards(members) {
+    $('#js-member-boards').boards({
+      key: 'assignee_id',
+      name: 'member',
+      data: members.map((m) => {
+        return {
+          state: m.login,
+          name: m.name,
+          color: '#888888',
+          avatarUrl: m.avatar_url,
+          colorTarget: 'background',
+          issuesCount: 0
+        }
+      }),
+      message: {
+        loading: '加载中...',
+        allComplete: '以上是全部内容',
+        stateDisabled: '当前任务不支持切换至此状态'
+      },
+      types: issueTypes,
+      user: {
+        admin: true,
+        id: 0
+      },
+      plugins: {
+        Sortable: Sortable
+      },
+      onUpdate: function (issue, oldState) {
+        console.log(issue, oldState)
+      },
+      onLoad: function (board, callback) {
+        $.ajax({
+          url: 'https://gitee.com/api/v5/repos/oschina/git-osc/issues',
+          data: {
+            assignee: board.state,
+            page: board.page,
+            sort: 'created',
+            state: 'all',
+            direction: 'desc',
+            per_page: 20
+          }
+        }).done(function (res) {
+          var issues = res.map(function (issue) {
+            issue.type = 1
+            issue.author = issue.user
+            issue.assignee_id = issue.assignee.login
+            issue.state_data = issueStates[issue.state]
+            return issue
+          })
+          callback(issues, 1000)
+        })
+      }
+    })
+  }
+
+  $.ajax({
+    url: 'https://gitee.com/api/v5/repos/oschina/git-osc/collaborators'
+  }).done(initMemberBoards)
+
+</script>
+</body>
+</html>

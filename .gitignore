@@ -1,0 +1,9 @@
+.idea/*
+/Runtime/*
+/Runtime-test/*
+/Uploads/*
+/vendor/*
+/node_modules/*
+composer.lock
+package-lock.json
+.env
