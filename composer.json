@@ -4,7 +4,6 @@
         "classmap": ["app","core/Library"]
     },
     "require": {
-        "predis/predis": "v1.1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "strack/oauth": "dev-master",
         "webpatser/laravel-uuid": "^3.0.1",
