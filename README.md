@@ -8,7 +8,8 @@
 
  姓名 | 简介
 ---|---
-weijer | 核心开发者
+weijer | PMC
+mychenjun | committer
 
 # 更新计划
 
