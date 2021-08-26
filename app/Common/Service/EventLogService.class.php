@@ -9,6 +9,7 @@
 namespace Common\Service;
 
 use Common\Model\BaseModel;
+use Common\Model\EventLogModel;
 use Common\Model\FieldModel;
 use Common\Model\HorizontalModel;
 use Common\Model\PlanModel;
@@ -76,31 +77,15 @@ class EventLogService
      */
     protected function postToServer($data, $controllerMethod)
     {
-        $logServerConfig = $this->getEventServer();
-        if ($logServerConfig["status"] === 200) {
-            // 写入到事件服务器
-            $http = Request::create();
-            $body = Body::json($data);
-
-            $url = $logServerConfig['request_url'] . "/{$controllerMethod}?sign={$logServerConfig['token']}";
-
-            $responseData = $http->post($url, $this->_headers, $body);
-
-            if ($responseData->code === 200) {
-                if ($responseData->body->status === 200) {
-                    return $responseData->body->data;
-                } else {
-                    $this->errorMsg = $responseData->body->message;
-                    return false;
-                }
-            } else {
-                $this->errorMsg = L('Log_Server_Exception');
-                return false;
-            }
-        } else {
-            $this->errorMsg = L('Log_Server_Exception');
-            return false;
+        //  TODO 改成队列入库
+        $eventModel = new EventLogModel();
+        switch ($controllerMethod){
+            case "add":
+                // 写入数据库
+                $eventModel->add($data);
+                break;
         }
+
     }
 
     /**
@@ -187,7 +172,7 @@ class EventLogService
         $this->writeToOperationCache($data);
 
         // 记录到Event服务器
-        $this->postToServer($data, "event/add");
+        $this->postToServer($data, "add");
     }
 
     /**
@@ -203,7 +188,7 @@ class EventLogService
             'type' => 'system',
             'config' => $param
         ];
-        $this->postToServer($data, "config/add");
+        $this->postToServer($data, "add");
     }
 
     /**
@@ -214,7 +199,7 @@ class EventLogService
      */
     public function testSendEmail($data)
     {
-        $testResult = $this->postToServer($data, "email/test");
+        $testResult = $this->postToServer($data, "email_test");
         if ($testResult !== false) {
             return $testResult;
         } else {
@@ -230,7 +215,7 @@ class EventLogService
      */
     public function directSendEmail($data)
     {
-        $sendResult = $this->postToServer($data, "email/send");
+        $sendResult = $this->postToServer($data, "email_send");
         if ($sendResult !== false) {
             return $sendResult;
         } else {
@@ -412,6 +397,17 @@ class EventLogService
     }
 
     /**
+     * 获取项目名通过project_id
+     * @param $projectId
+     * @return array|mixed|string
+     */
+    protected function getProjectNameById($projectId)
+    {
+        $projectName = M("Project")->where(["id" => $projectId])->getField("name");
+        return !empty($projectName) ? $projectName : "";
+    }
+
+    /**
      * 添加处理框架内部事件日志
      * @param $from
      * @param $data
@@ -460,7 +456,7 @@ class EventLogService
                         // 判断是否为项目相关事件
                         if (array_key_exists("project_id", $item)) {
                             $addData["project_id"] = $item["project_id"];
-                            $addData["project_name"] = M("Project")->where(["id" => $item["project_id"]])->getField("name");
+                            $addData["project_name"] = $this->getProjectNameById($item["project_id"]);
                         } else {
                             $addData["project_id"] = 0;
                             $addData["project_name"] = "";
@@ -492,7 +488,7 @@ class EventLogService
                             $variableConfig = $variableService->getVariableConfig($variableId);
 
                             $addData["project_id"] = $this->checkHorizontalProjectId($data["operate"], $moduleCode, $data, $moduleIdMapData);
-                            $addData["project_name"] = M("Project")->where(["id" => $addData["project_id"]])->getField("name");
+                            $addData["project_name"] = $this->getProjectNameById($addData["project_id"]);
 
                             $moduleInfo = $this->getEventModuleInfo($data["operate"], $moduleCode, $data, $moduleIdMapData, $moduleCodeMapData);
                             $addData["module_id"] = $moduleInfo["id"];
@@ -509,7 +505,7 @@ class EventLogService
                             $variableConfig = $variableService->getVariableConfig($data["data"]["variable_id"]);
                             $addData["project_id"] = $this->checkHorizontalProjectId($data["operate"], $moduleCode, $data, $moduleIdMapData);
                             if ($addData["project_id"] > 0) {
-                                $addData["project_name"] = M("Project")->where(["id" => $addData["project_id"]])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById($addData["project_id"]);
                             } else {
                                 $addData["project_name"] = "";
                             }
@@ -555,10 +551,10 @@ class EventLogService
                             if ($fieldModel->checkTableField($data["table"], "project_id")) {
                                 $projectId = M($modelName)->where([$data["primary_field"] => $data["primary_id"]])->getField("project_id");
                                 $addData["project_id"] = $projectId;
-                                $addData["project_name"] = M("Project")->where(["id" => $projectId])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById($projectId);
                             } else if (array_key_exists("project_id", $data)) {
                                 $addData["project_id"] = $data["project_id"];
-                                $addData["project_name"] = M("Project")->where(["id" => $data["project_id"]])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById( $data["project_id"]);
                             }
 
                             // 如果存在module_id字段 存在取出来
@@ -608,7 +604,7 @@ class EventLogService
         ];
 
         // 查询event列表数据
-        $resData = $this->postToServer($filter, "event/select");
+        $resData = $this->postToServer($filter, "select");
         if ($resData !== false) {
             $eventLogData = object_to_array($resData);
             $userService = new UserService();
@@ -721,7 +717,7 @@ class EventLogService
         $filter["filter"]["event_log"]['belong_system'] = ['-eq', C('BELONG_SYSTEM')];
 
 
-        $resData = $this->postToServer($filter, "event/select");
+        $resData = $this->postToServer($filter, "select");
         if ($resData !== false) {
             $resData = object_to_array($resData);
 
@@ -745,7 +741,7 @@ class EventLogService
     }
 
     /**
-     * 动态加载事件日志数据表格列字段
+     * 动态加载事件日志数据表格列字段 TODO
      * @return array|mixed
      * @throws \Ws\Http\Exception
      */

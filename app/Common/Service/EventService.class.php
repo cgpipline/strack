@@ -8,7 +8,6 @@
 // +----------------------------------------------------------------------
 namespace Common\Service;
 
-use PHP_CodeSniffer\Files\DummyFile;
 use Think\Request as TPRequest;
 use Common\Model\MediaModel;
 use Common\Model\ModuleModel;
