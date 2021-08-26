@@ -397,6 +397,17 @@ class EventLogService
     }
 
     /**
+     * 获取项目名通过project_id
+     * @param $projectId
+     * @return array|mixed|string
+     */
+    protected function getProjectNameById($projectId)
+    {
+        $projectName = M("Project")->where(["id" => $projectId])->getField("name");
+        return !empty($projectName) ? $projectName : "";
+    }
+
+    /**
      * 添加处理框架内部事件日志
      * @param $from
      * @param $data
@@ -445,7 +456,7 @@ class EventLogService
                         // 判断是否为项目相关事件
                         if (array_key_exists("project_id", $item)) {
                             $addData["project_id"] = $item["project_id"];
-                            $addData["project_name"] = M("Project")->where(["id" => $item["project_id"]])->getField("name");
+                            $addData["project_name"] = $this->getProjectNameById($item["project_id"]);
                         } else {
                             $addData["project_id"] = 0;
                             $addData["project_name"] = "";
@@ -477,7 +488,7 @@ class EventLogService
                             $variableConfig = $variableService->getVariableConfig($variableId);
 
                             $addData["project_id"] = $this->checkHorizontalProjectId($data["operate"], $moduleCode, $data, $moduleIdMapData);
-                            $addData["project_name"] = M("Project")->where(["id" => $addData["project_id"]])->getField("name");
+                            $addData["project_name"] = $this->getProjectNameById($addData["project_id"]);
 
                             $moduleInfo = $this->getEventModuleInfo($data["operate"], $moduleCode, $data, $moduleIdMapData, $moduleCodeMapData);
                             $addData["module_id"] = $moduleInfo["id"];
@@ -494,7 +505,7 @@ class EventLogService
                             $variableConfig = $variableService->getVariableConfig($data["data"]["variable_id"]);
                             $addData["project_id"] = $this->checkHorizontalProjectId($data["operate"], $moduleCode, $data, $moduleIdMapData);
                             if ($addData["project_id"] > 0) {
-                                $addData["project_name"] = M("Project")->where(["id" => $addData["project_id"]])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById($addData["project_id"]);
                             } else {
                                 $addData["project_name"] = "";
                             }
@@ -540,10 +551,10 @@ class EventLogService
                             if ($fieldModel->checkTableField($data["table"], "project_id")) {
                                 $projectId = M($modelName)->where([$data["primary_field"] => $data["primary_id"]])->getField("project_id");
                                 $addData["project_id"] = $projectId;
-                                $addData["project_name"] = M("Project")->where(["id" => $projectId])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById($projectId);
                             } else if (array_key_exists("project_id", $data)) {
                                 $addData["project_id"] = $data["project_id"];
-                                $addData["project_name"] = M("Project")->where(["id" => $data["project_id"]])->getField("name");
+                                $addData["project_name"] = $this->getProjectNameById( $data["project_id"]);
                             }
 
                             // 如果存在module_id字段 存在取出来
