@@ -123,9 +123,10 @@ class TemplateService
         foreach ($templateData["rows"] as &$templateItem) {
             if ($templateItem["project_id"] !== 0) {
                 $templateItem["name"] = $projectModel->where(["id" => $templateItem["project_id"]])->getField("name");
+                $templateItem["type_name"] = "";
             } else {
-                $notice = L("Builtin_template");
-                $templateItem["name"] = "{$templateItem["name"]} ( {$notice} )";
+                $templateItem["type_name"] = L("Builtin_template");
+                $templateItem["name"] = "{$templateItem["name"]}";
             }
         }
 
