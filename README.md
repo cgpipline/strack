@@ -29,6 +29,18 @@ mychenjun | committer
 
 ![image](doc/strack_structure.png)
 
+# 安装
+
+当前还是测试阶段，mysql，redis 请自行安装配置
+
+```shell
+docker run --network jgy --network-alias strack_3.0 \
+    --name strack -d  \
+    -p 18094:80 \
+    -v /mnt/hgfs/dev/weijer/strack:/usr/local/apache2/htdocs/app/public \
+    weijer/sd_docker:strack
+```
+
 
 
 
