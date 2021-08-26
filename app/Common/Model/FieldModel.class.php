@@ -189,6 +189,9 @@ class FieldModel extends Model
         $tableModuleName = str_replace(C("DB_PREFIX"), "", $tableName);
         $configJson = $this->where(["table" => $tableModuleName])->getField("config");
         $fieldConfig = json_decode($configJson, true);
+
+
+
         // 给内置字段加上module_code标识
         foreach ($fieldConfig as &$fieldsItem) {
             if (!empty($moduleData)) {

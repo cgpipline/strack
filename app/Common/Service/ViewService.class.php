@@ -72,8 +72,7 @@ class ViewService
     private function getModuleData($moduleId, $field = '')
     {
         $moduleData = $this->moduleModel->findData(['filter' => ['id' => $moduleId], 'fields' => 'id as module_id,code,type']);
-
-        if (!empty($field)) {
+        if (!empty($moduleData) && !empty($field)) {
             return $moduleData[$field];
         } else {
             return $moduleData;
@@ -265,7 +264,7 @@ class ViewService
             } else {
                 if (
                     in_array($value['editor'], ["horizontal_relationship", "belong_to"])
-                    ||  (!empty($this->customFieldsMap[$value['module_code']]) && in_array($this->customFieldsMap[$value['module_code']]['type'], ["horizontal_relationship", "belong_to"]))
+                    || (!empty($this->customFieldsMap[$value['module_code']]) && in_array($this->customFieldsMap[$value['module_code']]['type'], ["horizontal_relationship", "belong_to"]))
                 ) {
                     // 水平关联
                     $retainFields[$value['module_code']][] = $value['field'];
@@ -305,7 +304,7 @@ class ViewService
 
         $masterCode = $schemaConfig['relation_structure']['table_alias'];
 
-        $this->getCustomFieldsMap(['type'=>['IN', 'horizontal_relationship,belong_to']]);
+        $this->getCustomFieldsMap(['type' => ['IN', 'horizontal_relationship,belong_to']]);
 
         if (!empty($filter) && array_key_exists('number', $filter)) {
             if ((int)$filter['number'] === 1) {
@@ -1431,50 +1430,33 @@ class ViewService
     protected function generateGridColumnConfig($param, $moduleData)
     {
 
-        $moduleBaseSchemaConfig = [];
         if (array_key_exists("schema_page", $param) && !empty($param["schema_page"])) {
 
             // 声明变量
-            $relationStructure = [];
-            $viewConfig = [];
             $stepConfig = [];
             $columnNumber = "one";
 
-            switch ($param["schema_page"]) {
-                case "admin_eventlog":
-                    // 事件日志字段配置远程调用获取
-                    $eventLogService = new EventLogService();
-                    $eventLogFieldConfig = $eventLogService->getEventLogGridFields();
-                    if (!empty($eventLogFieldConfig)) {
-                        $moduleBaseSchemaConfig = $eventLogFieldConfig["config"];
-                    } else {
-                        throw_strack_exception(L("Illegal_Operation"));
-                    }
-                    break;
-                default:
-                    // 默认获取系统模块结构、字段配置
+            // 默认获取系统模块结构、字段配置
 
-                    $templateId = empty($param['template_id']) ? 0 : $param['template_id'];
-                    // 获取当前 Module schema_id
-                    $schemaId = $this->schemaService->getPageSchemaId($moduleData['type'], $param["schema_page"], $templateId);
-                    // 当前数据结构配置
-                    $moduleSchemaConfig = $this->getSchemaConfig($param, $schemaId, 'view');
-                    if (array_key_exists("side_bar", $param) && $param["side_bar"]) {
-                        $schemaFields = [];
-                        foreach ($moduleSchemaConfig["field_clean_data"]["schema_fields"] as $key => $itemFields) {
-                            if (in_array($key, [$moduleData["code"], "status", "media"])) {
-                                $schemaFields[$key] = $itemFields;
-                            }
-                        }
-                        $moduleSchemaConfig["field_clean_data"]["schema_fields"] = $schemaFields;
+            $templateId = empty($param['template_id']) ? 0 : $param['template_id'];
+            // 获取当前 Module schema_id
+            $schemaId = $this->schemaService->getPageSchemaId($moduleData['type'], $param["schema_page"], $templateId);
+            // 当前数据结构配置
+            $moduleSchemaConfig = $this->getSchemaConfig($param, $schemaId, 'view');
+            if (array_key_exists("side_bar", $param) && $param["side_bar"]) {
+                $schemaFields = [];
+                foreach ($moduleSchemaConfig["field_clean_data"]["schema_fields"] as $key => $itemFields) {
+                    if (in_array($key, [$moduleData["code"], "status", "media"])) {
+                        $schemaFields[$key] = $itemFields;
                     }
-                    // 组装字段数据
-                    $moduleBaseSchemaConfig = $this->schemaService->generateColumnsConfig($moduleSchemaConfig, $moduleData);
-
-                    $relationStructure = $moduleSchemaConfig['relation_structure'];
-                    $viewConfig = $moduleSchemaConfig['field_clean_data']['view_config'];
-                    break;
+                }
+                $moduleSchemaConfig["field_clean_data"]["schema_fields"] = $schemaFields;
             }
+            // 组装字段数据
+            $moduleBaseSchemaConfig = $this->schemaService->generateColumnsConfig($moduleSchemaConfig, $moduleData);
+
+            $relationStructure = $moduleSchemaConfig['relation_structure'];
+            $viewConfig = $moduleSchemaConfig['field_clean_data']['view_config'];
 
             $groupConfig = [];
             $sortConfig = ["sort_data" => [], "sort_query" => []];
