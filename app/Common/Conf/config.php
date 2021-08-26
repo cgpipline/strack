@@ -158,6 +158,7 @@ return array(
         'user' => 34,
         'file_commit' => 36,
         'review' => 56,
+        'eventlog' => 22
     ],
 
     // module应用状态

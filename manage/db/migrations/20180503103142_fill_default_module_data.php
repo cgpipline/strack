@@ -100,7 +100,7 @@ class FillDefaultModuleData extends AbstractMigration
             ['type' => 'entity', 'active' => 'yes', 'name' => '剧本', 'code' => 'script', 'icon' => 'icon-uniE60F', 'number' => 43, 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
             ['type' => 'entity', 'active' => 'yes', 'name' => 'BUG', 'code' => 'bug', 'icon' => 'icon-uniEA04', 'number' => 44, 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
             ['type' => 'entity', 'active' => 'yes', 'name' => '需求', 'code' => 'requires', 'icon' => 'icon-uniE9FD', 'number' => 45, 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
-            ['type' => 'entity', 'active' => 'yes', 'name' => '产品', 'code' => 'product', 'icon' => 'icon-uniF219', 'number' => 46, 'uuid' => Webpatser\Uuid\Uuid::generate()->string]
+            ['type' => 'entity', 'active' => 'yes', 'name' => '产品', 'code' => 'product', 'icon' => 'icon-uniF219', 'number' => 46, 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
         ];
 
         $this->table('strack_module')->insert($rows)->save();

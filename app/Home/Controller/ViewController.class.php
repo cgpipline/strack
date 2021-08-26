@@ -43,14 +43,11 @@ class ViewController extends VerifyController
         $param = $this->request->param();
         if ($param["page"] == "details_correlation_base") {
             $param["module_id"] = C("MODULE_ID")["base"];
+        }else if ($param["page"] === "admin_eventlog") {
+            $param["module_id"] = C("MODULE_ID")["eventlog"];
         }
-        if ($param["page"] !== "admin_eventlog") {
-            $viewService = new ViewService();
-            $resData = $viewService->getGridPanelData($param);
-        } else {
-            $eventLogService = new EventLogService();
-            $resData = $eventLogService->getEventLogGridPanelData($param);
-        }
+        $viewService = new ViewService();
+        $resData = $viewService->getGridPanelData($param);
         return json($resData);
     }
 

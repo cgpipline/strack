@@ -641,103 +641,12 @@ class EventLogService
      */
     public function getEventLogGridData($param)
     {
-        $filter = [
-            "filter" => [
-                "event_log" => []
-            ],
-            "page" => [
-                "page_size" => $param["pagination"]["page_size"],
-                "page_number" => $param["pagination"]["page_number"]
-            ]
+        $options = [
+            'page' => [$param["page"], $param["rows"]]
         ];
-
-        // 排序条件
-        if (!empty($param["filter"]["sort"])) {
-            $sortKey = array_keys($param["filter"]["sort"]);
-            $sortValue = array_values($param["filter"]["sort"]);
-            $key = str_replace('eventlog_', '', $sortKey[0]);
-            $filter["order"] = [
-                'event_log.' . $key => $sortValue[0]["type"]
-            ];
-        }
-
-        // 分组条件
-        if (!empty($param["filter"]["group"])) {
-            $sortKey = array_keys($param["filter"]["group"]);
-            $sortValue = array_values($param["filter"]["group"]);
-            $key = str_replace('eventlog_', '', $sortKey[0]);
-            $filter["order"] = [
-                'event_log.' . $key => $sortValue[0]
-            ];
-        }
-
-        // 过滤条件
-        if (!empty($param["filter"]["request"])) {
-            foreach ($param["filter"]["request"] as $item) {
-                $filter["filter"]["event_log"][$item["field"]] = [parserFilterCondition($item["condition"]), $item["value"]];
-            }
-        }
-
-        // 过滤框过滤条件
-        if (!empty($param["filter"]["filter_input"])) {
-            foreach ($param["filter"]["filter_input"] as $item) {
-                $filter["filter"]["event_log"][$item["field"]] = [parserFilterCondition($item["condition"]), $item["value"]];
-            }
-        }
-
-        // 过滤面板过滤条件
-        if (!empty($param["filter"]["filter_panel"])) {
-            foreach ($param["filter"]["filter_panel"] as $item) {
-                $filter["filter"]["event_log"][$item["field"]] = [parserFilterCondition($item["condition"]), $item["value"]];
-            }
-        }
-
-        // 高级过滤面板过滤条件
-        if (!empty($param["filter"]["filter_advance"])) {
-
-            if ($param["filter"]["filter_advance"]['number'] === 1) {
-                //  未分组
-                $logic = 'and';
-                foreach ($param["filter"]["filter_advance"] as $key => $item) {
-                    switch (strval($key)) {
-                        case 'logic':
-                            $logic = $item;
-                            break;
-                        case 'number':
-                            break;
-                        default:
-                            array_push($filter["filter"]["event_log"], [$item["field"] => [$item["condition"], $item["value"]]]);
-                            break;
-                    }
-                }
-            }
-        }
-
-        // 添加belong_system必要条件
-        $filter["filter"]["event_log"]['belong_system'] = ['-eq', C('BELONG_SYSTEM')];
-
-
-        $resData = $this->postToServer($filter, "select");
-        if ($resData !== false) {
-            $resData = object_to_array($resData);
-
-            $listData = [];
-            foreach ($resData["rows"] as $key => &$item) {
-                foreach ($item as $fieldKey => $fieldItem) {
-                    if ($fieldKey === "created") {
-                        $fieldItem = date("Y-m-d H:i:s", $fieldItem);
-                    }
-                    $tableKey = "eventlog_" . $fieldKey;
-                    $item[$tableKey] = $fieldItem;
-                    $listData[$key][$tableKey] = $fieldItem;
-                }
-            }
-
-            return ["total" => $resData["total"], "rows" => $listData];
-        } else {
-            return ["total" => 0, "rows" => []];
-        }
-
+        $eventLogModel = new EventLogModel();
+        $eventLogData = $eventLogModel->selectData($options);
+        return $eventLogData;
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Common\Model;
 
 use Think\Model\RelationModel;
 
-class EventLogModel extends RelationModel
+class EventlogModel extends RelationModel
 {
     // 自动验证
     protected $_validate = [

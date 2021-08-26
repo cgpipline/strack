@@ -1064,7 +1064,7 @@ class FillDefaultSchemaData extends AbstractMigration
                         'link_id' => 'id'
                     ]
                 ]
-            ],
+            ]
         ];
 
 

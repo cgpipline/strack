@@ -28,7 +28,7 @@ class CreateEventlogTable extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('strack_event_log', ['id' => false, 'primary_key' => ['id'], 'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci']);
+        $table = $this->table('strack_eventlog', ['id' => false, 'primary_key' => ['id'], 'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci']);
 
         //添加数据字段
         $table->addColumn('id', 'integer', ['identity' => true, 'signed' => false, 'limit' => 11, 'comment' => '事件记录ID'])

@@ -39,7 +39,7 @@ class EventlogController extends AdminController
      */
     public function getEventLogGridData()
     {
-        $param = $this->request->formatGridParam($this->request->param());
+        $param = $this->request->param();
         $eventLogService = new EventLogService();
         $resData = $eventLogService->getEventLogGridData($param);
         return json($resData);

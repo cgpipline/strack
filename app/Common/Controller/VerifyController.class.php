@@ -185,7 +185,6 @@ class VerifyController extends Controller
             $this->authPageParam = $refererPageData["param"];
 
             $this->setWebUserId();
-
             $visitPermission = $this->authService->verifyAjaxPermission([
                 'source_node' => md5($this->fullController),
                 'referer_page' => $refererPageData["page"],
@@ -489,7 +488,6 @@ class VerifyController extends Controller
 
                 // 发送系统名称到前端
                 $this->assignBelongSystemName();
-
                 // 模块更多配置参数
                 $this->checkModuleConfig();
 

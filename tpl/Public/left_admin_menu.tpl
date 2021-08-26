@@ -79,6 +79,7 @@
                 </a>
             </li>
         </if>
+        <!--
         <if condition="$admin_menu.logServer == 'yes' ">
             <li id="admin_logServer">
                 <a href="{:U('/admin/logServer')}" onclick="Strack.click_admin_menu(this)">
@@ -86,7 +87,7 @@
                     <span class="sidebar-title">{$Think.lang.Log_Server_Setting}</span>
                 </a>
             </li>
-        </if>
+        </if>-->
         <if condition="$admin_menu.email == 'yes' ">
             <li id="admin_email">
                 <a href="{:U('/admin/email')}" onclick="Strack.click_admin_menu(this)">
