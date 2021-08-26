@@ -1010,6 +1010,12 @@ class FillDefaultSchemaData extends AbstractMigration
                         'type' => 'has_many',
                         'link_id' => 'id'
                     ],
+                    [ // 关联资产
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'asset',
+                        'type' => 'has_many',
+                        'link_id' => 'id'
+                    ],
                     [ // 关联镜头
                         'src_module_code' => 'project',
                         'dst_module_code' => 'shot',
