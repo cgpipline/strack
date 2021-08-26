@@ -6,9 +6,6 @@ $(function(){
         }
     };
 
-    //ajax错误信息
-    var clipboard;
-
     load_data('new');
 
     Strack.delete_storage('admin_menu_top');
@@ -40,7 +37,9 @@ $(function(){
             dom += server_dom(val);
         });
 
-        $("#server_list").empty().append(dom);
+        if(dom){
+            $("#server_list").empty().append(dom);
+        }
     }
 
     /**
