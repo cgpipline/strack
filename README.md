@@ -25,6 +25,10 @@ mychenjun | committer
 - [ ] 重写 PYQT client 客户端
 - [ ] 支持workerman高性能运行（改动太大看情况）
 
+# 架构图
+
+![image](doc/strack_structure.png)
+
 
 
 
