@@ -635,7 +635,7 @@ class Model
      */
     protected function _before_update($pk, &$data, $options, $writeEvent)
     {
-        if ($options["model"] != "EventLog" && $writeEvent) {
+        if ($options["model"] != "Eventlog" && $writeEvent) {
             $oldData = $this->where($options["where"])->find();
             foreach ($data as $key => $value) {
                 if ($oldData[$key] != $value) {
@@ -741,7 +741,7 @@ class Model
      */
     protected function _before_delete($pk, $options)
     {
-        if ($options["model"] != "EventLog") {
+        if ($options["model"] != "Eventlog") {
             $this->oldDeleteData = $this->where($options["where"])->select();
         }
     }

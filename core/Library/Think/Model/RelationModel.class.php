@@ -126,7 +126,7 @@ class RelationModel extends Model
     protected function _after_insert($pk, $pkName, $data, $options)
     {
         //写入事件日志
-        if ($options["model"] != "EventLog") {
+        if ($options["model"] != "Eventlog") {
             $this->databaseEventLogHook([
                 'operate' => 'create',
                 'primary_id' => $pk,
@@ -155,7 +155,7 @@ class RelationModel extends Model
     {
 
         //写入事件日志
-        if ($result > 0 && $options["model"] != "EventLog" && $writeEvent) {
+        if ($result > 0 && $options["model"] != "Eventlog" && $writeEvent) {
             $this->databaseEventLogHook([
                 'operate' => 'update',
                 'primary_id' => $this->oldUpdateKey,
@@ -183,7 +183,7 @@ class RelationModel extends Model
     protected function _after_delete($result, $pkName, $data, $options)
     {
         //写入事件日志
-        if ($result > 0 && $options["model"] != "EventLog") {
+        if ($result > 0 && $options["model"] != "Eventlog") {
             $this->databaseEventLogHook([
                 'operate' => 'delete',
                 'primary_id' => $this->oldDeleteKey,
