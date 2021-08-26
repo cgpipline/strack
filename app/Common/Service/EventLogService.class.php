@@ -9,6 +9,7 @@
 namespace Common\Service;
 
 use Common\Model\BaseModel;
+use Common\Model\EventLogModel;
 use Common\Model\FieldModel;
 use Common\Model\HorizontalModel;
 use Common\Model\PlanModel;
@@ -76,31 +77,15 @@ class EventLogService
      */
     protected function postToServer($data, $controllerMethod)
     {
-        $logServerConfig = $this->getEventServer();
-        if ($logServerConfig["status"] === 200) {
-            // 写入到事件服务器
-            $http = Request::create();
-            $body = Body::json($data);
-
-            $url = $logServerConfig['request_url'] . "/{$controllerMethod}?sign={$logServerConfig['token']}";
-
-            $responseData = $http->post($url, $this->_headers, $body);
-
-            if ($responseData->code === 200) {
-                if ($responseData->body->status === 200) {
-                    return $responseData->body->data;
-                } else {
-                    $this->errorMsg = $responseData->body->message;
-                    return false;
-                }
-            } else {
-                $this->errorMsg = L('Log_Server_Exception');
-                return false;
-            }
-        } else {
-            $this->errorMsg = L('Log_Server_Exception');
-            return false;
+        //  TODO 改成队列入库
+        $eventModel = new EventLogModel();
+        switch ($controllerMethod){
+            case "add":
+                // 写入数据库
+                $eventModel->add($data);
+                break;
         }
+
     }
 
     /**
@@ -187,7 +172,7 @@ class EventLogService
         $this->writeToOperationCache($data);
 
         // 记录到Event服务器
-        $this->postToServer($data, "event/add");
+        $this->postToServer($data, "add");
     }
 
     /**
@@ -203,7 +188,7 @@ class EventLogService
             'type' => 'system',
             'config' => $param
         ];
-        $this->postToServer($data, "config/add");
+        $this->postToServer($data, "add");
     }
 
     /**
@@ -214,7 +199,7 @@ class EventLogService
      */
     public function testSendEmail($data)
     {
-        $testResult = $this->postToServer($data, "email/test");
+        $testResult = $this->postToServer($data, "email_test");
         if ($testResult !== false) {
             return $testResult;
         } else {
@@ -230,7 +215,7 @@ class EventLogService
      */
     public function directSendEmail($data)
     {
-        $sendResult = $this->postToServer($data, "email/send");
+        $sendResult = $this->postToServer($data, "email_send");
         if ($sendResult !== false) {
             return $sendResult;
         } else {
@@ -608,7 +593,7 @@ class EventLogService
         ];
 
         // 查询event列表数据
-        $resData = $this->postToServer($filter, "event/select");
+        $resData = $this->postToServer($filter, "select");
         if ($resData !== false) {
             $eventLogData = object_to_array($resData);
             $userService = new UserService();
@@ -721,7 +706,7 @@ class EventLogService
         $filter["filter"]["event_log"]['belong_system'] = ['-eq', C('BELONG_SYSTEM')];
 
 
-        $resData = $this->postToServer($filter, "event/select");
+        $resData = $this->postToServer($filter, "select");
         if ($resData !== false) {
             $resData = object_to_array($resData);
 
@@ -745,7 +730,7 @@ class EventLogService
     }
 
     /**
-     * 动态加载事件日志数据表格列字段
+     * 动态加载事件日志数据表格列字段 TODO
      * @return array|mixed
      * @throws \Ws\Http\Exception
      */

@@ -44,7 +44,7 @@ class CreateEventlogTable extends AbstractMigration
             ->addColumn('module_name', 'string', ['default' => '', 'limit' => 128, 'comment' => '模块名称'])
             ->addColumn('record', 'json', ['null' => true, 'comment' => '记录数据'])
             ->addColumn('belong_system', 'string', ['default' => '', 'limit' => 128, 'comment' => '所属系统'])
-            ->addColumn('batch_number', 'char', ['default' => '', 'limit' => 45, 'comment' => '批次号'])
+            ->addColumn('batch_number', 'string', ['default' => '', 'limit' => 255, 'comment' => '批次号'])
             ->addColumn('from', 'string', ['default' => '', 'limit' => 64, 'comment' => '来自哪里'])
             ->addColumn('user_uuid', 'char', ['default' => '', 'limit' => 36, 'comment' => '用户唯一标识符'])
             ->addColumn('created_by', 'string', ['default' => '', 'limit' => 128, 'comment' => '创建者'])
