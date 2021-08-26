@@ -156,21 +156,6 @@ class EventLogService
             $variableService->upDateVariableConfig($data);
         }
 
-        if ($operate === "update" && $data["table"] === "Base" && array_key_exists('variable_value', $data['record'])) {
-            // 更新单价或者每平米耗时时候
-            $formulaConfigData = (new OptionsService())->getFormulaConfigData();
-
-            if ($formulaConfigData !== false) {
-                switch ((int)$data['record']['variable_value']['variable_id']) {
-                    case (int)$formulaConfigData['estimate_working_hours']:
-                        // 更新预估工时
-                        $this->updateDurationByEstimateWorkingHours($data, $formulaConfigData);
-                        break;
-                }
-            }
-
-        }
-
         if ($operate === 'update' && $data["table"] === "Timelog") {
             // 结束时间日志计算时间消耗工时
             $formulaConfigData = (new OptionsService())->getFormulaConfigData();
@@ -1009,27 +994,6 @@ class EventLogService
                 }
 
             }
-
-
-            // 秒转分钟
-            $timelogMin = $timelogTotal / 60;
-            $examineMin = $examineTotal / 60;
-
-            $variableValueModel = new VariableValueModel();
-
-            // 更新当前实际工时字段
-            $variableValueModel->where([
-                'link_id' => $timelogData['link_id'],
-                'module_id' => $moduleIds['base'],
-                'variable_id' => $formulaConfigData['actual_time_consuming']
-            ])->setField('value', $timelogMin);
-
-            // 更新当前审核工时字段
-            $variableValueModel->where([
-                'link_id' => $timelogData['link_id'],
-                'module_id' => $moduleIds['base'],
-                'variable_id' => $formulaConfigData['examine_working_hours']
-            ])->setField('value', $examineMin);
         }
     }
 
@@ -1194,23 +1158,4 @@ class EventLogService
         $baseModel->where(['id' => $data['link_id']])->setField('plan_duration', $durationFormat);
     }
 
-    /**
-     * 预估工时更新结算工时
-     * @param $data
-     * @param $formulaConfigData
-     */
-    public function updateDurationByEstimateWorkingHours($data, $formulaConfigData)
-    {
-        $estimateWorKHours = $data['record']['new']['value'];
-        $moduleIds = C('MODULE_ID');
-
-        // 更新结算工时
-        $variableValueModel = new VariableValueModel();
-        $variableValueModel->where([
-            'link_id' => $data['link_id'],
-            'module_id' => $moduleIds['base'],
-            'variable_id' => $formulaConfigData['settlement_time_consuming']
-        ])->setField('value', $estimateWorKHours);
-
-    }
 }

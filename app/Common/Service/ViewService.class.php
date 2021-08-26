@@ -206,9 +206,6 @@ class ViewService
             "grouping_of_persons" => [
                 'lang' => L('Persons_View_Mode')
             ],
-            "grouping_of_stage" => [
-                'lang' => L('Stage_View_Mode')
-            ],
             "status" => [
                 'lang' => L('Status_View_Mode')
             ]
@@ -787,24 +784,16 @@ class ViewService
         // 执行人
         $assignee = $formulaConfigData['assignee_field'];
 
-        // 预估工时
-        $estimateTime = $formulaConfigData['estimate_working_hours'];
-
-        // 设计阶段
-        $designStage = $formulaConfigData['grouping_of_stage'];
-
         // 获取当前字段自定义属性
         $variableModel = new VariableModel();
         $variableData = $variableModel->field('id,code')
-            ->where(['id' => ['IN', join(',', [$reviewedBy, $assignee, $estimateTime, $designStage])]])
+            ->where(['id' => ['IN', join(',', [$reviewedBy, $assignee])]])
             ->select();
 
         $variableIdMap = array_column($variableData, 'code', 'id');
 
         $fieldList[] = $variableIdMap[$reviewedBy];
         $fieldList[] = $variableIdMap[$assignee];
-        $fieldList[] = $variableIdMap[$estimateTime];
-        $fieldList[] = $variableIdMap[$designStage];
 
 
         $requiredFieldList = [];
@@ -2900,8 +2889,6 @@ class ViewService
         $groupModuleData = [];
         $dragAuth = 'no';
 
-        $viewService = new ViewService();
-
         switch ($groupParam['field_type']) {
             case 'built_in':
                 // 由于某些分组数据量巨大暂时只支持
@@ -2919,7 +2906,8 @@ class ViewService
                         "module_code" => $moduleParam['module_code']
                     ]);
 
-                    $statusIds = array_column($templateConfig['status'], 'id');
+
+                    $statusIds = !empty($templateConfig) ? array_column($templateConfig['status'], 'id') : [];
 
                     $statusModel = new StatusModel();
                     $collaborators = $statusModel->field('id,name,code,color,icon,correspond')
@@ -2935,7 +2923,7 @@ class ViewService
                         "correspond" => "not_started"
                     ]);
 
-                    $dragAuth = $viewService->checkFieldPermission('base', 'status_id', "modify");
+                    $dragAuth = $this->checkFieldPermission('base', 'status_id', "modify");
                 }
                 break;
             case 'custom':
@@ -2980,7 +2968,7 @@ class ViewService
                             "correspond" => "not_type"
                         ]);
 
-                        $dragAuth = $viewService->checkFieldPermission('base', $groupParam['field'], "modify");
+                        $dragAuth = $this->checkFieldPermission('base', $groupParam['field'], "modify");
                         break;
                     case 'horizontal_relationship':
                         // 用户水平一对一
@@ -3027,7 +3015,7 @@ class ViewService
                                 "correspond" => "not_assign"
                             ]);
 
-                            $dragAuth = $viewService->checkFieldPermission('base', $groupParam['field'], "modify");
+                            $dragAuth = $this->checkFieldPermission('base', $groupParam['field'], "modify");
                         }
                         break;
                 }
@@ -3046,7 +3034,7 @@ class ViewService
 
         $formulaConfig = [];
         foreach ($formulaConfigData as $key => $formulaConfigItemId) {
-            if (in_array($key, ['reviewed_by', 'assignee_field', 'actual_time_consuming', 'estimate_working_hours'])) {
+            if (in_array($key, ['reviewed_by', 'assignee_field'])) {
                 if (in_array($variableCodeMap[$formulaConfigItemId]['type'], ['belong_to', 'horizontal_relationship'])) {
                     $variableCodeMap[$formulaConfigItemId]['field'] = "base_{$variableCodeMap[$formulaConfigItemId]['code']}";
                 } else {
