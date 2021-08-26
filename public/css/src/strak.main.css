@@ -21448,6 +21448,7 @@ div.jsoneditor-navigation-bar {
     left: 0;
     right: 0;
     color: #6c757d;
+    text-align: center;
 }
 
 .boards-list a.board-list-bottom:hover{

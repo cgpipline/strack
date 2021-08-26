@@ -1435,10 +1435,6 @@ class ProjectService
             // 执行人
             $assigneeFieldId = $HorizontalService->getHorizontalServiceData($moduleIds['base'], $moduleIds['user'], $formulaConfigData['assignee_field'], $baseData['id']);
             $data['task_executor'] = $userModel->where(['id' => $assigneeFieldId])->getField('name');
-
-            // 设计阶段
-            $variableService = new VariableService();
-            $data['task_stage'] = $variableService->getCustomVariableValue($baseData['id'], $moduleIds['base'], $formulaConfigData['grouping_of_stage']);
         }
 
         return $data;

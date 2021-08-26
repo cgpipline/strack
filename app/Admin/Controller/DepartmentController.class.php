@@ -51,7 +51,9 @@ class DepartmentController extends AdminController
 
         if ($resData['status'] === 200) {
             // 写入部门负责人
-            $userService->addDepartmentManager($resData['data']['id'], $param['user_ids']);
+            if(!empty($param['user_ids'])){
+                $userService->addDepartmentManager($resData['data']['id'], $param['user_ids']);
+            }
         }
 
         return json($resData);

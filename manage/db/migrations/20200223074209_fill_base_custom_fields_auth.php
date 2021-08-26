@@ -62,7 +62,6 @@ class FillBaseCustomFieldsAuth extends AbstractMigration
             'type' => 'system',
             'config' => json_encode([
                 "view" => [
-                    "grouping_of_stage" => $baseFieldMap['taskstage'],
                     "grouping_of_persons" => $baseFieldMap['executor']
                 ],
                 "formula" => [
@@ -70,15 +69,10 @@ class FillBaseCustomFieldsAuth extends AbstractMigration
                         "sub_task" => $baseFieldMap['subtask'],
                         "reviewed_by" => $baseFieldMap['assignor'],
                         "assignee_field" => $baseFieldMap['executor'],
-                        "grouping_of_stage" => $baseFieldMap['taskstage'],
                         "no_start_status" => 1,
                         "in_progress_status" => 7,
                         "end_by_status" => 15,
-                        "reviewed_by_status" => 9,
-                        "actual_time_consuming" => $baseFieldMap['actualtime'],
-                        "examine_working_hours" => $baseFieldMap['examinetime'],
-                        "estimate_working_hours" => $baseFieldMap['estimatetime'],
-                        "settlement_time_consuming" => $baseFieldMap['settletime']
+                        "reviewed_by_status" => 9
                     ],
                     "formula_data" => [
 
