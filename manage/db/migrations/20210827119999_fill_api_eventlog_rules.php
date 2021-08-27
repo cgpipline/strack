@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class FillApiViewGridPanelRules extends AbstractMigration
+class FillApiEventlogRules extends AbstractMigration
 {
     /**
      * Change Method.
@@ -83,14 +83,25 @@ class FillApiViewGridPanelRules extends AbstractMigration
     {
         $getTaskStatusListNodeRows = [
             [
-                'name' => '获取表格面板数据',
-                'code' => 'get_grid_panel_data',
-                'lang' => 'Get_Grid_Panel_Data',
+                'name' => '获取多条事件日志',
+                'code' => 'select_event_data',
+                'lang' => 'Select_Event_Data',
                 'type' => 'route',
                 'module' => 'api',
                 'project_id' => '0',
                 'module_id' => '0',
-                'rules' => 'api/View/getGridPanelData',
+                'rules' => 'api/Eventlog/select',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            [
+                'name' => '获取单条事件日志',
+                'code' => 'find_event_data',
+                'lang' => 'find_Event_Data',
+                'type' => 'route',
+                'module' => 'api',
+                'project_id' => '0',
+                'module_id' => '0',
+                'rules' => 'api/Eventlog/find',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ]
         ];
@@ -100,20 +111,42 @@ class FillApiViewGridPanelRules extends AbstractMigration
 
 
         /**
-         * 获取表格面板数据
+         * 获取事件日志数据
          */
         $getTaskStatusListGroupRows = [
             'group' => [
-                'name' => '获取表格面板数据',
-                'code' => 'get_grid_panel_data',
-                'lang' => 'Get_Grid_Panel_Data',
+                'name' => '获取多条事件日志',
+                'code' => 'select_event_data',
+                'lang' => 'Select_Event_Data',
                 'type' => 'url',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
             'rules' => [
                 [
                     'auth_group_id' => 0,
-                    'auth_node_id' => 796,
+                    'auth_node_id' => 798,
+                    'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                ]
+            ]
+        ];
+
+        $this->saveAuthGroup($getTaskStatusListGroupRows);
+
+        /**
+         * 获取事件日志数据
+         */
+        $getTaskStatusListGroupRows = [
+            'group' => [
+                'name' => '获取单条事件日志',
+                'code' => 'find_event_data',
+                'lang' => 'find_Event_Data',
+                'type' => 'url',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            'rules' => [
+                [
+                    'auth_group_id' => 0,
+                    'auth_node_id' => 799,
                     'uuid' => Webpatser\Uuid\Uuid::generate()->string
                 ]
             ]
@@ -124,15 +157,15 @@ class FillApiViewGridPanelRules extends AbstractMigration
 
 
         /**
-         * 获取表格面板数据视图页面权限规则注册
+         * 获取事件日志数据页面权限规则注册
          */
         $getTaskStatusListPageAuthRows = [
             'page' => [
                 'name' => '获取表格面板数据',
-                'code' => 'get_grid_panel_data',
-                'lang' => 'Get_Grid_Panel_Data',
-                'page' => 'api_view',
-                'param' => 'getgridpaneldata',
+                'code' => 'select_event_data',
+                'lang' => 'Select_Event_Data',
+                'page' => 'api_eventlog',
+                'param' => 'select',
                 'type' => 'belong',
                 'parent_id' => 0,
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
@@ -140,7 +173,32 @@ class FillApiViewGridPanelRules extends AbstractMigration
             'auth_group' => [
                 [
                     'page_auth_id' => 0,
-                    'auth_group_id' => 528,
+                    'auth_group_id' => 530,
+                    'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                ]
+            ]
+        ];
+
+        $this->savePageAuth($getTaskStatusListPageAuthRows);
+
+        /**
+         * 获取事件日志数据页面权限规则注册
+         */
+        $getTaskStatusListPageAuthRows = [
+            'page' => [
+                'name' => '获取表格面板数据',
+                'code' => 'find_event_data',
+                'lang' => 'find_Event_Data',
+                'page' => 'api_eventlog',
+                'param' => 'find',
+                'type' => 'belong',
+                'parent_id' => 0,
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            'auth_group' => [
+                [
+                    'page_auth_id' => 0,
+                    'auth_group_id' => 531,
                     'uuid' => Webpatser\Uuid\Uuid::generate()->string
                 ]
             ]
@@ -148,7 +206,7 @@ class FillApiViewGridPanelRules extends AbstractMigration
 
 
 
-        $this->savePageAuth($getTaskStatusListPageAuthRows, 944);
+        $this->savePageAuth($getTaskStatusListPageAuthRows);
 
     }
 
