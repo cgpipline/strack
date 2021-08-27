@@ -24,6 +24,7 @@ mychenjun | committer
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
 - [ ] 重写 PYQT client 客户端
+- [ ] 对接 Rocket.Chat
 - [ ] 支持workerman高性能运行（改动太大看情况）
 
 # 架构图
