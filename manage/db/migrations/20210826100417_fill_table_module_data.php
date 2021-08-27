@@ -500,7 +500,7 @@ class FillTableModuleData extends AbstractMigration
                 [ // 关联用户角色
                     'src_module_code' => 'eventlog',
                     'dst_module_code' => 'user',
-                    'type' => 'has_one',
+                    'type' => 'belong_to',
                     'link_id' => 'created_by'
                 ]
             ]
