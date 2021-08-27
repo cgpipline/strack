@@ -84,8 +84,8 @@ class FillApiEventlogRules extends AbstractMigration
         $getTaskStatusListNodeRows = [
             [
                 'name' => '获取多条事件日志',
-                'code' => 'select_event_data',
-                'lang' => 'Select_Event_Data',
+                'code' => 'select_eventlog_data',
+                'lang' => 'Select_Eventlog_Data',
                 'type' => 'route',
                 'module' => 'api',
                 'project_id' => '0',
@@ -95,13 +95,24 @@ class FillApiEventlogRules extends AbstractMigration
             ],
             [
                 'name' => '获取单条事件日志',
-                'code' => 'find_event_data',
-                'lang' => 'find_Event_Data',
+                'code' => 'find_eventlog_data',
+                'lang' => 'find_Eventlog_Data',
                 'type' => 'route',
                 'module' => 'api',
                 'project_id' => '0',
                 'module_id' => '0',
                 'rules' => 'api/Eventlog/find',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            [
+                'name' => '获取事件日志字段',
+                'code' => 'get_eventlog_fields',
+                'lang' => 'Get_Eventlog_Fields',
+                'type' => 'route',
+                'module' => 'api',
+                'project_id' => '0',
+                'module_id' => '0',
+                'rules' => 'api/Eventlog/fields',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ]
         ];
@@ -116,8 +127,8 @@ class FillApiEventlogRules extends AbstractMigration
         $getTaskStatusListGroupRows = [
             'group' => [
                 'name' => '获取多条事件日志',
-                'code' => 'select_event_data',
-                'lang' => 'Select_Event_Data',
+                'code' => 'select_eventlog_data',
+                'lang' => 'Select_Eventlog_Data',
                 'type' => 'url',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
@@ -138,8 +149,8 @@ class FillApiEventlogRules extends AbstractMigration
         $getTaskStatusListGroupRows = [
             'group' => [
                 'name' => '获取单条事件日志',
-                'code' => 'find_event_data',
-                'lang' => 'find_Event_Data',
+                'code' => 'find_eventlog_data',
+                'lang' => 'find_Eventlog_Data',
                 'type' => 'url',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
@@ -155,58 +166,107 @@ class FillApiEventlogRules extends AbstractMigration
         $this->saveAuthGroup($getTaskStatusListGroupRows);
 
 
-
         /**
-         * 获取事件日志数据页面权限规则注册
+         * 获取事件日志数据
          */
-        $getTaskStatusListPageAuthRows = [
-            'page' => [
-                'name' => '获取表格面板数据',
-                'code' => 'select_event_data',
-                'lang' => 'Select_Event_Data',
-                'page' => 'api_eventlog',
-                'param' => 'select',
-                'type' => 'belong',
-                'parent_id' => 0,
+        $getTaskStatusListGroupRows = [
+            'group' => [
+                'name' => '获取事件日志字段',
+                'code' => 'get_eventlog_fields',
+                'lang' => 'Get_Eventlog_Fields',
+                'type' => 'url',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
-            'auth_group' => [
+            'rules' => [
                 [
-                    'page_auth_id' => 0,
-                    'auth_group_id' => 530,
+                    'auth_group_id' => 0,
+                    'auth_node_id' => 800,
                     'uuid' => Webpatser\Uuid\Uuid::generate()->string
                 ]
             ]
         ];
 
-        $this->savePageAuth($getTaskStatusListPageAuthRows);
+        $this->saveAuthGroup($getTaskStatusListGroupRows);
+
 
         /**
-         * 获取事件日志数据页面权限规则注册
+         * 动作模块
          */
-        $getTaskStatusListPageAuthRows = [
+        $actionModuleRows = [
             'page' => [
-                'name' => '获取表格面板数据',
-                'code' => 'find_event_data',
-                'lang' => 'find_Event_Data',
+                'name' => '事件日志',
+                'code' => 'eventlog',
+                'lang' => 'Eventlog',
                 'page' => 'api_eventlog',
-                'param' => 'find',
-                'type' => 'belong',
+                'menu' => 'api',
+                'category' => 'API_Module',
+                'param' => '',
+                'type' => 'children',
                 'parent_id' => 0,
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
-            'auth_group' => [
+            'list' => [
                 [
-                    'page_auth_id' => 0,
-                    'auth_group_id' => 531,
-                    'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                    'page' => [
+                        'name' => '事件日志单条查找',
+                        'code' => 'eventlog_find',
+                        'lang' => 'Find',
+                        'page' => 'api_eventlog',
+                        'param' => 'find',
+                        'type' => 'belong',
+                        'parent_id' => 0,
+                        'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                    ],
+                    'auth_group' => [
+                        [
+                            'page_auth_id' => 0,
+                            'auth_group_id' => 530,
+                            'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                        ]
+                    ]
+                ],
+                [
+                    'page' => [
+                        'name' => '事件日志多条查找',
+                        'code' => 'eventlog_select',
+                        'lang' => 'Select',
+                        'page' => 'api_eventlog',
+                        'param' => 'select',
+                        'type' => 'belong',
+                        'parent_id' => 0,
+                        'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                    ],
+                    'auth_group' => [
+                        [
+                            'page_auth_id' => 0,
+                            'auth_group_id' => 531,
+                            'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                        ]
+                    ]
+                ],
+                [
+                    'page' => [
+                        'name' => '事件日志字段',
+                        'code' => 'eventlog_fields',
+                        'lang' => 'Get_Fields',
+                        'page' => 'api_eventlog',
+                        'param' => 'fields',
+                        'type' => 'belong',
+                        'parent_id' => 0,
+                        'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                    ],
+                    'auth_group' => [
+                        [
+                            'page_auth_id' => 0,
+                            'auth_group_id' => 532,
+                            'uuid' => Webpatser\Uuid\Uuid::generate()->string
+                        ]
+                    ]
                 ]
             ]
         ];
 
-
-
-        $this->savePageAuth($getTaskStatusListPageAuthRows);
+        $this->savePageAuth($actionModuleRows);
 
     }
 
@@ -215,8 +275,7 @@ class FillApiEventlogRules extends AbstractMigration
      */
     public function down()
     {
-        $this->execute('DELETE FROM strack_auth_group_node');
-        $this->execute('DELETE FROM strack_auth_node');
-        $this->execute('DELETE FROM strack_auth_group');
+        $this->execute('DELETE FROM strack_page_auth');
+        $this->execute('DELETE FROM strack_page_link_auth');
     }
 }

@@ -1024,6 +1024,47 @@ class FillDefaultSchemaData extends AbstractMigration
                     ]
                 ]
             ],
+            // 电影项目模型
+            [
+                'schema' => [
+                    'name' => '电影项目模型',
+                    'code' => 'film',
+                    'type' => 'project',
+                    'uuid' => Webpatser\Uuid\Uuid::generate()->string,
+                ],
+                'module_relation' => [
+                    [ // 关联状态
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'status',
+                        'type' => 'belong_to',
+                        'link_id' => 'status_id'
+                    ],
+                    [ // 关联媒体
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'media',
+                        'type' => 'belong_to',
+                        'link_id' => 'media_id'
+                    ],
+                    [ // 关联序列
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'sequence',
+                        'type' => 'has_many',
+                        'link_id' => 'id'
+                    ],
+                    [ // 关联资产
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'asset',
+                        'type' => 'has_many',
+                        'link_id' => 'id'
+                    ],
+                    [ // 关联镜头
+                        'src_module_code' => 'project',
+                        'dst_module_code' => 'shot',
+                        'type' => 'has_many',
+                        'link_id' => 'id'
+                    ]
+                ]
+            ],
             // 开发项目模型
             [
                 'schema' => [
