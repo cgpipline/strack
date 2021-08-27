@@ -57,6 +57,14 @@ class FillStatusData extends AbstractMigration
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
             [
+                'name' => '正常', //正常
+                'code' => 'normal',
+                'color' => '545454',
+                'icon' => 'icon-uniF00D',
+                'correspond' => 'in_progress',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            [
                 'name' => '暂停', //暂停
                 'code' => 'on_hold',
                 'color' => '6310e8',
