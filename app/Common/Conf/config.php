@@ -8,7 +8,7 @@ return array(
     'COMPANY_NAME' => Env::get("company_name"),    //系统版权
     'BELONG_SYSTEM' => Env::get("belong_system"),  // 所属系统
     "STRACK_INSTALL_VERSION" => Env::get("version"),    //系统安装版本版本
-    "STRACK_VERSION" => "3.1.3 Released",    //当前系统版本
+    "STRACK_VERSION" => Env::get("version"),    //当前系统版本
     'SHOW_THEME' => Env::get("show_theme"),    //系统版权
     'LOAD_EXT_CONFIG' => ['SMS' => 'sms'],
 
