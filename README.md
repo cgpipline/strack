@@ -18,7 +18,7 @@ mychenjun | committer
 - [x] 底层框架漏洞修复
 - [ ] PHP版本兼容升级 7.4
 - [ ] 重写media服务
-- [ ] 重写log服务
+- [x] 重写log服务
 - [ ] 编写使用文档
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
