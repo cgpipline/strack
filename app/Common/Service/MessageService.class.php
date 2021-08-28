@@ -99,18 +99,6 @@ class MessageService
         }
     }
 
-    /**
-     * 新增消息
-     * @param $from
-     * @param $data
-     * @throws \Exception
-     */
-    public function addMessage($from, $data)
-    {
-        // 消息记录到Event服务器
-        $this->postToServer($data, "message/add");
-    }
-
 
     /**
      * 新增提醒

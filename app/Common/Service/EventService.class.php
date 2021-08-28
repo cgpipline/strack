@@ -820,25 +820,6 @@ class EventService
     }
 
     /**
-     * 新增后，消息处理
-     * @param $moduleFilter
-     * @param $data
-     * @throws \Exception
-     */
-    protected function sendMessage($moduleFilter, $data)
-    {
-        $messageData = $this->getMessageContentData($moduleFilter, $data);
-
-        // 增加从哪里来参数
-        $from = session("event_from");
-
-        // 记录消息数据
-        $messageService = new MessageService();
-
-        $messageService->addMessage($from, $messageData);
-    }
-
-    /**
      * 格式化字段数据
      * @param $updateData
      * @return array|false|string
@@ -1138,8 +1119,8 @@ class EventService
     /**
      * 生成消息数据，传入参数（controller， action，config，request_param， operation_data）
      * @param $param
+     * @return array
      * @throws \Ws\Http\Exception
-     * @throws \Exception
      */
     public function generateMessageData($param)
     {
@@ -1160,6 +1141,7 @@ class EventService
          * 5、消息是否有执行按钮
          */
 
+        $messages = [];
         // 获取发送者数据
         switch ($param['action']) {
             case 'saveMediaData':
@@ -1181,7 +1163,7 @@ class EventService
                             $mediaData["value_show"] = $operationItem['record']["thumb"];
 
                             // 发送处理消息
-                            $this->sendMessage($moduleFilter, $mediaData);
+                            $messages[] =  $this->getMessageContentData($moduleFilter, $mediaData);
                         } else if ($operationItem['operate'] === 'update') {
                             // 修改媒体
                             $this->messageOperate = 'update';
@@ -1192,7 +1174,7 @@ class EventService
                             $mediaData["value_show"] = $mediaParam["thumb"];
 
                             // 发送处理消息
-                            $this->sendMessage($moduleFilter, $mediaData);
+                            $messages[] =  $this->getMessageContentData($moduleFilter, $mediaData);
                         }
                     }
                 }
@@ -1204,7 +1186,7 @@ class EventService
                 $this->messageOperate = 'add';
                 $noteData = TPRequest::$serviceOperationResData;;
                 $this->projectId = $noteData['project_id'];
-                $this->sendMessage($moduleFilter, $noteData);
+                $messages[] =  $this->getMessageContentData($moduleFilter, $noteData);
                 break;
             case 'modifyNote':
                 $this->requestParam = $param['request_param'];
@@ -1214,7 +1196,7 @@ class EventService
                 $this->messageFromType = 'note';
                 $this->messageOperate = 'update';
                 $noteData = TPRequest::$serviceOperationResData;
-                $this->sendMessage($moduleFilter, $noteData);
+                $messages[] =  $this->getMessageContentData($moduleFilter, $noteData);
                 break;
             case 'deleteNote':
                 // 删除Note
@@ -1227,7 +1209,7 @@ class EventService
                     $this->projectId = array_key_exists('project_id', $deleteOperationItem['master']) ? $deleteOperationItem['master']['project_id'] : 0;
                     $deleteData = $deleteOperationItem['master']['record'];
                     $deleteData['receive'] = $deleteOperationItem['receive'];
-                    $this->sendMessage($moduleFilter, $deleteData);
+                    $messages[] =  $this->getMessageContentData($moduleFilter, $deleteData);
                 }
                 break;
             case 'deleteGridData':
@@ -1242,7 +1224,7 @@ class EventService
                     if (!empty($deleteOperationItem['master']['record'])) {
                         $deleteData = $deleteOperationItem['master']['record'];
                         $deleteData['receive'] = $deleteOperationItem['receive'];
-                        $this->sendMessage($moduleFilter, $deleteData);
+                        $messages[] =  $this->getMessageContentData($moduleFilter, $deleteData);
                     }
                 }
                 break;
@@ -1269,10 +1251,10 @@ class EventService
                 foreach ($deleteOperationData as $deleteOperationItem) {
                     if ($this->messageOperate === 'update') {
                         if (!empty($deleteOperationItem['list'])) {
-                            $this->sendMessage($moduleFilter, $masterData);
+                            $messages[] =  $this->getMessageContentData($moduleFilter, $masterData);
                         }
                     } else {
-                        $this->sendMessage($moduleFilter, $masterData);
+                        $messages[] =  $this->getMessageContentData($moduleFilter, $masterData);
                     }
                 }
                 break;
@@ -1288,7 +1270,7 @@ class EventService
                 $updateData['project_id'] = $this->projectId;
                 $moduleFilter = TPRequest::$serviceOperationModuleFilter;
 
-                $this->sendMessage($moduleFilter, $updateData);
+                $messages[] =  $this->getMessageContentData($moduleFilter, $updateData);
                 break;
             case 'updateBaseConfirmationData':
                 $this->requestParam = $param['request_param'];
@@ -1300,7 +1282,7 @@ class EventService
                 $this->messageOperate = $masterData['operation'];
                 $this->messageFromType = 'base_confirmation';
 
-                $this->sendMessage($moduleFilter, $masterData);
+                $messages[] =  $this->getMessageContentData($moduleFilter, $masterData);
                 break;
             case 'startOrStopTimelog':
                 // 处理时间日志消息通知
@@ -1309,11 +1291,13 @@ class EventService
                 $this->messageFromType = "timelog_bnt_{$param['request_param']['from']}";
                 $masterData = TPRequest::$serviceOperationResData;
                 $masterData['data']['from'] = $param['request_param']['from'];
-                $this->sendMessage($moduleFilter, $masterData['data']);
+                $messages[] =  $this->getMessageContentData($moduleFilter, $masterData['data']);
                 break;
         }
 
-        $this->destroyBatchEventCache();
+        $this->destroyBatchEventCache($param['batch_number']);
+
+        return $messages;
     }
 
 

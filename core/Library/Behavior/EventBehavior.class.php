@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 namespace Behavior;
 
-use Think\QueueClient;
+use Common\Service\EventLogService;
 use Think\Request;
 
 /**
@@ -36,6 +36,9 @@ class EventBehavior
         ];
 
         // 异步处理
-        QueueClient::send('eventlog', $eventData);
+        $eventLogService = new EventLogService();
+        $eventLogService->addInsideEventLog($eventData["event_from"], $eventData["params"], $eventData["user_info"]);
+
+        //QueueClient::send('eventlog', ['some', time()]);
     }
 }

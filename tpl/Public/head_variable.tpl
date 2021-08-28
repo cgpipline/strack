@@ -172,3 +172,8 @@
     <script type="text/javascript" src="__COM_JS__/build/datagrid.scrollview.min.js"></script>
     <script type="text/javascript" src="__COM_JS__/build/datagrid.kanbanview.min.js"></script>
 </if>
+<if condition="$is_dev == '1' ">
+    <script type="text/javascript" src="__COM_JS__/src/centrifuge.js"></script>
+    <else/>
+    <script type="text/javascript" src="__COM_JS__/build/centrifuge.min.js"></script>
+</if>

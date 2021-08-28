@@ -14,7 +14,7 @@ mychenjun | committer
 # 更新计划
 
 - [x] 整理优化代码
-- [ ] event和消息异步处理
+- [x] event和消息异步处理
 - [x] 底层框架漏洞修复
 - [ ] PHP版本兼容升级 7.4
 - [x] 重写media服务

@@ -5472,6 +5472,7 @@ var Strack = {
     //批量触发动作
     click_run_action: function (i) {
         Strack.Websocket.init('action',{
+            ws_type: 'websocket',
             url: "ws://localhost:9888",
             afterInit : function (data) {
                 if(data["status"] === "error"){
@@ -17657,44 +17658,110 @@ Strack.Websocket = {
                 }
                 $('.pushable').prepend(Strack.loading_dom(bg_color, StrackLang["Starting_Action"], 'run_action'));
 
-                var ws = new WebSocket(param.url);
-                ws.onopen = function (evt) {
-                    // 已经成功连接 Websocket 服务
-                    Strack.Websocket.List[name] = ws;
-                    // 开启心跳维持
-                    Strack.Websocket.heartbeat(name);
-                    if(param.afterInit){
-                        $("#st-load_run_action").remove();
-                        param.afterInit({
-                            status : 'new',
-                            data : evt
-                        });
+                if(param.ws_type === 'centrifuge'){
+                    var centrifuge = new Centrifuge(param.data.websocket_url);
+
+                    centrifuge.setToken(param.data.token);
+
+                    var callbacks = {
+                        "publish": function(message) {
+                            // See below description of message format
+                            // 响应接收消息
+                            if(param.onMessage){
+                                console.log(message);
+                                param.onMessage(message.data);
+                            }
+                        },
+                        "join": function(message) {
+                            // See below description of join message format
+                            console.log(message.data);
+                        },
+                        "leave": function(message) {
+                            // See below description of leave message format
+                            console.log(message);
+                            // 关闭 Websocket 服务
+                            if(param.onClose){
+                                param.onClose(message.data);
+                            }
+                        },
+                        "subscribe": function(context) {
+                            // See below description of subscribe callback context format
+                            console.log(context);
+                            Strack.Websocket.List[name] = centrifuge;
+                            if(param.afterInit){
+                                $("#st-load_run_action").remove();
+                                param.afterInit({
+                                    status : 'new',
+                                    data : context
+                                });
+                            }
+                        },
+                        "error": function(errContext) {
+                            // See below description of subscribe error callback context format
+                            // 错误接收消息
+                            Strack.Websocket.close(name);
+                            if(param.afterInit){
+                                $("#st-load_run_action").remove();
+                                param.afterInit({
+                                    status : 'error',
+                                    data : errContext,
+                                    message : 'Connection error.'
+                                });
+                            }
+                        },
+                        "unsubscribe": function(context) {
+                            // See below description of unsubscribe event callback context format
+                            console.log(context);
+                            // 关闭 Websocket 服务
+                            if(param.onClose){
+                                param.onClose(context);
+                            }
+                        }
                     }
-                };
-                ws.onclose = function (evt) {
-                    // 关闭 Websocket 服务
-                    if(param.onClose){
-                        param.onClose(evt.data);
-                    }
-                };
-                ws.onmessage = function (evt) {
-                    // 响应接收消息
-                    if(param.onMessage){
-                        param.onMessage(evt.data);
-                    }
-                };
-                ws.onerror = function (evt) {
-                    // 错误接收消息
-                    Strack.Websocket.close(name);
-                    if(param.afterInit){
-                        $("#st-load_run_action").remove();
-                        param.afterInit({
-                            status : 'error',
-                            data : evt,
-                            message : 'Connection error.'
-                        });
-                    }
-                };
+
+                    centrifuge.subscribe(param.data.channel, callbacks);
+
+                    centrifuge.connect();
+                }else {
+                    var ws = new WebSocket(param.url);
+                    ws.onopen = function (evt) {
+                        // 已经成功连接 Websocket 服务
+                        Strack.Websocket.List[name] = ws;
+                        // 开启心跳维持
+                        Strack.Websocket.heartbeat(name);
+                        if(param.afterInit){
+                            $("#st-load_run_action").remove();
+                            param.afterInit({
+                                status : 'new',
+                                data : evt
+                            });
+                        }
+                    };
+                    ws.onclose = function (evt) {
+                        // 关闭 Websocket 服务
+                        if(param.onClose){
+                            param.onClose(evt.data);
+                        }
+                    };
+                    ws.onmessage = function (evt) {
+                        // 响应接收消息
+                        if(param.onMessage){
+                            param.onMessage(evt.data);
+                        }
+                    };
+                    ws.onerror = function (evt) {
+                        // 错误接收消息
+                        Strack.Websocket.close(name);
+                        if(param.afterInit){
+                            $("#st-load_run_action").remove();
+                            param.afterInit({
+                                status : 'error',
+                                data : evt,
+                                message : 'Connection error.'
+                            });
+                        }
+                    };
+                }
             }else {
                 // 不支持 WebSocket
                 if(param.afterInit){
@@ -17800,14 +17867,14 @@ Strack.update = {
             success: function (data) {
                 if(data["active"] === "yes" && data["websocket_url"]){
                     Strack.Websocket.init('update',{
-                        url: data["websocket_url"]+"?sign="+data["token"],
+                        ws_type: 'centrifuge',
+                        data: data,
                         afterInit : function (data) {
                             if(data["status"] === "error"){
                                 console.log("ws error:"+data["message"]);
                             }
                         },
-                        onMessage: function (data) {
-                            var message = JSON.parse(data);
+                        onMessage: function (message) {
                             switch (message["type"]){
                                 case "connect":
                                     Strack.Websocket.bind("update", Strack.get_page_uuid());

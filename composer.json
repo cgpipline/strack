@@ -13,7 +13,8 @@
         "robmorgan/phinx": "^0.10.6",
         "mingyoung/dingtalk": "^2.0",
         "strack/yurun-oauth-login": "^0.4",
-        "workerman/redis-queue": "^1.0"
+        "workerman/redis-queue": "^1.0",
+        "centrifugal/phpcent": ">=3.0"
     },
     "require-dev": {
         "phpcompatibility/php-compatibility": "*"
