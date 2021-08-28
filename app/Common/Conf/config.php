@@ -120,7 +120,7 @@ return array(
         'host' => Env::get("redis_host"),
         'port' => Env::get("redis_port"),
         'password' => Env::get("redis_password"),
-        'select' => 0,
+        'select' => Env::get("redis_select"),
         'timeout' => 300,
         'expire' => 0,
         'persistent' => true,

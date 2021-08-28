@@ -11,13 +11,6 @@ namespace Common\Service;
 use Common\Model\BaseModel;
 use Common\Model\EventLogModel;
 use Common\Model\FieldModel;
-use Common\Model\HorizontalModel;
-use Common\Model\PlanModel;
-use Common\Model\ProjectModel;
-use Common\Model\TimelogModel;
-use Common\Model\VariableValueModel;
-use Ws\Http\Request;
-use Ws\Http\Request\Body;
 
 class EventLogService
 {
@@ -72,8 +65,7 @@ class EventLogService
      * 记录到Event服务器
      * @param $data
      * @param $controllerMethod
-     * @return bool
-     * @throws \Ws\Http\Exception
+     * @throws \Think\Exception
      */
     protected function postToServer($data, $controllerMethod)
     {
@@ -118,8 +110,7 @@ class EventLogService
      * 处理记录事件
      * @param $operate
      * @param $data
-     * @throws \Exception
-     * @throws \Ws\Http\Exception
+     * @throws \Think\Exception
      */
     protected function afterEvent($operate, $data)
     {
@@ -388,8 +379,7 @@ class EventLogService
      * @param $from
      * @param $data
      * @param $userInfo
-     * @throws \Exception
-     * @throws \Ws\Http\Exception
+     * @throws \Think\Exception
      */
     public function addInsideEventLog($from, $data, $userInfo)
     {

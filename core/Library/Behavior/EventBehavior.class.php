@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 namespace Behavior;
 
-use Common\Service\EventLogService;
+use Think\QueueClient;
 use Think\Request;
 
 /**
@@ -28,16 +28,14 @@ class EventBehavior
     {
 
         $params['batch_number'] = Request::$batchNumber;
+
         $eventData = [
             "event_from" => session("event_from"),   // 增加从哪里来参数
             "user_info" => S('user_data_' . fill_created_by()),
             "params" => $params
         ];
 
-        // 异步处理 TODO
-        $eventLogService = new EventLogService();
-        $eventLogService->addInsideEventLog($eventData["event_from"], $eventData["params"], $eventData["user_info"]);
-
-        //\Queue\Controller\JobsController::push('Event', 'event', '', ["event_data" => json_encode($eventData)]);
+        // 异步处理
+        QueueClient::send('eventlog', $eventData);
     }
 }
