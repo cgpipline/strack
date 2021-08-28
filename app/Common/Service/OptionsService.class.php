@@ -372,7 +372,7 @@ class OptionsService
         $checkField = true;
         if (array_key_exists('formula', $defaultSettings)) {
             foreach ($defaultSettings['formula']['fields'] as $field => $value) {
-                if (empty($value)) {
+                if ($value !==0 && empty($value)) {
                     $checkField = false;
                 }
             }

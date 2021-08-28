@@ -574,7 +574,7 @@ $(function(){
         templist +='<li id="temp_id_'+tempData["project_template_id"]+'" class="templates-items" >'+
             '<div class="role-name text-ellipsis aign-left">' +
             '<a href="javascript:;" class="list-item" onclick="obj.select_template(this);" data-pid="'+tempData["project_id"]+'"  data-tempid="'+tempData["project_template_id"]+'" data-tempname="'+tempData["name"]+'" data-tempcode="'+tempData["code"]+'">'+
-            tempData["name"] +
+            tempData["name"] +  " ( " + tempData["type_name"]+ " ) " +
             '</a>' +
             '</div>' +
             '<div class="role-bnt aign-right">';

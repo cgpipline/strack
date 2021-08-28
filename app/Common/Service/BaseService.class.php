@@ -492,7 +492,7 @@ class BaseService
          */
         $needTaskField = [
             'built_in' => ['project_id', 'name', 'status_id', 'end_time', 'description'],
-            'custom' => [$formulaConfigData['estimate_working_hours'], $formulaConfigData['reviewed_by'], $formulaConfigData['assignee_field'], $formulaConfigData['grouping_of_stage']]
+            'custom' => [$formulaConfigData['reviewed_by'], $formulaConfigData['assignee_field']]
         ];
 
         $formFieldsConfig = [];
@@ -510,17 +510,11 @@ class BaseService
             if (in_array($customItem['variable_id'], $needTaskField['custom'])) {
                 $formFieldsConfig[] = $customItem;
                 switch ($customItem['variable_id']) {
-                    case  $formulaConfigData['estimate_working_hours']:
-                        $customKeyMap[$customItem['fields']] = 'estimate_working_hours';
-                        break;
                     case  $formulaConfigData['reviewed_by']:
                         $customKeyMap[$customItem['fields']] = 'reviewed_by';
                         break;
                     case  $formulaConfigData['assignee_field']:
                         $customKeyMap[$customItem['fields']] = 'assignee_field';
-                        break;
-                    case  $formulaConfigData['grouping_of_stage']:
-                        $customKeyMap[$customItem['fields']] = 'grouping_of_stage';
                         break;
                 }
             }
@@ -827,22 +821,8 @@ class BaseService
 
         if (!empty($resData)) {
             // 添加任务成功后处理自定义字段
-            $variableValueMap = array_column($variableValueData, null, 'variable_id');
             foreach ($variableValueData as $variableValueItem) {
-
-                switch ((int)$variableValueItem['variable_id']) {
-                    case (int)$formulaConfigData['actual_time_consuming']:
-                        // 实际工时
-                        $variableValueItem['value'] = 0;
-                        break;
-                    case (int)$formulaConfigData['settlement_time_consuming']:
-                        // 结算工时等于预估工时
-                        $variableValueItem['value'] = $variableValueMap[$formulaConfigData['estimate_working_hours']];
-                        break;
-                }
-
                 $variableValueItem['link_id'] = $resData['id'];
-
                 $variableValueModel->addItem($variableValueItem);
             }
 

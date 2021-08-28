@@ -54,7 +54,8 @@ class FillDefaultPageSchemaUseData extends AbstractMigration
             ['page' => 'project_asset', 'schema_id' => '19', 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
             ['page' => 'project_bug', 'schema_id' => '20', 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
             ['page' => 'project_requires', 'schema_id' => '21', 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
-            ['page' => 'project_product', 'schema_id' => '22', 'uuid' => Webpatser\Uuid\Uuid::generate()->string]
+            ['page' => 'project_product', 'schema_id' => '22', 'uuid' => Webpatser\Uuid\Uuid::generate()->string],
+            ['page' => 'admin_eventlog', 'schema_id' => '26', 'uuid' => Webpatser\Uuid\Uuid::generate()->string]
         ];
 
         $this->table('strack_page_schema_use')->insert($rows)->save();

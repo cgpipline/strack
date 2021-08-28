@@ -72,8 +72,7 @@ class ViewService
     private function getModuleData($moduleId, $field = '')
     {
         $moduleData = $this->moduleModel->findData(['filter' => ['id' => $moduleId], 'fields' => 'id as module_id,code,type']);
-
-        if (!empty($field)) {
+        if (!empty($moduleData) && !empty($field)) {
             return $moduleData[$field];
         } else {
             return $moduleData;
@@ -206,9 +205,6 @@ class ViewService
             "grouping_of_persons" => [
                 'lang' => L('Persons_View_Mode')
             ],
-            "grouping_of_stage" => [
-                'lang' => L('Stage_View_Mode')
-            ],
             "status" => [
                 'lang' => L('Status_View_Mode')
             ]
@@ -268,7 +264,7 @@ class ViewService
             } else {
                 if (
                     in_array($value['editor'], ["horizontal_relationship", "belong_to"])
-                    ||  (!empty($this->customFieldsMap[$value['module_code']]) && in_array($this->customFieldsMap[$value['module_code']]['type'], ["horizontal_relationship", "belong_to"]))
+                    || (!empty($this->customFieldsMap[$value['module_code']]) && in_array($this->customFieldsMap[$value['module_code']]['type'], ["horizontal_relationship", "belong_to"]))
                 ) {
                     // 水平关联
                     $retainFields[$value['module_code']][] = $value['field'];
@@ -308,7 +304,7 @@ class ViewService
 
         $masterCode = $schemaConfig['relation_structure']['table_alias'];
 
-        $this->getCustomFieldsMap(['type'=>['IN', 'horizontal_relationship,belong_to']]);
+        $this->getCustomFieldsMap(['type' => ['IN', 'horizontal_relationship,belong_to']]);
 
         if (!empty($filter) && array_key_exists('number', $filter)) {
             if ((int)$filter['number'] === 1) {
@@ -787,24 +783,16 @@ class ViewService
         // 执行人
         $assignee = $formulaConfigData['assignee_field'];
 
-        // 预估工时
-        $estimateTime = $formulaConfigData['estimate_working_hours'];
-
-        // 设计阶段
-        $designStage = $formulaConfigData['grouping_of_stage'];
-
         // 获取当前字段自定义属性
         $variableModel = new VariableModel();
         $variableData = $variableModel->field('id,code')
-            ->where(['id' => ['IN', join(',', [$reviewedBy, $assignee, $estimateTime, $designStage])]])
+            ->where(['id' => ['IN', join(',', [$reviewedBy, $assignee])]])
             ->select();
 
         $variableIdMap = array_column($variableData, 'code', 'id');
 
         $fieldList[] = $variableIdMap[$reviewedBy];
         $fieldList[] = $variableIdMap[$assignee];
-        $fieldList[] = $variableIdMap[$estimateTime];
-        $fieldList[] = $variableIdMap[$designStage];
 
 
         $requiredFieldList = [];
@@ -1442,50 +1430,33 @@ class ViewService
     protected function generateGridColumnConfig($param, $moduleData)
     {
 
-        $moduleBaseSchemaConfig = [];
         if (array_key_exists("schema_page", $param) && !empty($param["schema_page"])) {
 
             // 声明变量
-            $relationStructure = [];
-            $viewConfig = [];
             $stepConfig = [];
             $columnNumber = "one";
 
-            switch ($param["schema_page"]) {
-                case "admin_eventlog":
-                    // 事件日志字段配置远程调用获取
-                    $eventLogService = new EventLogService();
-                    $eventLogFieldConfig = $eventLogService->getEventLogGridFields();
-                    if (!empty($eventLogFieldConfig)) {
-                        $moduleBaseSchemaConfig = $eventLogFieldConfig["config"];
-                    } else {
-                        throw_strack_exception(L("Illegal_Operation"));
-                    }
-                    break;
-                default:
-                    // 默认获取系统模块结构、字段配置
+            // 默认获取系统模块结构、字段配置
 
-                    $templateId = empty($param['template_id']) ? 0 : $param['template_id'];
-                    // 获取当前 Module schema_id
-                    $schemaId = $this->schemaService->getPageSchemaId($moduleData['type'], $param["schema_page"], $templateId);
-                    // 当前数据结构配置
-                    $moduleSchemaConfig = $this->getSchemaConfig($param, $schemaId, 'view');
-                    if (array_key_exists("side_bar", $param) && $param["side_bar"]) {
-                        $schemaFields = [];
-                        foreach ($moduleSchemaConfig["field_clean_data"]["schema_fields"] as $key => $itemFields) {
-                            if (in_array($key, [$moduleData["code"], "status", "media"])) {
-                                $schemaFields[$key] = $itemFields;
-                            }
-                        }
-                        $moduleSchemaConfig["field_clean_data"]["schema_fields"] = $schemaFields;
+            $templateId = empty($param['template_id']) ? 0 : $param['template_id'];
+            // 获取当前 Module schema_id
+            $schemaId = $this->schemaService->getPageSchemaId($moduleData['type'], $param["schema_page"], $templateId);
+            // 当前数据结构配置
+            $moduleSchemaConfig = $this->getSchemaConfig($param, $schemaId, 'view');
+            if (array_key_exists("side_bar", $param) && $param["side_bar"]) {
+                $schemaFields = [];
+                foreach ($moduleSchemaConfig["field_clean_data"]["schema_fields"] as $key => $itemFields) {
+                    if (in_array($key, [$moduleData["code"], "status", "media"])) {
+                        $schemaFields[$key] = $itemFields;
                     }
-                    // 组装字段数据
-                    $moduleBaseSchemaConfig = $this->schemaService->generateColumnsConfig($moduleSchemaConfig, $moduleData);
-
-                    $relationStructure = $moduleSchemaConfig['relation_structure'];
-                    $viewConfig = $moduleSchemaConfig['field_clean_data']['view_config'];
-                    break;
+                }
+                $moduleSchemaConfig["field_clean_data"]["schema_fields"] = $schemaFields;
             }
+            // 组装字段数据
+            $moduleBaseSchemaConfig = $this->schemaService->generateColumnsConfig($moduleSchemaConfig, $moduleData);
+
+            $relationStructure = $moduleSchemaConfig['relation_structure'];
+            $viewConfig = $moduleSchemaConfig['field_clean_data']['view_config'];
 
             $groupConfig = [];
             $sortConfig = ["sort_data" => [], "sort_query" => []];
@@ -2900,8 +2871,6 @@ class ViewService
         $groupModuleData = [];
         $dragAuth = 'no';
 
-        $viewService = new ViewService();
-
         switch ($groupParam['field_type']) {
             case 'built_in':
                 // 由于某些分组数据量巨大暂时只支持
@@ -2919,7 +2888,8 @@ class ViewService
                         "module_code" => $moduleParam['module_code']
                     ]);
 
-                    $statusIds = array_column($templateConfig['status'], 'id');
+
+                    $statusIds = !empty($templateConfig) ? array_column($templateConfig['status'], 'id') : [];
 
                     $statusModel = new StatusModel();
                     $collaborators = $statusModel->field('id,name,code,color,icon,correspond')
@@ -2935,7 +2905,7 @@ class ViewService
                         "correspond" => "not_started"
                     ]);
 
-                    $dragAuth = $viewService->checkFieldPermission('base', 'status_id', "modify");
+                    $dragAuth = $this->checkFieldPermission('base', 'status_id', "modify");
                 }
                 break;
             case 'custom':
@@ -2980,7 +2950,7 @@ class ViewService
                             "correspond" => "not_type"
                         ]);
 
-                        $dragAuth = $viewService->checkFieldPermission('base', $groupParam['field'], "modify");
+                        $dragAuth = $this->checkFieldPermission('base', $groupParam['field'], "modify");
                         break;
                     case 'horizontal_relationship':
                         // 用户水平一对一
@@ -3027,7 +2997,7 @@ class ViewService
                                 "correspond" => "not_assign"
                             ]);
 
-                            $dragAuth = $viewService->checkFieldPermission('base', $groupParam['field'], "modify");
+                            $dragAuth = $this->checkFieldPermission('base', $groupParam['field'], "modify");
                         }
                         break;
                 }
@@ -3046,7 +3016,7 @@ class ViewService
 
         $formulaConfig = [];
         foreach ($formulaConfigData as $key => $formulaConfigItemId) {
-            if (in_array($key, ['reviewed_by', 'assignee_field', 'actual_time_consuming', 'estimate_working_hours'])) {
+            if (in_array($key, ['reviewed_by', 'assignee_field'])) {
                 if (in_array($variableCodeMap[$formulaConfigItemId]['type'], ['belong_to', 'horizontal_relationship'])) {
                     $variableCodeMap[$formulaConfigItemId]['field'] = "base_{$variableCodeMap[$formulaConfigItemId]['code']}";
                 } else {

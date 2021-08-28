@@ -111,6 +111,12 @@ class FillStepData extends AbstractMigration
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
             [
+                'name' => 'Layout',
+                'code' => 'layout',
+                'color' => '33b1ff',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            [
                 'name' => 'Animation',
                 'code' => 'anim',
                 'color' => '54d9e8',
@@ -120,6 +126,12 @@ class FillStepData extends AbstractMigration
                 'name' => 'Lighting',
                 'code' => 'lighting',
                 'color' => '23eb23',
+                'uuid' => Webpatser\Uuid\Uuid::generate()->string
+            ],
+            [
+                'name' => 'Render',
+                'code' => 'render',
+                'color' => '0f991b',
                 'uuid' => Webpatser\Uuid\Uuid::generate()->string
             ],
             [

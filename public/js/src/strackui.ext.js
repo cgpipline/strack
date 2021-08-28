@@ -26273,7 +26273,8 @@
                     'truncateLength'  : 0,                  // The length to truncate the file names to
                     'uploadLimit'     : 0,                  // The maximum number of files you can upload
                     'uploadScript'    : 'uploadifive.php',  // The path to the upload script
-                    'width'           : 100                 // The width of the button
+                    'width'           : 100,                 // The width of the button
+                    'token'           : '',                 // 验证令牌
 
                     /*
                      // Events
@@ -26576,6 +26577,7 @@
                 // Upload a single file
                 $data.uploadFile = function(file, uploadAll) {
                     if (!file.skip && !file.complete && !file.uploading) {
+
                         file.uploading = true;
                         $data.uploads.current++;
                         $data.uploads.attempted++;
@@ -26607,6 +26609,8 @@
                                     $data.progress(e, file);
                                 }
                             }, false);
+
+                            xhr.setRequestHeader('token', settings.token);
 
                             // On complete function
                             xhr.addEventListener('load', function(e) {
@@ -26690,6 +26694,7 @@
                                 }
                                 xhr.open(settings.method, settings.uploadScript, true);
                                 xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+                                xhr.setRequestHeader('token', settings.token);
 
                                 // Trigger the uploadFile event
                                 if (typeof settings.onUploadFile === 'function') {

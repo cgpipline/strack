@@ -146,6 +146,8 @@ class FillApiViewGridPanelRules extends AbstractMigration
             ]
         ];
 
+
+
         $this->savePageAuth($getTaskStatusListPageAuthRows, 944);
 
     }

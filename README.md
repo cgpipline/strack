@@ -17,13 +17,31 @@ mychenjun | committer
 - [ ] event和消息异步处理
 - [x] 底层框架漏洞修复
 - [ ] PHP版本兼容升级 7.4
-- [ ] 重写media服务
-- [ ] 重写log服务
+- [x] 重写media服务
+- [x] 重写log服务
+- [ ] 编写docker-compose文件
 - [ ] 编写使用文档
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
 - [ ] 重写 PYQT client 客户端
+- [ ] 对接 Rocket.Chat
 - [ ] 支持workerman高性能运行（改动太大看情况）
+
+# 架构图
+
+![image](doc/strack_structure.png)
+
+# 安装
+
+当前还是测试阶段，mysql，redis 请自行安装配置
+
+```shell
+docker run --network jgy --network-alias strack_3.0 \
+    --name strack -d  \
+    -p 18094:80 \
+    -v /mnt/hgfs/dev/weijer/strack:/usr/local/apache2/htdocs/app/public \
+    weijer/sd_docker:strack
+```
 
 
 

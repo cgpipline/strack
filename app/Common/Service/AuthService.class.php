@@ -313,7 +313,7 @@ class AuthService
     {
         if (!$onlyJudgeRole && (in_array($pageAuthData["code"], $this->onlyAdministratorAllowVisit) || in_array($moduleName, $this->onlyAdministratorAllowVisit))) {
             // 仅仅允许 strack 超级管理员访问模块
-            $permission = $this->userId === 1 ? true : ($from === 'api' && $this->userId === 2) ? true : false;
+            $permission = $this->userId === 1 ? true : (($from === 'api' && $this->userId === 2) ? true : false);
         } else {
             if (!$onlyJudgeRole && in_array($this->userId, [1, 2])) {
                 // client 客户超级管理员拥有所有权限
@@ -696,7 +696,6 @@ class AuthService
                 }
 
                 return false;
-                break;
             case "ajax":
                 // 先判断是不是顶部工具栏
                 $topPanelPermission = $this->checkWhetherTopToolPanel($param);
@@ -720,13 +719,11 @@ class AuthService
                     ->select();
 
                 $allNodeRules = $this->getPageAllNodeRules($allPageLinkAuthData);
-
                 if (array_key_exists($param["source_node"], $allNodeRules)) {
                     return $this->getPageAuthPermission($allNodeRules[$param["source_node"]]);
                 } else {
                     return false;
                 }
-                break;
             case "api": //验证api路由权限
                 $pageAuthData = $pageAuthModel->where([
                     "page" => $param["referer_page"],
@@ -739,7 +736,6 @@ class AuthService
                 }
 
                 return false;
-                break;
         }
 
         return false;
