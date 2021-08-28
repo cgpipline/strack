@@ -19,8 +19,8 @@ class Cache
 {
 
     protected static $instance = [];
-    public static $readTimes   = 0;
-    public static $writeTimes  = 0;
+    public static $readTimes = 0;
+    public static $writeTimes = 0;
 
     /**
      * 操作句柄
@@ -29,16 +29,20 @@ class Cache
      */
     protected static $handler;
 
+    protected static $driverType;
+
     /**
      * 连接缓存
      * @access public
-     * @param array         $options  配置数组
-     * @param bool|string   $name 缓存连接标识 true 强制重新连接
+     * @param array $options 配置数组
+     * @param bool|string $name 缓存连接标识 true 强制重新连接
      * @return Driver
      */
     public static function connect(array $options = [], $name = false)
     {
         $type = !empty($options['type']) ? $options['type'] : 'File';
+
+        self::$driverType = strtolower($type);
         if (false === $name) {
             $name = md5(serialize($options));
         }
@@ -62,7 +66,7 @@ class Cache
     /**
      * 自动初始化缓存
      * @access public
-     * @param array         $options  配置数组
+     * @param array $options 配置数组
      * @return void
      */
     public static function init(array $options = [])
@@ -110,7 +114,7 @@ class Cache
      * 读取缓存
      * @access public
      * @param string $name 缓存标识
-     * @param mixed  $default 默认值
+     * @param mixed $default 默认值
      * @return mixed
      */
     public static function get($name, $default = false)
@@ -123,9 +127,9 @@ class Cache
     /**
      * 写入缓存
      * @access public
-     * @param string        $name 缓存标识
-     * @param mixed         $value  存储数据
-     * @param int|null      $expire  有效时间 0为永久
+     * @param string $name 缓存标识
+     * @param mixed $value 存储数据
+     * @param int|null $expire 有效时间 0为永久
      * @return boolean
      */
     public static function set($name, $value, $expire = null)
@@ -138,8 +142,8 @@ class Cache
     /**
      * 自增缓存（针对数值缓存）
      * @access public
-     * @param string    $name 缓存变量名
-     * @param int       $step 步长
+     * @param string $name 缓存变量名
+     * @param int $step 步长
      * @return false|int
      */
     public static function inc($name, $step = 1)
@@ -152,8 +156,8 @@ class Cache
     /**
      * 自减缓存（针对数值缓存）
      * @access public
-     * @param string    $name 缓存变量名
-     * @param int       $step 步长
+     * @param string $name 缓存变量名
+     * @param int $step 步长
      * @return false|int
      */
     public static function dec($name, $step = 1)
@@ -166,7 +170,7 @@ class Cache
     /**
      * 删除缓存
      * @access public
-     * @param string    $name 缓存标识
+     * @param string $name 缓存标识
      * @return boolean
      */
     public static function rm($name)
@@ -206,9 +210,9 @@ class Cache
     /**
      * 如果不存在则写入缓存
      * @access public
-     * @param string    $name 缓存变量名
-     * @param mixed     $value  存储数据
-     * @param int       $expire  有效时间 0为永久
+     * @param string $name 缓存变量名
+     * @param mixed $value 存储数据
+     * @param int $expire 有效时间 0为永久
      * @return mixed
      */
     public static function remember($name, $value, $expire = null)
@@ -221,14 +225,43 @@ class Cache
     /**
      * 缓存标签
      * @access public
-     * @param string        $name 标签名
-     * @param string|array  $keys 缓存标识
-     * @param bool          $overlay 是否覆盖
+     * @param string $name 标签名
+     * @param string|array $keys 缓存标识
+     * @param bool $overlay 是否覆盖
      * @return Driver
      */
     public static function tag($name, $keys = null, $overlay = false)
     {
         self::init();
         return self::$handler->tag($name, $keys, $overlay);
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $cb
+     * @return false|int
+     */
+    public static function lPush($key, $value, $cb = null)
+    {
+        if (self::$driverType !== 'redis') {
+            return false;
+        }
+        return self::$handler->lPush($key, $value, $cb);
+    }
+
+    /**
+     * @param $key
+     * @param $score
+     * @param $value
+     * @param null $cb
+     * @return int
+     */
+    public static function zAdd($key, $score, $value, $cb = null)
+    {
+        if (self::$driverType !== 'redis') {
+            return false;
+        }
+        return self::$handler->zAdd($key, $score, $value, $cb);
     }
 }

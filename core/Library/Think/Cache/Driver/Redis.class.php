@@ -112,6 +112,30 @@ class Redis extends Driver
         return $result;
     }
 
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $cb
+     * @return false|int
+     */
+    public function lPush($key, $value, $cb = null)
+    {
+        return $this->handler->lPush($key, $value, $cb);
+    }
+
+    /**
+     * @param $key
+     * @param $score
+     * @param $value
+     * @param null $cb
+     * @return int
+     */
+    public function zAdd($key, $score, $value, $cb = null)
+    {
+        return $this->handler->zAdd($key, $score, $value, $cb);
+    }
+
     /**
      * 自增缓存（针对数值缓存）
      * @access public

@@ -12,7 +12,8 @@
         "pragmarx/google2fa-qrcode": "^1.0",
         "robmorgan/phinx": "^0.10.6",
         "mingyoung/dingtalk": "^2.0",
-        "strack/yurun-oauth-login": "^0.4"
+        "strack/yurun-oauth-login": "^0.4",
+        "workerman/redis-queue": "^1.0"
     },
     "require-dev": {
         "phpcompatibility/php-compatibility": "*"
