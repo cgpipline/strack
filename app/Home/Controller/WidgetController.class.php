@@ -14,6 +14,7 @@ use Common\Model\RoleModel;
 use Common\Model\VariableValueModel;
 use Common\Service\ActionService;
 use Common\Service\BaseService;
+use common\service\CentrifugalService;
 use Common\Service\CommonService;
 use Common\Service\EntityService;
 use Common\Service\HorizontalService;
@@ -1165,16 +1166,17 @@ class WidgetController extends VerifyController
      */
     public function getLogServerConfig()
     {
-        $optionsService = new OptionsService();
-        $logServerConfig = $optionsService->getLogServerStatus();
-        if (!empty($logServerConfig)) {
-            $logServerConfig["active"] = "yes";
-            $logServerConfig["token"] = md5($logServerConfig["access_key"] . $logServerConfig["secret_key"]);
-        } else {
-            $logServerConfig["active"] = "no";
-            $logServerConfig["token"] = "";
-        }
-        return json($logServerConfig);
+        $channel = 'strack_browser_channel';
+        $globalChatId = 'strack_browser_user_0';
+        $centrifugoToken = (new CentrifugalService())->generateGlobalCentrifugoToken($globalChatId, $channel);
+
+        $param = [
+            'active' => 'yes',
+            'websocket_url' => C('centrifugo')['ws_connect_url'],
+            'token' => $centrifugoToken,
+            'channel' => $channel
+        ];
+        return json($param);
     }
 
     /**
