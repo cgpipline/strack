@@ -1874,10 +1874,10 @@ var Strack = {
                     inits: function () {
                         $('#choice_media').uploadifive({
                             'auto': false,
+                            'token' : media_server['token'],
                             'formData': {
                                 timestamp: Strack.current_time(),
                                 belong_system: StrackPHP['Belong_System'],
-                                token: media_server['token'],
                                 size : '250x140'
                             },
                             'multi': true,
@@ -4830,10 +4830,10 @@ var Strack = {
         $('#nodeimg_bnt_' + t).uploadifive({
             'auto': false,
             'removeCompleted': true,
+            'token' : media_server['token'],
             'formData': {
                 timestamp: Strack.current_time(),
                 belong_system: StrackPHP['Belong_System'],
-                token: media_server['token'],
                 size : '250x140'
             },
             'queueID': 'nodeimg_' + t,
@@ -8116,10 +8116,10 @@ var Strack = {
                 $('#'+dom).uploadifive({
                     'auto': false,
                     'width' : 258,
+                    'token' : media_server['token'],
                     'formData': {
                         timestamp: Strack.current_time(),
                         belong_system: StrackPHP['Belong_System'],
-                        token: media_server['token'],
                         size : '250x140'
                     },
                     'multi': false,
@@ -8142,7 +8142,7 @@ var Strack = {
                         if (parseInt(resJson['status']) === 200) {
                             // 上传成功写入数据库
                             var param = Strack.get_update_item_hide_param(this);
-                            check_data.up_data["media"] = Strack.generate_widget_media_fields(media_server, param, resJson['data']);
+                            check_data.up_data["media"] = Strack.generate_widget_media_fields(media_server, param, resJson['data'][0]);
                             Strack.submit_update_item(this, true, param, check_data.up_data);
                         } else {
                             layer.msg(resJson['message'], {icon: 7, time: 1200, anim: 6});
@@ -11979,7 +11979,7 @@ var Strack = {
                 break;
             case 'video':
                 // 视频类型
-                var img_url = param['base_url']+param['md5_name']+'.jpg';
+                var img_url = param['base_url']+param['md5_name']+'_0.jpg';
                 main_dom = '<a class="light-box" data-poster="'+img_url+'"  data-html="#light_box_video_'+id+'" >'+
                     '<img class="img-responsive" src="'+img_url+'">'+
                     '<div class="light-poster">'+
@@ -12693,10 +12693,10 @@ var Strack = {
                     inits: function () {
                         $('#choice_media').uploadifive({
                             'auto': false,
+                            'token' : media_server['token'],
                             'formData': {
                                 timestamp: Strack.current_time(),
                                 belong_system: StrackPHP['Belong_System'],
-                                token: media_server['token'],
                                 size : '250x140'
                             },
                             'multi': multi,
@@ -12730,7 +12730,7 @@ var Strack = {
                                         variable_id: param.variable_id,
                                         module_id: param.module_id,
                                         media_server: media_server,
-                                        media_data: resJson['data'],
+                                        media_data: resJson['data'][0],
                                         widget_param: widget_param
                                     }, function (res_data) {
                                         if(!multi) {
