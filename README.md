@@ -1,4 +1,10 @@
-# 说明
+# Strack 4.0 影视动画游戏流程管理系统
+
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/workerman-%3E=4.0.19-brightgreen.svg)](https://github.com/walkor/Workerman)
+[![imi License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/cgpipline/strack/blob/master/LICENSE)
+
+# 缘起
 
 当前strack版本基于开源版本 strack3.0 继续维护，基于 Apache-2.0 License 开源。
 
@@ -6,9 +12,9 @@
 
 # 维护人员
 
- 姓名 | 简介
----|---
-weijer | PMC
+ 姓名 | 简介 | 联系方式
+---|---|---
+weijer | PMC | 微信 weijer（备注：github strack）
 mychenjun | committer
 
 # 更新计划
