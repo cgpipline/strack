@@ -65,7 +65,7 @@ class MfaService
     }
 
     /**
-     * 获取二维码路径 strack_admin 数据['company'=> 'cineuse', 'holder'=>'strack@foxmail.com', 'secret'=>'RFASLZAGI3GKDNNT']
+     * 获取二维码路径 strack_admin 数据['company'=> 'strack opensource team', 'holder'=>'strack@foxmail.com', 'secret'=>'RFASLZAGI3GKDNNT']
      * @param $userId
      * @return string
      * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
