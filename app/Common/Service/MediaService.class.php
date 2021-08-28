@@ -175,7 +175,7 @@ class MediaService
             case 'video':
                 // 视频保存原始尺寸
                 $mediaSize = "{$mediaData["width"]}x{$mediaData["height"]}";
-                $thumbUrl = "{$param['media_server']['request_url']}{$mediaData['path']}{$mediaData['md5_name']}.jpg";
+                $thumbUrl = "{$param['media_server']['request_url']}{$mediaData['path']}{$mediaData['md5_name']}_0.jpg";
                 break;
             case 'image':
                 // 获取图片上传尺寸
@@ -209,7 +209,12 @@ class MediaService
         }
 
         $moduleModel = new ModuleModel();
-        $moduleId = $moduleModel->where(['code' => $param["module_code"]])->getField('id');
+        $moduleId = 0;
+        if(!empty($param["module_id"])){
+            $moduleId = $param["module_id"];
+        }else if(!empty($param["module_code"])){
+            $moduleId = $moduleModel->where(['code' => $param["module_code"]])->getField('id');
+        }
 
         if ($moduleId <= 0) {
             throw_strack_exception(L('Module_Not_Exit'), 210009);
@@ -290,9 +295,10 @@ class MediaService
         if (!empty($mediaItem)) {
             // 获取媒体服务器信息
             $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
-            $url = $mediaServerData['request_url'] . "/media/get?sign={$mediaServerData['token']}";
+            $url = $mediaServerData['request_url'] . "media/get";
 
             // 获取媒体
+            $this->_headers['token'] = $mediaServerData['token'];
             $postResult = $this->postData(['md5_name' => $mediaItem['md5_name']], $url);
             if (!$postResult) {
                 return ['has_media' => 'no', 'param' => []];
