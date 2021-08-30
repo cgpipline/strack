@@ -5,13 +5,12 @@ namespace Home\Controller;
 use Common\Controller\VerifyController;
 use Common\Service\CommonService;
 use Common\Service\DiskService;
-use Common\Service\EventLogService;
 use Common\Service\HorizontalService;
 use Common\Service\ProjectService;
+use Common\Service\SchemaService;
 use Common\Service\TemplateService;
 use Common\Service\VariableService;
 use Common\Service\ViewService;
-use Common\Service\SchemaService;
 
 class ViewController extends VerifyController
 {
@@ -43,7 +42,7 @@ class ViewController extends VerifyController
         $param = $this->request->param();
         if ($param["page"] == "details_correlation_base") {
             $param["module_id"] = C("MODULE_ID")["base"];
-        }else if ($param["page"] === "admin_eventlog") {
+        } else if ($param["page"] === "admin_eventlog") {
             $param["module_id"] = C("MODULE_ID")["eventlog"];
         }
         $viewService = new ViewService();
@@ -349,7 +348,7 @@ class ViewController extends VerifyController
                 //$this->appendCloudDiskMenu($menuList);
                 break;
             case "help":
-                $authMenuList = $this->checkUserMenuAuth(["project_manage",  "help"]);
+                $authMenuList = $this->checkUserMenuAuth(["project_manage", "help"]);
                 foreach ($authMenuList as $item) {
                     $menuData = $fixedMenuData[$item];
                     if ($item == "help") {
@@ -593,7 +592,14 @@ class ViewController extends VerifyController
             $moduleCode = $param["tab_param"]["dst_module_code"];
         } else {
             $moduleId = $param["tab_param"]["module_id"];
-            $moduleCode = $param["tab_param"]["module_code"];
+            switch ($param["tab_param"]["module_code"]) {
+                case 'correlation_base':
+                    $moduleCode = 'base';
+                    break;
+                default:
+                    $moduleCode = $param["tab_param"]["module_code"];
+                    break;
+            }
         }
         $gridParam = [
             "module_id" => $moduleId,
