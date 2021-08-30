@@ -51,6 +51,7 @@ class MediaService
         $http = Request::create();
         $body = Body::json($data);
         $responseData = $http->post($url, $this->_headers, $body);
+
         if ($responseData->code === 200) {
             if ($responseData->body->status === 200) {
                 return $responseData->body->data;
@@ -385,9 +386,10 @@ class MediaService
         if (!empty($mediaServiceId) && is_array($md5NameList)) {
             // 获取媒体服务器信息
             $mediaServerData = $this->getMediaServerItem(['id'=>$mediaServiceId]);
-            $url = $mediaServerData['request_url'] . "/media/select?sign={$mediaServerData['token']}";
+            $url = $mediaServerData['request_url'] . "media/select";
 
             // 获取媒体
+            $this->_headers['token'] = $mediaServerData['token'];
             $postResult = $this->postData(['md5_name' => join(",", $md5NameList)], $url);
 
             if (!$postResult) {
@@ -451,8 +453,9 @@ class MediaService
                 if ($mediaSelectData["rows"] == 0) {
                     try {
                         $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
-                        $url = $mediaServerData['request_url'] . "/media/remove?sign={$mediaServerData['token']}";
+                        $url = $mediaServerData['request_url'] . "media/remove";
                         // 清除媒体
+                        $this->_headers['token'] = $mediaServerData['token'];
                         $this->postData(['md5_name' => $mediaItem['md5_name']], $url);
                     } catch (\Exception $e) {
 
@@ -485,8 +488,9 @@ class MediaService
             if ($mediaData["total"] == 0) {
                 // 获取媒体服务器信息
                 $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
-                $url = $mediaServerData['request_url'] . "/media/remove?sign={$mediaServerData['token']}";
+                $url = $mediaServerData['request_url'] . "media/remove";
                 // 清除媒体
+                $this->_headers['token'] = $mediaServerData['token'];
                 $postResult = $this->postData(['md5_name' => $mediaItem['md5_name']], $url);
                 if (is_bool($postResult)) {
                     return false;
