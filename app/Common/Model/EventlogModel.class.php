@@ -22,14 +22,14 @@ class EventlogModel extends RelationModel
         ['module_name', '0,128', '', self::EXISTS_VALIDATE, 'length'],
         ['record', '', '', self::EXISTS_VALIDATE, 'array'],
         ['belong_system', '0,128', '', self::EXISTS_VALIDATE, 'length'],
-        ['batch_number', '0,45', '', self::EXISTS_VALIDATE, 'length'],
+        ['batch_number', '0,255', '', self::EXISTS_VALIDATE, 'length'],
         ['from', '0,64', '', self::EXISTS_VALIDATE, 'length'],
-        ['user_uuid', '0,32', '', self::EXISTS_VALIDATE, 'length'],
-        ['created_by', '', '', self::EXISTS_VALIDATE, 'integer'],
+        ['user_uuid', '0,36', '', self::EXISTS_VALIDATE, 'length'],
+        ['created_by', '0,128', '', self::EXISTS_VALIDATE, 'length']
     ];
 
     // 自动完成
-    public $_auto = [
+    protected $_auto = [
         ['record', 'json_encode', self::EXISTS_VALIDATE, 'function'],
         ['created', 'time', self::MODEL_INSERT, 'function'],
         ['uuid', 'create_uuid', self::MODEL_INSERT, 'function']

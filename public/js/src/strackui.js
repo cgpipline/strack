@@ -13232,7 +13232,6 @@
 
         //初始化工具栏可以分组项
         if (opts.toolbarConfig.groupAllow && opts.authorityRules.group === "yes") {
-            console.log(data["group_list"]);
             var group_dom = Strack.toolbar_down_init('group', data["group_list"], opts, 'grid');
             if(opts.isKanban){
                 $('.kanban-mode-list').empty().append(group_dom);
