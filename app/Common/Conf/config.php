@@ -120,7 +120,7 @@ return array(
         'host' => Env::get("redis_host"),
         'port' => Env::get("redis_port"),
         'password' => Env::get("redis_password"),
-        'select' => 0,
+        'select' => Env::get("redis_select"),
         'timeout' => 300,
         'expire' => 0,
         'persistent' => true,
@@ -182,5 +182,13 @@ return array(
         'oss_open' => Env::get("strack_oauth_oss_onpen"),
     ],
     // web url
-    'web_url' => Env::get("web_url")
+    'web_url' => Env::get("web_url"),
+
+    'centrifugo' =>  [
+        'api_url' => Env::get('WS_HOST', 'http://centrifugo:8000/api'),
+        'ws_connect_url' => Env::get('WS_CONNECT_URL', 'ws://127.0.0.1:8080/connection/websocket'),
+        'api_key' => Env::get('WS_KEY', 'f7b1179f-7c23-48fe-a7e1-2d471fa501ad'),
+        'secret' => Env::get('WS_SECRET', '94375620-0f51-4a67-9836-82a067593bc9'),
+        'expire' => 604800
+    ],
 );

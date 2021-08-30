@@ -1,20 +1,26 @@
-# 说明
+# Strack 4.0 影视动画游戏流程管理系统
 
-当前strack版本基于开源版本 strack3.0 继续维护，基于 Apache-2.0 License 开源。
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/workerman-%3E=4.0.19-brightgreen.svg)](https://github.com/walkor/Workerman)
+[![imi License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/cgpipline/strack/blob/master/LICENSE)
 
-本人从2016年-2019年作为strack核心开发人员，因为公司财务问题导致strack3.0实际上没有得到完全商业就夭折甚是可惜，故重启此维护版本回馈行业。
+# 缘起
+
+当前 strack 版本基于开源版本 strack3.0 继续维护。
+
+本人从2016年-2019年作为strack核心开发人员，因为公司财务问题导致 strack3.0 实际上没有得到完全商业化就夭折甚是可惜，故重启此维护版本回馈行业。
 
 # 维护人员
 
- 姓名 | 简介
----|---
-weijer | PMC
+ 姓名 | 简介 | 联系方式
+---|---|---
+weijer | PMC | 微信 weijer（备注：github strack）
 mychenjun | committer
 
 # 更新计划
 
 - [x] 整理优化代码
-- [ ] event和消息异步处理
+- [x] event和消息异步处理
 - [x] 底层框架漏洞修复
 - [ ] PHP版本兼容升级 7.4
 - [x] 重写media服务

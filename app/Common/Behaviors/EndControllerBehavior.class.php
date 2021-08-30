@@ -2,8 +2,9 @@
 
 namespace Common\Behaviors;
 
-use Think\Request;
 use Common\Service\EventService;
+use Think\QueueClient;
+use Think\Request;
 
 class EndControllerBehavior extends \Think\Behavior
 {
@@ -15,18 +16,24 @@ class EndControllerBehavior extends \Think\Behavior
     public function run(&$param)
     {
         $batchNumber = Request::$batchNumber;
+
         $batchCache = S($batchNumber);
         if (!empty($batchCache)) {
             // 只有增删改有操作记录
-            $eventService = new EventService();
             $requestParam = Request::instance()->param();
-            $eventService->generateMessageData([
+
+            $eventService = new EventService();
+            $messageData = $eventService->generateMessageData( [
+                'batch_number' => $batchNumber,
                 'controller' => CONTROLLER_NAME,
                 'action' => ACTION_NAME,
                 'config' => $param,
                 'request_param' => $requestParam,
                 'operation_data' => $batchCache
             ]);
+
+            // 异步处理
+            QueueClient::send('message', $messageData);
         };
     }
 }

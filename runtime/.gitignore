@@ -1,2 +1,6 @@
-*
 !.gitignore
+!MailTemplate
+!Cache
+!Temp
+!Logs
+!Data
