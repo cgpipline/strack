@@ -1214,7 +1214,7 @@ class UserService
                         throw_strack_exception($userModel->getError(), 229021);
                     } else {
                         // 发送找回密码邮件
-                        $eventLogService = new EventLogService();
+                        $emailService = new EmailService();
                         $forgetEmailParam = [
                             "param" => [
                                 "addressee" => $userData["email"],
@@ -1250,7 +1250,7 @@ class UserService
                             ]
                         ];
 
-                        $eventLogService->directSendEmail($forgetEmailParam);
+                        $emailService->directSendEmail($forgetEmailParam);
                         return success_response(L("Login_Forget_Send_Notice"));
                     }
                 }
@@ -1301,7 +1301,7 @@ class UserService
     /**
      * 找回密码操作 -- 提交修改密码请求
      * @param $param
-     * @return int
+     * @return array
      */
     public function modifyUserPassword($param)
     {

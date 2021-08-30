@@ -2,7 +2,7 @@
 
 namespace Admin\Controller;
 
-use Common\Service\EventLogService;
+use Common\Service\EmailService;
 use Common\Service\OptionsService;
 
 // +----------------------------------------------------------------------
@@ -40,9 +40,6 @@ class EmailController extends AdminController
         $param = $this->request->param();
         $optionsService = new OptionsService();
         $resData = $optionsService->updateOptionsData("email_settings", $param, L("Email_Settings_Save_SC"));
-        // 同时保存到事件日志
-        $eventLogService = new EventLogService();
-        $eventLogService->addLogServiceConfig("email_settings", $param);
         return json($resData);
     }
 
@@ -66,8 +63,8 @@ class EmailController extends AdminController
             ]
 
         ];
-        $eventLogService = new EventLogService();
-        $resData = $eventLogService->testSendEmail($param);
+        $emailService = new EmailService();
+        $resData = $emailService->testSendEmail($param);
         return json($resData);
     }
 }

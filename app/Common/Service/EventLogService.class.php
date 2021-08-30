@@ -143,54 +143,6 @@ class EventLogService
     }
 
     /**
-     * 保存配置到消息日志服务器
-     * @param $name
-     * @param $param
-     * @throws \Ws\Http\Exception
-     */
-    public function addLogServiceConfig($name, $param)
-    {
-        $data = [
-            'name' => $name,
-            'type' => 'system',
-            'config' => $param
-        ];
-        $this->postToServer($data, "add");
-    }
-
-    /**
-     * 发送测试邮件
-     * @param $data
-     * @return bool
-     * @throws \Ws\Http\Exception
-     */
-    public function testSendEmail($data)
-    {
-        $testResult = $this->postToServer($data, "email_test");
-        if ($testResult !== false) {
-            return $testResult;
-        } else {
-            throw_strack_exception(L("Please_Configure_Event_Server"));
-        }
-    }
-
-    /**
-     * 直接发送邮件
-     * @param $data
-     * @return bool
-     * @throws \Ws\Http\Exception
-     */
-    public function directSendEmail($data)
-    {
-        $sendResult = $this->postToServer($data, "email_send");
-        if ($sendResult !== false) {
-            return $sendResult;
-        } else {
-            throw_strack_exception(L("Please_Configure_Event_Server"));
-        }
-    }
-
-    /**
      * 获取水平关联类型project_id
      * @param $moduleData
      * @param $linkId
