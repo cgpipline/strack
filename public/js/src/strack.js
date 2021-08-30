@@ -4849,7 +4849,7 @@ var Strack = {
             'onUploadComplete': function (file, data) {
                 var resData = JSON.parse(data);
                 if(parseInt(resData['status']) === 200){
-                    Strack.G.Note_Uploadifive_Imgs.push(resData['data']);
+                    Strack.G.Note_Uploadifive_Imgs.push(resData['data'][0]);
                 }
             },
             'onQueueComplete': function (file, data) {
