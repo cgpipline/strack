@@ -1,4 +1,5 @@
 <?php
+
 // 应用入口文件
 // 检测PHP环境
 if (version_compare(PHP_VERSION, '7.0.0', '<')) {
