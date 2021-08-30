@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{{header.title}}</title>
+    <style type="text/css" media="screen">
+
+        /* Force Hotmail to display emails at full width */
+        .ExternalClass {
+            display: block !important;
+            width: 100%;
+        }
+
+        /* Force Hotmail to display normal line spacing */
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+            line-height: 100%;
+        }
+
+        body,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        p,
+        td {
+            font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+            font-size: 15px;
+            color: #333333;
+            line-height: 1.5em;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: normal;
+            line-height: 24px;
+        }
+
+        body,
+        p {
+            margin-bottom: 0;
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+
+        img {
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a img {
+            border: none;
+        }
+
+        .background {
+            background-color: #ffffff;
+        }
+
+        table.background {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        .block-img {
+            display: block;
+            line-height: 0;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        a,
+        a:link {
+            color: #2A5DB0;
+            text-decoration: underline;
+        }
+
+        table{
+            border-spacing: 0;
+        }
+
+        table td {
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .wrap {
+            width: 600px;
+        }
+
+        .notice_tableWrap{
+            overflow: hidden!important;
+        }
+
+        .wrap-cell {
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        .header-cell,
+        .body-cell,
+        .footer-cell {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .header-cell {
+            text-align: center;
+            font-size: 23px;
+            color: #ffffff;
+            line-height: 60px;
+            padding: 15px;
+            background-color: #2bbbff;
+        }
+
+        .body-cell {
+            padding-top: 30px;
+            padding-bottom: 34px;
+        }
+
+        .footer-cell {
+            background-color: #f1f1f1;
+            text-align: center;
+            font-size: 13px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+        .force-full-width {
+            width: 100% !important;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor="" class="background">
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" class="background">
+    <tr>
+        <td align="center" valign="top" width="100%" class="background">
+            <div style="width: 600px; margin: 0 auto">
+                <table cellpadding="0" cellspacing="0" width="600" class="wrap">
+                    <tr>
+                        <td valign="top" class="wrap-cell" style="padding-top:30px; padding-bottom:30px;">
+                            <table cellpadding="0" cellspacing="0" class="force-full-width">
+                                <tr>
+                                    <td height="60" valign="top" class="header-cell">
+                                        {{header.title}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top" class="body-cell">
+
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td valign="top" style="padding-bottom:15px;">
+                                                    <h1>{{body.text.message.title}}</h1>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="padding-bottom:20px;">
+                                                    <b>你好 {{body.text.message.username}},</b><br>
+                                                    {% for value in body.text.message.details if value.type==text %}
+                                                    <p>{{value}}</p>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table cellspacing="0" cellpadding="0" width="100%">
+                                                        <tr>
+                                                            <td style="width:200px;background:#20A0FF;">
+                                                                <div><!--[if mso]>
+                                                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml"
+                                                                            xmlns:w="urn:schemas-microsoft-com:office:word"
+                                                                            href="#"
+                                                                            style="height:40px;v-text-anchor:middle;width:200px;"
+                                                                            stroke="f" fillcolor="#20A0FF">
+                                                                        <w:anchorlock/>
+                                                                        <center>
+                                                                    <![endif]-->
+                                                                    {%for value in body.button if body.button.type==url%}
+                                                                    <a href="{{value.content}}"
+                                                                       style="background-color:#20A0FF;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:18px;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">{{value.name}}</a>
+                                                                    {%endfor%}
+                                                                    <!--[if mso]>
+                                                                    </center>
+                                                                    </v:rect>
+                                                                    <![endif]--></div>
+                                                            </td>
+                                                            <td width="360" style="font-size:0; line-height:0;">
+                                                                &nbsp;
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            {% for value in body.text.bottom %}
+                                            <tr>
+                                                <td style="padding-top:20px;">
+                                                    {{value.title}}:{{value.detail}}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top" class="footer-cell">
+                                        {{footer.copyright}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
