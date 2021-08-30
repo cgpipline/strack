@@ -11,6 +11,7 @@ namespace Common\Service;
 use Common\Model\SmsModel;
 use Common\Model\UserModel;
 use Org\Util\Pinyin;
+use Think\QueueClient;
 use Ws\Http\Request;
 use Ws\Http\Request\Body;
 use Overtrue\EasySms\EasySms;
@@ -382,13 +383,18 @@ class MessageService
             'deadline' => $deadline
         ]);
 
-        $this->sendSMS([
-            'phone' => $param["phone"],
-            'template' => 'register',
-            'code' => $code,
-            'content' => "注册码：{$code}",
-            'deadline' => 30
-        ], 'qcloud');
+
+        // 异步处理
+        QueueClient::send('sms', [
+            'data' => [
+                'phone' => $param["phone"],
+                'template' => 'register',
+                'code' => $code,
+                'content' => "注册码：{$code}",
+                'deadline' => 30
+            ],
+            'gateway' => 'qcloud'
+        ]);
 
         return success_response(L("Send_SMS_SC"), ['batch' => $batch, 'sms_id' => $addSMSData["id"]]);
     }

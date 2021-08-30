@@ -17,13 +17,13 @@ return [
             'file' => RUNTIME_PATH . 'easy_sms/error.log',
         ],
         'qcloud' => [
-            'sdk_app_id' => '1400184248', // SDK APP ID
+            'sdk_app_id' => '', // SDK APP ID
             'app_key' => '', // APP KEY
             'sign_name' => '', // 短信签名，如果使用默认签名，该字段可缺省（对应官方文档中的sign）
         ]
     ],
     'template' => [
-        'register' => 280851,
-        'login' => 280802,
+        'register' => 280851, // 注册短信
+        'login' => 280802, // 登陆短信
     ]
 ];

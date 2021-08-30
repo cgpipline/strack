@@ -2,17 +2,17 @@
 
 namespace Common\Command;
 
-use Common\Service\EmailService;
+use Common\Service\MessageService;
 use Think\Console\Command;
 use Think\Console\Input;
 use Think\Console\Output;
 
-class EmailCommand extends Command
+class SMSCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('email')
-            ->setDescription('Implementation of email')
+        $this->setName('sms')
+            ->setDescription('Implementation of sms')
             ->addArgument('param');
     }
 
@@ -29,8 +29,8 @@ class EmailCommand extends Command
         $param = json_decode($arg['param'], true);
 
         if(!empty($param)){
-            $emailService = new EmailService();
-            $emailService->queueSendEmail($param);
+            $messageService = new MessageService();
+            $messageService->sendSMS($param['data'], $param['gateway']);
         }
     }
 }
