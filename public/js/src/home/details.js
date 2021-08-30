@@ -779,7 +779,7 @@ $(function () {
                     },
                     {
                         field: 'created_by',
-                        title: StrackLang["Created_by"],
+                        title: StrackLang["Created_By"],
                         align: 'center',
                         width: 160,
                         frozen: "frozen",

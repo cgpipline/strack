@@ -71,10 +71,10 @@ class EventLogService
     {
         //  TODO 改成队列入库
         $eventModel = new EventLogModel();
-        switch ($controllerMethod){
+        switch ($controllerMethod) {
             case "add":
                 // 写入数据库
-                $eventModel->add($data);
+                $eventModel->addItem($data);
                 break;
         }
 
@@ -472,7 +472,7 @@ class EventLogService
                                 $addData["project_name"] = $this->getProjectNameById($projectId);
                             } else if (array_key_exists("project_id", $data)) {
                                 $addData["project_id"] = $data["project_id"];
-                                $addData["project_name"] = $this->getProjectNameById( $data["project_id"]);
+                                $addData["project_name"] = $this->getProjectNameById($data["project_id"]);
                             }
 
                             // 如果存在module_id字段 存在取出来
@@ -503,31 +503,28 @@ class EventLogService
      */
     public function getModuleItemHistory($param)
     {
+        $eventLogModel = new EventLogModel();
+
         $filter = [
-            "filter" => [
-                "event_log" => [
-                    "module_id" => ["-eq", $param["module_id"]],
-                    "link_id" => ["-eq", $param["item_id"]],
-                    "project_id" => ["-in", [$param["project_id"], 0]],
-                    "belong_system" => ["-eq", C('BELONG_SYSTEM')]
-                ]
-            ],
-            "order" => [
-                'event_log.id' => "desc"
-            ],
-            "page" => [
-                "page_number" => $param["page"],
-                "page_size" => $param["rows"]
-            ]
+            "module_id" => $param["module_id"],
+            "link_id" => $param["item_id"],
+            "project_id" => ["IN", [$param["project_id"], 0]],
+            "belong_system" => C('BELONG_SYSTEM')
         ];
 
+        $eventLogTotal = $eventLogModel->where($filter)->count();
+
+        $eventLogData = $eventLogModel->field('id,operate,type,record,from,created_by,created')
+            ->where($filter)
+            ->page($param["page"], $param["rows"])
+            ->order('id desc')
+            ->select();
+
         // 查询event列表数据
-        $resData = $this->postToServer($filter, "select");
-        if ($resData !== false) {
-            $eventLogData = object_to_array($resData);
+        if (!empty($eventLogData)) {
             $userService = new UserService();
-            foreach ($eventLogData["rows"] as &$item) {
-                if ($item["operate"] == "update") {
+            foreach ($eventLogData as &$item) {
+                if ($item["operate"] == "update" && !empty($item["record"])) {
                     $record = json_decode($item["record"], true);
                     if (array_key_exists("new", $record) && !empty($record['new'])) {
                         list($value) = array_values($record["new"]);
@@ -542,10 +539,10 @@ class EventLogService
                     }
                 }
                 // 获取用户头像
-                $item["avatar"] = $userService->getUserAvatarByUUID($item["user_uuid"]);
+                $item["avatar"] = $userService->getUserAvatarByUUID($item["created_by"]);
                 $item["created"] = date_friendly('Y', $item["created"]);
             }
-            return $eventLogData;
+            return ['total' => $eventLogTotal, "rows" => $eventLogData];
         } else {
             return ["total" => 0, "rows" => []];
         }
