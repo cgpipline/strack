@@ -112,7 +112,7 @@ class DetailsController extends VerifyController
 
         // 查询onset信息
         $onsetService = new OnsetService();
-        $onsetData = $onsetService->getLinkOnsetId([
+        $onsetId = $onsetService->getLinkOnsetId([
             'link_id' => $getUrlParam[2],
             'module_id' => $moduleData["id"]
         ]);
@@ -133,7 +133,7 @@ class DetailsController extends VerifyController
             'module_type' => $moduleData["type"],
             'onset_param' => [
                 "module_id" => C("MODULE_ID")["onset"],
-                "id" => $onsetData["id"]
+                "id" => $onsetId
             ],
             "page" => $page,
             "item_id" => $getUrlParam[2],

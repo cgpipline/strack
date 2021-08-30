@@ -8,7 +8,6 @@ namespace common\service;
 
 use common\model\UserModel;
 use phpcent\Client;
-use support\ErrorCode;
 use think\Exception;
 
 class CentrifugalService
