@@ -12158,31 +12158,41 @@ var Strack = {
             }
         );
     },
+    // 获取图片blob,传入从canvas通过getImageData获取到的数据
+    base64ToFile: function (img_data) {
+        return new Promise( resolve => {
+            var canvas2 = document.createElement("canvas"),
+                context2 = canvas2.getContext("2d");
+            canvas2.width = Strack.G.Jcrop_Thumb.w;
+            canvas2.height = Strack.G.Jcrop_Thumb.h;
+            context2.putImageData(img_data, 0, 0, 0, 0, Strack.G.Jcrop_Thumb.w, Strack.G.Jcrop_Thumb.h);
+            canvas2.toBlob(function(blob) {
+                resolve(new File([blob], Math.random().toString(36).substr(2) + '.' + Strack.G.Jcrop_Thumb_Ext, { type: Strack.G.Jcrop_Thumb_Mime }))
+            }, Strack.G.Jcrop_Thumb_Mime);
+        });
+    },
     // 上传头像
-    upload_avatar: function () {
+    upload_avatar: async function () {
         if (Strack.G.Jcrop_Thumb) {
             var user_id = $('#Nuser_id').val(),
                 module_id = $('#Nmodule_id').val(),
-                img_data = Strack.G.Jcrop_Canvas.toDataURL("image/png");
+                ctx = Strack.G.Jcrop_Canvas.getContext("2d"),
+                crop_thumb = ctx.getImageData(Strack.G.Jcrop_Thumb.x, Strack.G.Jcrop_Thumb.y, Strack.G.Jcrop_Thumb.w, Strack.G.Jcrop_Thumb.h),
+                img_data = await this.base64ToFile(crop_thumb),
+                media_server = Strack.G.Media_Server,
+                fd = new FormData();
 
-            var media_server = Strack.G.Media_Server;
+            fd.append("belong_system", StrackPHP['Belong_System']);
+            fd.append("size", "90x90");
+            fd.append("Filedata", img_data);
+
             $.ajax({
                 type: 'POST',
                 url: media_server['upload_url'],
-                dataType: "json",
-                data: {
-                    token: media_server['token'],
-                    belong_system: StrackPHP['Belong_System'],
-                    size : '90x90',
-                    ext : Strack.G.Jcrop_Thumb_Ext,
-                    crop: JSON.stringify({
-                        x: Strack.G.Jcrop_Thumb.x,
-                        y: Strack.G.Jcrop_Thumb.y,
-                        w: Strack.G.Jcrop_Thumb.w,
-                        h: Strack.G.Jcrop_Thumb.h
-                    }),
-                    base64Img: img_data
-                },
+                headers: {'token': media_server['token']},
+                data: fd,
+                processData:false,   //  告诉jquery不要处理发送的数据
+                contentType:false,   // 告诉jquery不要设置content-Type请求头
                 beforeSend: function () {
                     $.messager.progress({title: StrackLang['Waiting'], msg: StrackLang['loading']});
                 },
@@ -12193,7 +12203,7 @@ var Strack = {
                             link_id : user_id,
                             module_id: module_id,
                             media_server: media_server,
-                            media_data: data['data'],
+                            media_data: data['data'][0],
                             mode: 'single'
                         }, function (data) {
                             $.messager.progress('close');
@@ -17253,6 +17263,7 @@ var Strack = {
                         // 获取当前图片后缀
                         var path_arr = path.split(".");
                         Strack.G.Jcrop_Thumb_Ext = path_arr[path_arr.length - 1];
+                        Strack.G.Jcrop_Thumb_Mime = this.files[0].type;
                         _self.drawImg(this.files[0], _self.Setting.Canvas);
                     }
                     _self.Setting.callback();
@@ -17515,6 +17526,7 @@ Strack.G = {
     Default_Mail: '@strack.com',
     Jcrop_Thumb: '',
     Jcrop_Thumb_Ext: '',
+    Jcrop_Thumb_Mime: 'image/png',
     Note_Uploadifive_Imgs: [],
     Note_Delete_Img_Ids: [],
     Note_Has_Img_Length: 0,
