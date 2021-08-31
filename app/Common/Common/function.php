@@ -286,14 +286,19 @@ function check_ccnumber($cc)
 
 /**
  * 加密密码
- * @param string $pass
- * @return bool|string
+ * @param string $password
+ * @return false|string|null
  */
-function create_pass($pass = "")
+function create_pass($password = "")
 {
-    $PassHash = new \Org\Util\Phpass();
-    $PassHash->PasswordHash(8, TRUE);
-    return $PassHash->HashPassword($pass);
+    if (!empty($password)) {
+        $options = [
+            'cost' => 8,
+        ];
+        return password_hash($password, PASSWORD_BCRYPT, $options);
+    } else {
+        return '';
+    }
 }
 
 /**
@@ -313,14 +318,13 @@ function fill_default_pass($pass = "")
 
 /**
  * 验证密码
- * @param  string
+ * @param $password
+ * @param $encryptionPassword
  * @return bool
  */
-function check_pass($password, $phpassword)
+function check_pass($password, $encryptionPassword)
 {
-    $PassHash = new \Org\Util\Phpass();
-    $PassHash->PasswordHash(8, TRUE);
-    return $PassHash->CheckPassword($password, $phpassword);
+    return password_verify($password, $encryptionPassword);
 }
 
 /**
