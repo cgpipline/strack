@@ -6,3 +6,4 @@
 composer.lock
 package-lock.json
 .env
+supervisord.*
