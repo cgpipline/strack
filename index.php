@@ -16,7 +16,7 @@ define('RUNTIME_PATH', __DIR__ . '/runtime/');
 define("TMPL_PATH", __DIR__ . '/tpl/');
 
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
-define('APP_DEBUG', true);
+define('APP_DEBUG', false);
 
 // 引入入口文件
 require __DIR__ . '/core/Strack.php';
