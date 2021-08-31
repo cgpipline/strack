@@ -444,7 +444,7 @@ class EventService
         switch ($moduleData['code']) {
             case 'base': // 任务详情页面
             case 'entity': // 实体详情页面
-                $projectId = !empty($this->projectId) ? $this->projectId : (array_key_exists('project_id', $data) ? $data['project_id'] : 0);
+                $projectId = !empty($thiscl->projectId) ? $this->projectId : (array_key_exists('project_id', $data) ? $data['project_id'] : 0);
                 $url = generate_details_page_url($projectId, $moduleData['id'], $data['id']);
                 break;
             case 'project':
