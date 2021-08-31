@@ -142,7 +142,6 @@ class OnsetService
      * 获取Onset详情数据
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getOnsetInfoData($param)
     {
@@ -168,7 +167,6 @@ class OnsetService
      * 获取Onset关联附件数据
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getOnsetAttachment($param)
     {

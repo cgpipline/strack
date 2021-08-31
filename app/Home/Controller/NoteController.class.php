@@ -12,7 +12,6 @@ class NoteController extends VerifyController
     /**
      * 获取动态Note数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getNoteListData()
     {
@@ -26,7 +25,6 @@ class NoteController extends VerifyController
     /**
      * 获取一条Note数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getOneNoteData()
     {

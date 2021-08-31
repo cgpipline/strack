@@ -1120,7 +1120,6 @@ class EventService
      * 生成消息数据，传入参数（controller， action，config，request_param， operation_data）
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function generateMessageData($param)
     {

@@ -82,7 +82,6 @@ class UserController extends VerifyController
     /**
      * 获取当前用户信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getMyAccountData()
     {

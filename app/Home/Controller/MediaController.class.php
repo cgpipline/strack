@@ -14,7 +14,6 @@ class MediaController extends VerifyController
     /**
      * 保存媒体信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function saveMediaData()
     {
@@ -38,7 +37,6 @@ class MediaController extends VerifyController
     /**
      * 清除媒体缩略图
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function clearMediaThumbnail()
     {
@@ -51,7 +49,6 @@ class MediaController extends VerifyController
     /**
      * 获取详情页面顶部数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getDetailTopThumb()
     {

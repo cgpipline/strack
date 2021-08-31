@@ -12,9 +12,8 @@ use Common\Model\SmsModel;
 use Common\Model\UserModel;
 use Org\Util\Pinyin;
 use Think\QueueClient;
-use Ws\Http\Request;
-use Ws\Http\Request\Body;
 use Overtrue\EasySms\EasySms;
+use Yurun\Util\HttpRequest;
 
 class MessageService
 {
@@ -69,25 +68,26 @@ class MessageService
      * 记录到message服务器
      * @param $data
      * @param $controllerMethod
-     * @return bool
-     * @throws \Ws\Http\Exception
+     * @return false|mixed
      */
     protected function postToServer($data, $controllerMethod)
     {
         $logServerConfig = $this->getEventServer();
         if ($logServerConfig["status"] === 200) {
             // 写入到事件服务器
-            $http = Request::create();
-            $body = Body::json($data);
+
+            $http = HttpRequest::newSession();
             $url = $logServerConfig['request_url'] . "/{$controllerMethod}?sign={$logServerConfig['token']}";
 
-            $responseData = $http->post($url, $this->_headers, $body);
+            $responseData = $http->headers($this->_headers)
+                ->post($url, $data, 'json');
 
-            if ($responseData->code === 200) {
-                if ($responseData->body->status === 200) {
-                    return $responseData->body->data;
+            if ($responseData->httpCode() === 200) {
+                $resData = $responseData->json(true);
+                if ((int)$resData["status"] === 200) {
+                    return $resData["data"];
                 } else {
-                    $this->errorMsg = $responseData->body->message;
+                    $this->errorMsg = $resData["message"];
                     return false;
                 }
             } else {
@@ -116,8 +116,7 @@ class MessageService
     /**
      * 获取我的message数据
      * @param $param
-     * @return array
-     * @throws \Ws\Http\Exception
+     * @return mixed
      */
     public function getMyMessageList($param)
     {
@@ -172,8 +171,7 @@ class MessageService
     /**
      * 获取消息盒子数据
      * @param $param
-     * @return bool|mixed
-     * @throws \Ws\Http\Exception
+     * @return array|mixed
      */
     public function getSideInboxData($param)
     {
@@ -243,8 +241,7 @@ class MessageService
     /**
      * 获取指定用户未读消息数据
      * @param $userId
-     * @return array|bool|mixed
-     * @throws \Ws\Http\Exception
+     * @return array|mixed
      */
     public function getUnReadData($userId)
     {
@@ -274,7 +271,6 @@ class MessageService
      * 获取指定用户未读消息条数
      * @param $userId
      * @return array|mixed
-     * @throws \Ws\Http\Exception
      */
     public function getUnReadNumber($userId)
     {
@@ -306,7 +302,6 @@ class MessageService
      * @param $userId
      * @param $created
      * @return mixed
-     * @throws \Ws\Http\Exception
      */
     public function readMessage($userId, $created)
     {
@@ -434,8 +429,6 @@ class MessageService
     /**
      * 清除指定任务的结算按钮
      * @param $linkIds
-     * @return mixed
-     * @throws \Ws\Http\Exception
      */
     public function clearSettlementBnt($linkIds)
     {

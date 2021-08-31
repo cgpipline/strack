@@ -113,7 +113,6 @@ class ViewService
      * 前端数据表格视图结构
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getGirdViewConfig($param)
     {
@@ -134,8 +133,7 @@ class ViewService
     /**
      * 获取边侧栏数据表格配置
      * @param $param
-     * @return array|mixed
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getDataGridSliderTableConfig($param)
     {
@@ -1425,7 +1423,6 @@ class ViewService
      * @param $param
      * @param $moduleData
      * @return array
-     * @throws \Ws\Http\Exception
      */
     protected function generateGridColumnConfig($param, $moduleData)
     {
@@ -2399,58 +2396,43 @@ class ViewService
      * 获取高级过滤字段列表
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getAdvanceFilterFields($param)
     {
         $filterList = [];
         $moduleData = $this->getModuleData($param['module_id']);
-        switch ($param["page"]) {
-            case "admin_eventlog":
-                $eventLogService = new EventLogService();
-                $eventLogFields = $eventLogService->getEventLogGridFields();
-                foreach ($eventLogFields["config"] as $field) {
-                    $field["frozen_module"] = "eventlog";
-                    $field['id'] = $field["module_code"] . '.' . $field["fields"];
-                    $field["lang"] = L($field["fields"]);
-                    array_push($filterList, $field);
+
+        // 获取schema_id
+        $schemaId = $this->schemaService->getPageSchemaId($moduleData["type"], $param['schema_page'], 0);
+
+        // 字段配置数据
+        $fieldConfigData = $this->getSchemaConfig($param, $schemaId, "view");
+
+        // 返回一层
+        foreach ($fieldConfigData["field_clean_data"]["field_auth_config"]["filter_list"] as $item) {
+            foreach ($item["built_in"]["fields"] as $field) {
+                if ($moduleData["code"] != $field["module_code"] && array_key_exists("outreach_editor", $field) && $field["outreach_editor"] === "combobox") {
+                    $field["fields"] = "id";
                 }
-                break;
-            default:
-                // 获取schema_id
-                $schemaId = $this->schemaService->getPageSchemaId($moduleData["type"], $param['schema_page'], 0);
+                $field["frozen_module"] = $moduleData["code"];
+                $field['id'] = $field["module"] . '.' . $field["fields"];
 
-                // 字段配置数据
-                $fieldConfigData = $this->getSchemaConfig($param, $schemaId, "view");
+                array_push($filterList, $field);
+            }
 
-                // 返回一层
-                foreach ($fieldConfigData["field_clean_data"]["field_auth_config"]["filter_list"] as $item) {
-                    foreach ($item["built_in"]["fields"] as $field) {
-                        if ($moduleData["code"] != $field["module_code"] && array_key_exists("outreach_editor", $field) && $field["outreach_editor"] === "combobox") {
-                            $field["fields"] = "id";
-                        }
-                        $field["frozen_module"] = $moduleData["code"];
-                        $field['id'] = $field["module"] . '.' . $field["fields"];
-
-                        array_push($filterList, $field);
-                    }
-
-                    foreach ($item["custom"]["fields"] as $field) {
-                        if (in_array($field["type"], ['horizontal_relationship', 'belong_to'])) {
-                            $field['id'] = $field["fields"] . ".id";
-                            $field['module_code'] = $field["fields"];
-                            $field['fields'] = "id";
-                            $field['table'] = $field["module"];
-                        } else {
-                            $field['id'] = $field["module"] . '.' . $field["fields"];
-                        }
-
-                        array_push($filterList, $field);
-                    }
+            foreach ($item["custom"]["fields"] as $field) {
+                if (in_array($field["type"], ['horizontal_relationship', 'belong_to'])) {
+                    $field['id'] = $field["fields"] . ".id";
+                    $field['module_code'] = $field["fields"];
+                    $field['fields'] = "id";
+                    $field['table'] = $field["module"];
+                } else {
+                    $field['id'] = $field["module"] . '.' . $field["fields"];
                 }
-                break;
+
+                array_push($filterList, $field);
+            }
         }
-
         return $filterList;
     }
 

@@ -18,7 +18,6 @@ class ViewController extends VerifyController
     /**
      * 动态加载数据表格列字段
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getGridColumns()
     {
@@ -35,7 +34,6 @@ class ViewController extends VerifyController
     /**
      * 获取过滤面板数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getGridPanelData()
     {
@@ -582,7 +580,6 @@ class ViewController extends VerifyController
     /**
      * 获取边侧栏数据表格配置
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getDataGridSliderTableConfig()
     {

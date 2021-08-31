@@ -32,7 +32,6 @@ class MessageController extends AdminController
     /**
      * 保存消息配置
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function saveMessageSetting()
     {

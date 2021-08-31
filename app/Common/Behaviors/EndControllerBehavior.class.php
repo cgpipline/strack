@@ -11,7 +11,6 @@ class EndControllerBehavior extends \Think\Behavior
     /**
      * 行为执行入口
      * @param mixed $param
-     * @throws \Ws\Http\Exception
      */
     public function run(&$param)
     {

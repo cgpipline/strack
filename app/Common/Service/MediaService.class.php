@@ -15,8 +15,9 @@ use Common\Model\MediaServerModel;
 use Common\Model\ModuleModel;
 use Common\Model\ReviewLinkModel;
 use Think\Request as TPRequest;
-use Ws\Http\Request;
-use Ws\Http\Request\Body;
+use Yurun\Util\HttpRequest;
+use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
+use Yurun\Util\YurunHttp\Http\Psr7\Consts\MediaType;
 
 class MediaService
 {
@@ -43,20 +44,20 @@ class MediaService
      * 远程请求数据
      * @param $data
      * @param $url
-     * @return bool
-     * @throws \Ws\Http\Exception
+     * @return false|mixed
      */
     protected function postData($data, $url)
     {
-        $http = Request::create();
-        $body = Body::json($data);
-        $responseData = $http->post($url, $this->_headers, $body);
+        $http = HttpRequest::newSession();
+        $responseData = $http->headers($this->_headers)
+            ->post($url, $data, 'json');
 
-        if ($responseData->code === 200) {
-            if ($responseData->body->status === 200) {
-                return $responseData->body->data;
+        if ($responseData->httpCode() === 200) {
+            $resData = $responseData->json(true);
+            if ((int)$resData['status'] === 200) {
+                return $resData['data'];
             } else {
-                $this->errorMsg = $responseData->body->message;
+                $this->errorMsg = $resData['message'];
                 return false;
             }
         } else {
@@ -78,18 +79,26 @@ class MediaService
                 'token' => $mediaUploadServer['token'],
                 'size' => '250x140'
             ];
-            $http = Request::create();
-            $body = Body::multipart($data, [
-                'Filedata' => $file
+
+            $http = HttpRequest::newSession();
+            $http->content([
+                $data,
+                // 显示的文件名；文件类型，可以为null；文件真实路径
+                new UploadedFile('Filedata', MediaType::MULTIPART_FORM_DATA, $file),
             ]);
 
-            $responseData = $http->post($mediaUploadServer['upload_url'], ['Accept' => 'application/json'], $body);
-            if ($responseData->code === 200) {
-                if ($responseData->body->status === 200) {
-                    $mediaData = object_to_array($responseData->body->data);
+
+            $responseData = $http->headers(['Accept' => 'application/json'])
+                ->post($mediaUploadServer['upload_url']);
+
+
+            if ($responseData->httpCode() === 200) {
+                $resData = $responseData->json(true);
+                if ((int)$resData["status"] === 200) {
+                    $mediaData = object_to_array($resData["data"]);
                     return ["media_data" => $mediaData, "media_server" => $mediaUploadServer];
                 } else {
-                    $this->errorMsg = $responseData->body->message;
+                    $this->errorMsg = $resData["message"];
                     return false;
                 }
             } else {
@@ -107,7 +116,6 @@ class MediaService
      * 新增媒体数据
      * @param $data
      * @return array
-     * @throws \Ws\Http\Exception
      */
     protected function addMediaData($data)
     {
@@ -126,7 +134,6 @@ class MediaService
      * 修改媒体数据
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     protected function modifyMediaData($param)
     {
@@ -164,7 +171,6 @@ class MediaService
      * 添加或者更新media
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function saveMediaData($param)
     {
@@ -286,7 +292,6 @@ class MediaService
      * 获取指定媒体信息
      * @param $filter
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getMediaData($filter)
     {
@@ -301,10 +306,11 @@ class MediaService
             // 获取媒体
             $this->_headers['token'] = $mediaServerData['token'];
             $postResult = $this->postData(['md5_name' => $mediaItem['md5_name']], $url);
+
             if (!$postResult) {
                 return ['has_media' => 'no', 'param' => []];
             } else {
-                $mediaItemData = object_to_array($postResult->param);
+                $mediaItemData = $postResult['param'];
                 $mediaItemData['base_url'] = $mediaServerData['request_url'] . "{$mediaItemData['path']}";
                 if ($mediaItemData['type'] === 'image') {
                     $mediaItemData['size'] = explode(',', $mediaItemData['size']);
@@ -332,7 +338,6 @@ class MediaService
      * 获取多条媒体信息
      * @param $filter
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getMediaSelectData($filter)
     {
@@ -379,7 +384,6 @@ class MediaService
      * @param $mediaServiceId
      * @param $md5NameList
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function selectMediaData($mediaServiceId, $md5NameList)
     {
@@ -417,7 +421,6 @@ class MediaService
      * 批量清除缩略图
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function batchClearMediaThumbnail($param)
     {
@@ -476,7 +479,6 @@ class MediaService
      * @param $filter
      * @param string $mode
      * @return bool
-     * @throws \Ws\Http\Exception
      */
     public function clearMediaThumbnail($filter, $mode = 'delete')
     {
@@ -513,7 +515,6 @@ class MediaService
      * @param $filter
      * @param $size
      * @return string
-     * @throws \Ws\Http\Exception
      */
     public function getSpecifySizeThumbPath($filter, $size)
     {

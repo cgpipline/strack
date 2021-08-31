@@ -333,7 +333,6 @@ class WidgetController extends VerifyController
     /**
      * 获取顶部右侧信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getTopRightData()
     {
@@ -982,7 +981,6 @@ class WidgetController extends VerifyController
     /**
      * 获取指定模块详细信息数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getModuleItemInfo()
     {
@@ -1267,7 +1265,6 @@ class WidgetController extends VerifyController
     /**
      * 获取数据表格边侧栏其他页面数据
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getDataGridSliderOtherPageData()
     {
@@ -1385,7 +1382,6 @@ class WidgetController extends VerifyController
     /**
      * 更新任务审核数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function updateBaseConfirmationData()
     {

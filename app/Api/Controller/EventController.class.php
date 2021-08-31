@@ -19,7 +19,6 @@ class EventController extends BaseController
     /**
      * 获取消息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getSideInboxData()
     {
@@ -31,7 +30,6 @@ class EventController extends BaseController
     /**
      * 更新任务审核数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function updateBaseConfirmationData()
     {

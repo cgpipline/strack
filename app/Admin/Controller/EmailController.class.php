@@ -33,7 +33,6 @@ class EmailController extends AdminController
     /**
      * 更新邮件设置
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function saveEmailSetting()
     {
@@ -47,7 +46,7 @@ class EmailController extends AdminController
     /**
      * 测试邮件发送
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
+     * @throws \Throwable
      */
     public function testSendEmail()
     {

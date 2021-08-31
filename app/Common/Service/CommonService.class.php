@@ -1084,7 +1084,6 @@ class CommonService
      * @param $param
      * @param $moduleCode
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getModuleItemInfo($param, $moduleCode)
     {
@@ -1379,7 +1378,6 @@ class CommonService
      * 更新任务审核数据
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function updateBaseConfirmationData($param)
     {
