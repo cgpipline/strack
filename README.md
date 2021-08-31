@@ -25,7 +25,7 @@ mychenjun | committer
 - [x] PHP版本兼容升级 7.4
 - [x] 重写media服务
 - [x] 重写log服务
-- [ ] 编写docker-compose文件
+- [ ] 编写一键部署文件
 - [ ] 编写使用文档
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
