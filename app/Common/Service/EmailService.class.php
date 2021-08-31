@@ -293,7 +293,7 @@ class EmailService
      * @param $param
      * @return false
      */
-    protected function initParam($param)
+    public function initParam($param)
     {
         $optionsService = new OptionsService();
         $emailConfig = $optionsService->getOptionsData("email_settings");
