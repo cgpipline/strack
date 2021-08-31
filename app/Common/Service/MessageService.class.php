@@ -11,7 +11,6 @@ namespace Common\Service;
 use Common\Model\MessageMemberModel;
 use Common\Model\MessageModel;
 use Common\Model\SmsModel;
-use Common\Model\UserModel;
 use Org\Util\Pinyin;
 use Overtrue\EasySms\EasySms;
 use Think\QueueClient;
@@ -374,187 +373,143 @@ class MessageService
     }
 
     /**
-     * 获取我的message数据
-     * @param $param
-     * @return mixed
+     * 查询多条 MessageMember
+     * @param $filter
+     * @param $pageSize
+     * @param $pageNumber
+     * @return array
      */
-    public function getMyMessageList($param)
+    public function getMessageMemberData($filter, $pageNumber, $pageSize)
     {
-        $userModel = new UserModel();
-        $userUuid = $userModel->where(['id' => fill_created_by()])->getField('uuid');
+        $messageMemberModel = new MessageMemberModel();
 
-        $filter = [
-            'filter' => [
-                'message' => [
-                    'user_uuid' => ['-eq', $userUuid]
-                ]
-            ],
-            'order' => [
-                'message.created' => 'desc'
-            ],
-            'page' => [
-                'page_size' => $param['rows']
-            ]
-        ];
-
-        // 获取消息记录
-        $messageData = $this->postToServer($filter, "message/select");
-        $messageData = object_to_array($messageData);
-
-        $userModuleId = C("MODULE_ID")["user"];
-        $mediaService = new MediaService();
-        $pinyin = new Pinyin();
-
-        foreach ($messageData['rows'] as &$item) {
-            $item['sender'] = json_decode($item['sender'], true);
-            $item['member'] = json_decode($item['member'], true);
-
-            // 获取用户名称
-            $item['user_name'] = $item['sender']['name'];
-
-            // 获取用户头像
-            $item['sender']['user_avatar'] = $mediaService->getMediaThumb(['module_id' => $userModuleId, 'link_id' => $item['sender']['id']]);
-            $item['sender']['pinyin'] = $pinyin->getAllPY($item['user_name']);
-
-            // 获取媒体数据
-            $item['media_data'] = $mediaService->getMediaSelectData(['module_id' => $item['module_id'], 'link_id' => $item['primary_id']]);
-
-            // 获取成员数据
-            $item['member_data'] = json_decode($item['member'], true);
-
-            // 格式化 note 时间
-            $item["created"] = date_friendly('', $item["created"]);
+        $total = $messageMemberModel->where($filter)->count();
+        $ids = '';
+        if ($total > 0) {
+            $resData = $messageMemberModel->field('message_id')->where($filter)->page($pageNumber, $pageSize)->select();
+            $ids = !empty($resData) ? array_column($resData, 'message_id') : '';
         }
-        return $messageData;
+        return [
+            'total' => $total,
+            'ids' => $ids
+        ];
     }
 
     /**
      * 获取消息盒子数据
      * @param $param
-     * @return array|mixed
+     * @param string $msgStatus
+     * @return array
      */
-    public function getSideInboxData($param)
+    public function getSideInboxData($param, $msgStatus = '')
     {
-        $userModel = new UserModel();
-        $userUuid = $userModel->where(['id' => session('user_id')])->getField('uuid');
+        $memberFilter["user_id"] = !empty($param['user_id']) ? $param['user_id'] : session('user_id');
 
-        $messageFilter = [];
         if ($param['tab'] == "at_me") {
-            $memberFilter["belong_type"] = ['-eq', 'at'];
-            $messageFilter["belong_system"] = ['-eq', C('BELONG_SYSTEM')];
+            $memberFilter["belong_type"] = 'at';
         }
 
-        $memberFilter["user_uuid"] = ['-eq', $userUuid];
-        $messageFilter["belong_system"] = ['-eq', C('BELONG_SYSTEM')];
+        if (!empty($msgStatus)) {
+            $memberFilter['status'] = $msgStatus;
+        }
 
-        $filter = [
-            'filter' => [
-                'message' => $messageFilter,
-                "message_member" => $memberFilter
-            ],
-            'page' => [
-                'page_size' => $param['page_size'],
-                'page_number' => $param['page_number'],
-            ]
-        ];
+        // 获取属于我的message
+        $messageMemberData = $this->getMessageMemberData($memberFilter, $param['page_number'], $param['page_size']);
 
-        // 获取消息记录
-        $messageData = $this->postToServer($filter, "message/select");
-        if ($messageData !== false) {
-            $messageData = object_to_array($messageData);
-            $userModuleId = C("MODULE_ID")["user"];
-            $mediaService = new MediaService();
-            $pinyin = new Pinyin();
-            foreach ($messageData['rows'] as &$item) {
-                $item['sender'] = json_decode($item['sender'], true);
-                $item['content'] = json_decode($item['content'], true);
-                $item['user_name'] = $item['sender']['name'];
+        if (!empty($messageMemberData['ids'])) {
 
-                $item['sender']['user_avatar'] = $mediaService->getMediaThumb(['module_id' => $userModuleId, 'link_id' => $item['sender']['id']]);
-                $item['sender']['pinyin'] = $pinyin->getAllPY($item['user_name']);
+            // 获取message数据
+            $messageModel = new MessageModel();
+            $messageData = $messageModel->where(
+                [
+                    "id" => ["IN", join(",", $messageMemberData['ids'])]
+                ]
+            )
+                ->page($param['page_number'], $param['page_size'])
+                ->order('created desc')
+                ->select();
 
-                $mediaLinkId = 0;
-                $mediaLinkModuleId = 0;
-                switch ($item['operate']) {
-                    case 'reject':
-                        if (!empty($item['content']['update_data']['note_id']) && !empty($item['content']['update_data']['note_module_id'])) {
-                            $mediaLinkId = $item['content']['update_data']['note_id'];
-                            $mediaLinkModuleId = $item['content']['update_data']['note_module_id'];
-                        }
-                        break;
-                    default:
-                        $mediaLinkId = $item['primary_id'];
-                        $mediaLinkModuleId = $item['module_id'];
-                        break;
+            // 获取消息记录
+            if (!empty($messageData)) {
+                $userModuleId = C("MODULE_ID")["user"];
+                $mediaService = new MediaService();
+                $pinyin = new Pinyin();
+                foreach ($messageData as &$item) {
+                    $item['sender'] = json_decode($item['sender'], true);
+                    $item['content'] = json_decode($item['content'], true);
+                    $item['user_name'] = $item['sender']['name'];
+
+                    $item['sender']['user_avatar'] = $mediaService->getMediaThumb(['module_id' => $userModuleId, 'link_id' => $item['sender']['id']]);
+                    $item['sender']['pinyin'] = $pinyin->getAllPY($item['user_name']);
+
+                    $mediaLinkId = 0;
+                    $mediaLinkModuleId = 0;
+                    switch ($item['operate']) {
+                        case 'reject':
+                            if (!empty($item['content']['update_data']['note_id']) && !empty($item['content']['update_data']['note_module_id'])) {
+                                $mediaLinkId = $item['content']['update_data']['note_id'];
+                                $mediaLinkModuleId = $item['content']['update_data']['note_module_id'];
+                            }
+                            break;
+                        default:
+                            $mediaLinkId = $item['primary_id'];
+                            $mediaLinkModuleId = $item['module_id'];
+                            break;
+                    }
+
+                    $item['media_data'] = $mediaService->getMediaSelectData(['module_id' => $mediaLinkModuleId, 'link_id' => $mediaLinkId]);
+                    $item['created'] = date_friendly('Y', $item['created']);
                 }
 
-                $item['media_data'] = $mediaService->getMediaSelectData(['module_id' => $mediaLinkModuleId, 'link_id' => $mediaLinkId]);
-                $item['created'] = date_friendly('Y', $item['created']);
+                return ["total" => $messageMemberData['total'], "rows" => $messageData];
+            } else {
+                return ["total" => $messageMemberData['total'], "rows" => []];
             }
-
-            return $messageData;
-        } else {
-            return ["total" => 0, "rows" => []];
         }
+
+        return ["total" => 0, "rows" => []];
     }
 
     /**
      * 获取指定用户未读消息数据
      * @param $userId
-     * @return array|mixed
+     * @return array
      */
     public function getUnReadData($userId)
     {
-        $userModel = new UserModel();
-        $userUuid = $userModel->where(['id' => $userId])->getField('uuid');
-
-        $filter = [
-            "filter" => [
-                "message_member" => [
-                    "user_uuid" => ['-eq', $userUuid],
-                    "status" => ['-eq', "unread"],
-                    'belong_system' => ['-eq', C('BELONG_SYSTEM')]
-                ]
-            ]
-        ];
-
-        // 获取消息记录
-        $messageData = $this->postToServer($filter, "message/getUnReadData");
-        if ($messageData !== false) {
-            return object_to_array($messageData);
-        } else {
-            return ["total" => 0, "rows" => []];
-        }
+        return $this->getSideInboxData([
+            'user_id' => $userId,
+            'page_number' => 1,
+            'page_size' => 30
+        ], 'unread');
     }
 
     /**
      * 获取指定用户未读消息条数
      * @param $userId
-     * @return array|mixed
+     * @return array
      */
     public function getUnReadNumber($userId)
     {
-        $userModel = new UserModel();
-        $userUuid = $userModel->where(['id' => $userId])->getField('uuid');
-
-        $filter = [
-            "filter" => [
-                "message_member" => [
-                    "user_uuid" => ['-eq', $userUuid],
-                    "status" => ['-eq', "unread"],
-                    'belong_system' => ['-eq', C('BELONG_SYSTEM')]
-                ]
-            ]
+        $memberFilter = [
+            "user_id" => $userId,
+            "status" => "unread"
         ];
 
-        // 获取消息记录
-        $messageData = $this->postToServer($filter, "message/getUnReadNumber");
+        $messageMemberModel = new MessageMemberModel();
+        $total = $messageMemberModel->where($memberFilter)->count();
+        if ($total > 0) {
+            // 取最新的一条时间
+            $lastMessageData = $messageMemberModel
+                ->where($memberFilter)
+                ->field('created')
+                ->order('created desc')
+                ->find();
 
-        if ($messageData !== false) {
-            return object_to_array($messageData);
-        } else {
-            return ["massage_number" => 0, "last_message_data" => []];
+            return ["massage_number" => $total, "last_message_data" => $lastMessageData];
         }
+
+        return ["massage_number" => 0, "last_message_data" => []];
     }
 
     /**
@@ -565,25 +520,17 @@ class MessageService
      */
     public function readMessage($userId, $created)
     {
-        $userModel = new UserModel();
-        $userUuid = $userModel->where(['id' => $userId])->getField('uuid');
-
-        $filter = [
-            "filter" => [
-                "message_member" => [
-                    "user_uuid" => ['-eq', $userUuid],
-                    "status" => ['-eq', "unread"],
-                    'belong_system' => ['-eq', C('BELONG_SYSTEM')],
-                    "created" => ['-elt', $created]
-                ]
-            ]
+        $memberFilter = [
+            "user_id" => $userId,
+            "status" => "unread",
+            "created" => ['ELT', $created]
         ];
 
-        // 获取消息记录
-        $resData = $this->postToServer($filter, "message/read");
+        $messageMemberModel = new MessageMemberModel();
+        $resData = $messageMemberModel->where($memberFilter)->setField('status', 'read');
 
-        if ($resData !== false) {
-            return object_to_array($resData);
+        if (!empty($resData)) {
+            return success_response('', $resData);
         } else {
             throw_strack_exception("", 404);
         }
