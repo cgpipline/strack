@@ -637,7 +637,7 @@ class AdvModel extends Model
                         $seq = (ord(substr($fun($field), 0, 1)) % $this->partition['num']) + 1;
                     } else {
                         // 按照字段的首字母的值分表
-                        $seq = (ord($field{0}) % $this->partition['num']) + 1;
+                        $seq = (ord($field[0]) % $this->partition['num']) + 1;
                     }
             }
             return $this->getTableName() . '_' . $seq;
