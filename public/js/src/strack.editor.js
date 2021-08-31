@@ -4619,7 +4619,7 @@ LinkPopover = (function(superClass) {
           .combobox('reload',c_src)
           .combobox('clear');
     }});
-    
+
     this.urlEl.on('keyup', (function(_this) {
       return function(e) {
         var val;
@@ -6161,7 +6161,7 @@ return Simditor;
         images: EmojiButton.images
       }, this.editor.opts.emoji || {});
       html = "";
-      dir = StrackPHP["BASE_URL"]+'/'+StrackPHP['IMG']+ '/emoji/';
+      dir = StrackPHP["BASE_URL"]+StrackPHP['IMG']+ '/emoji/';
       ref = opts.images;
       for (i = 0, len = ref.length; i < len; i++) {
         name = ref[i];
