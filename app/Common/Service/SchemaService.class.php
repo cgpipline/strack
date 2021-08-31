@@ -977,19 +977,23 @@ class SchemaService
                     if ($schemaId > 0) {
                         // 获取主表表名
                         $hasManyTableName = $moduleRelationData["type"] === 'fixed' ? $moduleRelationData['code'] : $moduleRelationData['type'];
+
                         // 获取 has many 关联数据显示配置
                         $belongToModel = D('Common/' . camelize($hasManyTableName));
                         $belongToFormat = $belongToModel->_hasManyDataShowFormat;
-                        $belongToFormatCode = $belongToFormat["format"]["table"];
 
-                        $belongToModuleData = $this->moduleModel->findData(["filter" => ["code" => $belongToFormatCode], "fields" => "id as module_id,name,code,type"]);
+                        if(!empty($belongToFormat)){
+                            $belongToFormatCode = $belongToFormat["format"]["table"];
 
-                        if (!empty($belongToModuleData)) {
-                            $schemaFields[$belongToFormatCode]['field_configs'] = $this->getTableFieldConfig($belongToModuleData, $param["project_id"]);
-                            $schemaFields[$belongToFormatCode]["code"] = $belongToModuleData["code"];
-                            $schemaFields[$belongToFormatCode]["type"] = $belongToModuleData["type"];
+                            $belongToModuleData = $this->moduleModel->findData(["filter" => ["code" => $belongToFormatCode], "fields" => "id as module_id,name,code,type"]);
 
-                            $relationModuleList[$key]["belong_to_config"] = $belongToFormat;
+                            if (!empty($belongToModuleData)) {
+                                $schemaFields[$belongToFormatCode]['field_configs'] = $this->getTableFieldConfig($belongToModuleData, $param["project_id"]);
+                                $schemaFields[$belongToFormatCode]["code"] = $belongToModuleData["code"];
+                                $schemaFields[$belongToFormatCode]["type"] = $belongToModuleData["type"];
+
+                                $relationModuleList[$key]["belong_to_config"] = $belongToFormat;
+                            }
                         }
                     }
                 }
