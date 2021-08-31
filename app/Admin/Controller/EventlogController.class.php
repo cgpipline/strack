@@ -35,7 +35,6 @@ class EventlogController extends AdminController
     /**
      * EventLog表格数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getEventLogGridData()
     {

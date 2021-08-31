@@ -498,8 +498,7 @@ class EventLogService
     /**
      * 获取事件日志数据
      * @param $param
-     * @return array|mixed
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getModuleItemHistory($param)
     {
@@ -551,8 +550,7 @@ class EventLogService
     /**
      * 获取eventLog表格数据
      * @param $param
-     * @return mixed
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getEventLogGridData($param)
     {
@@ -563,22 +561,6 @@ class EventLogService
         $eventLogModel = new EventLogModel();
         $resData = $eventLogModel->getRelationData($schemaFields);
         return $resData;
-    }
-
-    /**
-     * 动态加载事件日志数据表格列字段 TODO
-     * @return array|mixed
-     * @throws \Ws\Http\Exception
-     */
-    public function getEventLogGridFields()
-    {
-        // 获取eventlog表的字段配置
-        $fieldInfo = $this->postToServer([], "event/fields");
-        if ($fieldInfo !== false) {
-            return object_to_array($fieldInfo);
-        } else {
-            return [];
-        }
     }
 
 

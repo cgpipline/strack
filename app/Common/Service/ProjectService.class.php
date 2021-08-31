@@ -492,7 +492,6 @@ class ProjectService
      * 获取项目列表
      * @param $filter
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getAdminProjectList($filter)
     {
@@ -1308,7 +1307,6 @@ class ProjectService
      * @param $type
      * @param $linkId
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getFileAttributeData($type, $linkId)
     {
@@ -1355,7 +1353,6 @@ class ProjectService
      * @param $data
      * @param $projectUUID
      * @return mixed
-     * @throws \Ws\Http\Exception
      */
     protected function getFileProjectData(&$data, $projectUUID)
     {
@@ -1391,7 +1388,6 @@ class ProjectService
      * @param $data
      * @param $taskUUID
      * @return mixed
-     * @throws \Ws\Http\Exception
      */
     public function getFileTaskData(&$data, $taskUUID)
     {

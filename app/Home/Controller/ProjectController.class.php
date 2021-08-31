@@ -580,7 +580,6 @@ class ProjectController extends VerifyController
     /**
      * 获取项目详细信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getProjectInfo()
     {

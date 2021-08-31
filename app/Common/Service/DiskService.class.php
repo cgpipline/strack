@@ -12,8 +12,7 @@ use Common\Model\BaseModel;
 use Common\Model\DiskModel;
 use Common\Model\ProjectModel;
 use Common\Model\UserModel;
-use Ws\Http\Request;
-use Ws\Http\Request\Body;
+use Yurun\Util\HttpRequest;
 
 class DiskService
 {
@@ -48,39 +47,28 @@ class DiskService
      * 远程请求数据
      * @param $data
      * @param $url
-     * @return bool
-     * @throws \Ws\Http\Exception
+     * @return false|mixed
      */
     protected function postData($data, $url)
     {
-        $http = Request::create();
-        $body = Body::json($data);
+        $http = HttpRequest::newSession();
+        $responseData = $http->headers($this->_headers)
+            ->post($url, $data, 'json');
 
-        $responseData = $http->post($url, $this->_headers, $body);
-
-        if ($responseData->code === 200) {
-            switch ($responseData->body->status) {
+        if ($responseData->httpCode() === 200) {
+            $resData = $responseData->json(true);
+            switch ((int)$resData["status"]) {
                 case 0:
                 case 200:
-                    return $responseData->body->data;
-                    break;
+                    return $resData["data"];
                 case -41002:
                 case -41003:
                     // token过期重新获取，再次发起请求
                     $this->errorMsg = 'token_expire';
                     return false;
-                    break;
                 default:
-                    $this->errorMsg = $responseData->body->message;
+                    $this->errorMsg =$resData["message"];
                     return false;
-                    break;
-            }
-
-            if (in_array($responseData->body->status, [0, 200])) {
-                return $responseData->body->data;
-            } else {
-                $this->errorMsg = $responseData->body->message;
-                return false;
             }
         } else {
             $this->errorMsg = '文件管理系统异常';
@@ -93,7 +81,6 @@ class DiskService
      * @param $param
      * @param string $mode
      * @return mixed|string
-     * @throws \Ws\Http\Exception
      */
     protected function getToken($param, $mode = '')
     {
@@ -123,8 +110,7 @@ class DiskService
     /**
      * 通过用户手机号或者UCid创建用户
      * @param $endpointParam
-     * @return array
-     * @throws \Ws\Http\Exception
+     * @return array|mixed
      */
     protected function createUserByPhoneOrUcId($endpointParam)
     {
@@ -280,7 +266,6 @@ class DiskService
      * 获取最近最快的网盘节点
      * @param $endpoints
      * @return array|mixed
-     * @throws \Ws\Http\Exception
      */
     protected function getTheFastEndpoints($endpoints)
     {
@@ -373,7 +358,6 @@ class DiskService
      * @param int $uuid
      * @param string $folderName
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getCloudDiskUrl($type = 'project', $linkId = 0, $uuid = 0, $folderName = '')
     {
@@ -453,7 +437,7 @@ class DiskService
      * @param $userData
      * @param $fastEndpoints
      * @param $param
-     * @return string
+     * @return array
      */
     public function getCloudDiskUrlByFrontend($userData, $fastEndpoints, $param)
     {
@@ -508,7 +492,6 @@ class DiskService
      * 获取边侧栏云盘访问路径
      * @param $param
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getDataGridSliderOtherPageData($param)
     {

@@ -97,7 +97,6 @@ class NoteService
      * @param $param
      * @param $moduleId
      * @return mixed
-     * @throws \Ws\Http\Exception
      */
     public function getOneNoteData($param, $moduleId)
     {
@@ -113,7 +112,6 @@ class NoteService
      * @param $moduleId
      * @param string $stick
      * @return array
-     * @throws \Ws\Http\Exception
      */
     private function selectNoteListData($param, $moduleId, $stick = "no")
     {
@@ -170,7 +168,6 @@ class NoteService
      * @param $param
      * @param $moduleId
      * @return array
-     * @throws \Ws\Http\Exception
      */
     public function getNoteListData($param, $moduleId)
     {
@@ -378,7 +375,6 @@ class NoteService
      * @param $data
      * @param $noteModuleId
      * @return mixed
-     * @throws \Ws\Http\Exception
      */
     protected function getFormatNoteData($data, $noteModuleId)
     {
@@ -460,7 +456,6 @@ class NoteService
      * @param $resData
      * @param $moduleId
      * @return array
-     * @throws \Ws\Http\Exception
      */
     protected function saveMedia($param, $resData, $moduleId)
     {

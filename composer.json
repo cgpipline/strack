@@ -7,7 +7,6 @@
         "phpoffice/phpspreadsheet": "^1.5.1",
         "strack/oauth": "dev-master",
         "webpatser/laravel-uuid": "^3.0.1",
-        "toohamster/ws-http" : "1.0.2",
         "overtrue/easy-sms": "^1.1",
         "phpmailer/phpmailer": "^v6.4",
         "twig/twig": "^v2.5.0",

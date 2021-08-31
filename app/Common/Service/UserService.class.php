@@ -929,7 +929,6 @@ class UserService
      * 获取我的账户数据（登录名、姓名、昵称、邮箱、手机、头像）
      * @param $userId
      * @return array|mixed
-     * @throws \Ws\Http\Exception
      */
     public function getMyAccountData($userId)
     {
@@ -952,8 +951,7 @@ class UserService
     /**
      * 通过用户uuid获取用户头像
      * @param $userUUID
-     * @return array|mixed
-     * @throws \Ws\Http\Exception
+     * @return array|mixed|string[]
      */
     public function getUserAvatarByUUID($userUUID)
     {
@@ -1171,7 +1169,7 @@ class UserService
     /**
      * 获取找回密码请求地址
      * @param $param
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getForgetLoginRequest($param)
     {

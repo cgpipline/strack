@@ -10,7 +10,6 @@ class MessageController extends VerifyController
     /**
      * 获取消息盒子数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getSideInboxData()
     {
@@ -23,7 +22,6 @@ class MessageController extends VerifyController
     /**
      * 标记已读消息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function readMessage()
     {

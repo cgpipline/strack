@@ -9,8 +9,7 @@ class EventlogController extends VerifyController
 {
     /**
      * 获取指定模块下面某项的历史操作记录
-     * @return mixed
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getModuleItemHistory()
     {
@@ -21,8 +20,7 @@ class EventlogController extends VerifyController
 
     /**
      * 获取数据表格边侧栏历史数据
-     * @return mixed
-     * @throws \Ws\Http\Exception
+     * @return array
      */
     public function getDataGridSliderHistoryData()
     {

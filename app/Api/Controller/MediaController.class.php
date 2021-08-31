@@ -31,7 +31,6 @@ class MediaController extends BaseController
     /**
      * 添加media
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function createMedia()
     {
@@ -42,7 +41,6 @@ class MediaController extends BaseController
     /**
      * 修改media
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function updateMedia()
     {
@@ -54,7 +52,6 @@ class MediaController extends BaseController
     /**
      * 获取指定媒体信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getMediaData()
     {
@@ -96,7 +93,6 @@ class MediaController extends BaseController
     /**
      * 获取指定尺寸的媒体缩略图路径
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getSpecifySizeThumbPath()
     {
@@ -105,9 +101,8 @@ class MediaController extends BaseController
     }
 
     /**
-     *  获取多个媒体信息
+     * 获取多个媒体信息
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function selectMediaData()
     {

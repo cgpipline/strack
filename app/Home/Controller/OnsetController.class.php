@@ -67,7 +67,6 @@ class OnsetController extends VerifyController
     /**
      * 获取Onset关联附件数据
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getOnsetAttachment()
     {

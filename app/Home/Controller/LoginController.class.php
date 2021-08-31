@@ -227,7 +227,6 @@ class LoginController extends VerifyController
     /**
      * 获取找回密码请求地址
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getForgetLoginRequest()
     {

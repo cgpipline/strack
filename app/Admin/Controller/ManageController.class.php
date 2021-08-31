@@ -22,7 +22,6 @@ class ManageController extends AdminController
     /**
      * 后台项目列表
      * @return \Think\Response
-     * @throws \Ws\Http\Exception
      */
     public function getAdminProjectList()
     {
