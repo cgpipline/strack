@@ -29,7 +29,6 @@ class MessageModel extends RelationModel
     protected $_auto = [
         ['content', 'json_encode', self::EXISTS_VALIDATE, 'function'],
         ['sender', 'json_encode', self::EXISTS_VALIDATE, 'function'],
-        ['created', 'time', self::MODEL_INSERT, 'function'],
         ['uuid', 'create_uuid', self::MODEL_INSERT, 'function']
     ];
 }
