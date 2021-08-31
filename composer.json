@@ -11,13 +11,13 @@
         "phpmailer/phpmailer": "^v6.4",
         "twig/twig": "^v2.5.0",
         "pragmarx/google2fa-qrcode": "^1.0",
-        "robmorgan/phinx": "^0.10.6",
         "mingyoung/dingtalk": "^2.0",
         "strack/yurun-oauth-login": "^0.4",
         "workerman/redis-queue": "^1.0",
         "centrifugal/phpcent": ">=3.0"
     },
     "require-dev": {
+        "robmorgan/phinx": "^0.10.6",
         "phpcompatibility/php-compatibility": "*"
     },
     "scripts": {
