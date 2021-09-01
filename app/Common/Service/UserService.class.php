@@ -19,7 +19,7 @@ use Common\Model\UserConfigModel;
 use Common\Model\UserModel;
 use Common\Model\ViewModel;
 use Common\Model\ViewUseModel;
-use Org\Util\Pinyin;
+use Overtrue\Pinyin\Pinyin;
 
 class UserService
 {
@@ -511,7 +511,7 @@ class UserService
                 'login_name' => $loginUserData['phone'],
                 'email' => $loginUserData['phone'] . C('Default_EmailExt'),
                 'name' => $loginUserData['name'],
-                'nickname' => $this->pinyinClass->getAllPY($loginUserData['name']),
+                'nickname' => $this->pinyinClass->permalink($loginUserData['name'], '', PINYIN_KEEP_ENGLISH),
                 'phone' => $loginUserData['phone'],
                 'password' => $this->getUserDefaultPassword(),
                 $idField => $loginUserData['id']
@@ -943,7 +943,7 @@ class UserService
         // 获取用户头像
         $mediaService = new MediaService();
         $userData['avatar'] = $mediaService->getSpecifySizeThumbPath(['link_id' => $userData['id'], 'module_id' => 34], 'origin');
-        $userData['pinyin'] = $this->pinyinClass->getAllPY($userData['name']);
+        $userData['pinyin'] = $this->pinyinClass->permalink($userData['name'], '', PINYIN_KEEP_ENGLISH);
 
         return $userData;
     }
@@ -967,7 +967,7 @@ class UserService
             // 获取用户头像
             $mediaService = new MediaService();
             $userData['avatar'] = $mediaService->getSpecifySizeThumbPath(['link_id' => $userData['id'], 'module_id' => 34], 'origin');
-            $userData['pinyin'] = $this->pinyinClass->getAllPY($userData['name']);
+            $userData['pinyin'] = $this->pinyinClass->permalink($userData['name'], '', PINYIN_KEEP_ENGLISH);
             return $userData;
         } else {
             return ['avatar' => '', 'pinyin' => ''];
@@ -1059,7 +1059,7 @@ class UserService
         foreach ($userData["rows"] as &$item) {
             $item["abbr"] = $item["id"];
             $item["id"] = $index++;
-            $item["pinyin"] = $this->pinyinClass->getAllPY($item['name']);
+            $item["pinyin"] = $this->pinyinClass->permalink($item['name'], '', PINYIN_KEEP_ENGLISH);
         }
 
         return $userData["rows"];
@@ -1131,7 +1131,7 @@ class UserService
             'user_id' => $userData['user_id'],
             'login_name' => $userData['login_name'],
             'name' => $userData['name'],
-            'pinyin' => $this->pinyinClass->getAllPY($userData['name']),
+            'pinyin' => $this->pinyinClass->permalink($userData['name'], '', PINYIN_KEEP_ENGLISH),
             'department' => $this->getDepartmentName($userData['department_id']),
             'ip' => get_client_ip()
         ];

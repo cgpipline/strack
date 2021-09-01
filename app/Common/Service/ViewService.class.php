@@ -21,7 +21,7 @@ use Common\Model\VariableModel;
 use Common\Model\ViewDefaultModel;
 use Common\Model\ViewModel;
 use Common\Model\ViewUseModel;
-use Org\Util\Pinyin;
+use Overtrue\Pinyin\Pinyin;
 
 class ViewService
 {
@@ -2906,7 +2906,7 @@ class ViewService
                         // 固定下拉框
                         $pinyin = new Pinyin();
                         foreach ($fieldConfig['combo_list'] as $id => $name) {
-                            $code = $pinyin->getAllPY($name);
+                            $code = $pinyin->permalink($name, '', PINYIN_KEEP_ENGLISH);
                             $collaborators[] = [
                                 "id" => $id,
                                 'link_id' => 0,
