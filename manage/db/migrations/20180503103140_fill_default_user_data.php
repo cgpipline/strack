@@ -28,6 +28,23 @@ class FillDefaultUserData extends AbstractMigration
      */
 
     /**
+     * 加密密码
+     * @param string $password
+     * @return false|string|null
+     */
+    public function create_pass($password = "")
+    {
+        if (!empty($password)) {
+            $options = [
+                'cost' => 8,
+            ];
+            return password_hash($password, PASSWORD_BCRYPT, $options);
+        } else {
+            return '';
+        }
+    }
+
+    /**
      * Migrate Up.
      */
     public function up()
@@ -40,7 +57,7 @@ class FillDefaultUserData extends AbstractMigration
                 'nickname' => 'admin',
                 'phone' => '88888888888',
                 'department_id' => 0,
-                'password' => '$P$BRpF99iQ4yAtVa2364s9aJVCga7yJY.',
+                'password' => $this->create_pass("Strack@Admin"),
                 'status' => 'in_service',
                 'login_session' => '',
                 'login_count' => 0,
@@ -60,7 +77,7 @@ class FillDefaultUserData extends AbstractMigration
                 'nickname' => 'strack',
                 'phone' => '88888888888',
                 'department_id' => 0,
-                'password' => '$P$BB0ZJe5KfVnsY4pxiBRwK/PYekgFSE1',
+                'password' => $this->create_pass("strack"),
                 'status' => 'in_service',
                 'login_session' => '',
                 'login_count' => 0,

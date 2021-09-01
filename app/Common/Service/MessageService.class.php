@@ -11,8 +11,8 @@ namespace Common\Service;
 use Common\Model\MessageMemberModel;
 use Common\Model\MessageModel;
 use Common\Model\SmsModel;
-use Org\Util\Pinyin;
 use Overtrue\EasySms\EasySms;
+use Overtrue\Pinyin\Pinyin;
 use Think\QueueClient;
 use Yurun\Util\HttpRequest;
 
@@ -440,7 +440,7 @@ class MessageService
                     $item['user_name'] = $item['sender']['name'];
 
                     $item['sender']['user_avatar'] = $mediaService->getMediaThumb(['module_id' => $userModuleId, 'link_id' => $item['sender']['id']]);
-                    $item['sender']['pinyin'] = $pinyin->getAllPY($item['user_name']);
+                    $item['sender']['pinyin'] = $pinyin->permalink($item['user_name'], '', PINYIN_KEEP_ENGLISH);
 
                     $mediaLinkId = 0;
                     $mediaLinkModuleId = 0;
