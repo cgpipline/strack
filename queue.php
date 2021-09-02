@@ -36,17 +36,6 @@ $redisOptions = [
     'db' => $env['redis_select']
 ];
 
-// 添加默认媒体配置
-$mediaServerData = [
-    'name' => 'media_default',
-    'code' => 'media_default',
-    'request_url' => $env['media_request_url'],
-    'upload_url' => $env['media_upload_url'],
-    'access_key' => $env['media_access_key'],
-    'secret_key' => $env['media_secret_key']
-];
-Console::call('add_media_server', ['param' => json_encode($mediaServerData)]);
-
 // 队列消费者目录
 $consumerDir = __DIR__ . '/app/Common/Queue';
 
