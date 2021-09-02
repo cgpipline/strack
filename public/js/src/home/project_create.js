@@ -385,9 +385,9 @@ $(function () {
                     // 初始化
                     $('#choice_project_thumb').uploadifive({
                         'auto': false,
+                        'token': media_server['token'],
                         'formData': {
                             timestamp: Strack.current_time(),
-                            token: media_server['token'],
                             size : '250x140'
                         },
                         'multi': false,
@@ -406,7 +406,7 @@ $(function () {
                             if (parseInt(resJson['status']) === 200) {
                                 // 上传成功写入数据库
                                 project_create_data["media"]["media_server"] = media_server;
-                                project_create_data["media"]["media_data"] = resJson['data'];
+                                project_create_data["media"]["media_data"] = resJson['data'][0];
                                 submit_add_project();
                             } else {
                                 layer.msg(resJson['message'], {icon: 7, time: 1200, anim: 6});
