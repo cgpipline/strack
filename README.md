@@ -88,7 +88,7 @@ chmod -R 777 ./install.sh
 ## 3. 默认访问
 
 ```shell
-http://你的服务器id:19801
+http://你的服务器ip:19801
 
 管理员账户: strack
 管理员密码: strack
