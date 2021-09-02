@@ -9,7 +9,7 @@
 namespace Common\Service;
 
 use Common\Model\BaseModel;
-use Common\Model\EventLogModel;
+use Common\Model\EventlogModel;
 use Common\Model\FieldModel;
 
 class EventLogService
@@ -70,7 +70,7 @@ class EventLogService
     protected function postToServer($data, $controllerMethod)
     {
         //  TODO 改成队列入库
-        $eventModel = new EventLogModel();
+        $eventModel = new EventlogModel();
         switch ($controllerMethod) {
             case "add":
                 // 写入数据库
@@ -502,7 +502,7 @@ class EventLogService
      */
     public function getModuleItemHistory($param)
     {
-        $eventLogModel = new EventLogModel();
+        $eventLogModel = new EventlogModel();
 
         $filter = [
             "module_id" => $param["module_id"],
@@ -558,7 +558,7 @@ class EventLogService
         $schemaFields = $viewService->getGridQuerySchemaConfig($param);
 
         // 查询关联模型数据
-        $eventLogModel = new EventLogModel();
+        $eventLogModel = new EventlogModel();
         $resData = $eventLogModel->getRelationData($schemaFields);
         return $resData;
     }
