@@ -74,14 +74,25 @@ docker-compose --version
 # 脚本下载地址
 https://github.com/cgpipline/strack-install
 
+# 打开 install.sh
+
+LOCAL_HOSTNAME=改成当前服务器外网ip或者域名
+WS_HOSTNAME=改成当前服务器外网ip或者域名
+
 # 进入到strack-install根目录执行
 chmod -R 777 ./install.sh
 ./install.sh
 
 ```
 
+## 3. 默认访问
 
+```shell
+http://你的服务器id:19801
 
+管理员账户: strack
+管理员密码: strack
+```
 
 
 
