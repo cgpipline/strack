@@ -39,6 +39,35 @@ mychenjun | committer
 
 ![image](doc/strack_structure.png)
 
+# 底层模块数据结构
+
+一般简单业务系统开发都是先从业务流程出发，抽象数据结构建库建表，表是固定的。为了适应复杂业务模型，对表做了局部动态处理。
+
+## 涉及表及其关系
+
+|表名|说明
+|---|---
+|fixed| 固定表
+|entity | 实体表
+|module | 模块注册表，可以动态注册 entity 实体类
+|module_relation | 模块关系描述表
+|schema | 由多个模块关系组成一个特定的数据结构
+
+![importdata](./doc/module_01.jpg)
+
+
+## Entity表
+
+Entity表为动态表，可以由此注册实例化多个动态模块
+
+![importdata](./doc/module_02.jpg)
+
+## 最小结构单元
+
+一个Entity可以理解成一组任务分组模块，一个Entity必然对应一个Base（任务表）。
+
+![importdata](./doc/module_03.jpg)
+
 # docker-compose 一键部署
 
 **脚本下载地址**
