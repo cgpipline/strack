@@ -316,7 +316,6 @@
                     status_color = '#'+this.config.paramConfig.status_config[issue.base_status_id]['color'];
                 }
 
-                console.log(this.config.paramConfig.formula_config)
                 var progress_param = Strack.calculation_progress_bar(
                     0,
                     Strack.translate_timespinner_val(issue['base_plan_duration']),
