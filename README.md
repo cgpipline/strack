@@ -28,6 +28,7 @@ mychenjun | committer
 - [x] 编写一键部署文件
 - [ ] 黑盒功能性测试
 - [x] 编写使用文档
+- [ ] 增加demo项目
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
 - [ ] 重写 PYQT client 客户端
