@@ -346,8 +346,13 @@ class WidgetController extends VerifyController
         $userData = $userService->getUserInfo($userId);
 
         // 获取用户头像
-        $mediaService = new MediaService();
-        $userData['avatar'] = $mediaService->getSpecifySizeThumbPath(['link_id' => $userId, 'module_id' => $moduleId], '90x90');
+        try {
+            $mediaService = new MediaService();
+            $userData['avatar'] = $mediaService->getSpecifySizeThumbPath(['link_id' => $userId, 'module_id' => $moduleId], '90x90');
+        }catch (\Exception $e){
+            $userData['avatar']  = "";
+        }
+
 
         // 获取激活timer数据
         $timeLogService = new TimelogService();
