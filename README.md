@@ -70,9 +70,11 @@ docker-compose --version
 
 ## 2. 下载一键安装脚本到上面准备好的服务器
 
+**脚本下载地址**
+
+[https://github.com/cgpipline/strack-install](https://github.com/cgpipline/strack-install)
+
 ```shell
-# 脚本下载地址
-https://github.com/cgpipline/strack-install
 
 # 打开 install.sh
 
@@ -94,48 +96,62 @@ http://你的服务器ip:19801
 管理员密码: strack
 ```
 
+## 4. 更新Strack
+
+```shell
+# 进入安装根目录
+cd /docker_strack
+
+# 停止并删除strack服务
+docker-compose down
+
+# 下载strack最新代码覆盖下面目录
+
+/docker_strack/install/strack/core
+
+# 启动strack服务
+
+docker-compose up -d
+```
+
 # 学习路线图
 
 你可以参考我们给你列出的学习路线，对自己的学习有一个规划。
 
-**IT的学习路线图：**
+## IT的学习路线图
 
-[1.快速上手-IT篇](./wiki/2.-快速上手#21快速上手-it篇)
+[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#21快速上手-it篇)
 
-[2.strack使用逻辑](./wiki/3.-通用使用逻辑)
+[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
 
-[3.IT管理者手册](./wiki/5.-IT管理者手册)
+[3.IT管理者手册](https://github.com/cgpipline/strack/wiki/5.-IT管理者手册)
 
-**制片/协调的学习路线图：**
+## 制片/协调的学习路线图
 
-[1.快速上手-制片/协调篇](./wiki/2.-快速上手#22快速上手-制片协调篇)
+[1.快速上手-制片/协调篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#22快速上手-制片协调篇)
 
-[2.strack使用逻辑-网页端](./wiki/3.-通用使用逻辑)
+[2.strack使用逻辑-网页端](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
 
-[3.使用者手册-制片/协调篇](./wiki/4.-用户手册#41使用者手册-制片协调篇)
+[3.使用者手册-制片/协调篇](https://github.com/cgpipline/strack/wiki/4.-用户手册#41使用者手册-制片协调篇)
 
-**客户（导演）/总监的学习路线图：**
+## 客户（导演）/总监的学习路线图
 
-[1.快速上手-客户（导演）/总监篇](./wiki/2.-快速上手#23快速上手-客户导演总监篇)
+[1.快速上手-客户（导演）/总监篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#23快速上手-客户导演总监篇)
 
-**艺术家/组长的学习路线图：**
+## 艺术家/组长的学习路线图
 
-[1.快速上手-艺术家/组长-网页篇](./wiki/2.-快速上手#24快速上手-艺术家组长-网页篇)
+[1.快速上手-艺术家/组长-网页篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#24快速上手-艺术家组长-网页篇)
 
-[2.快速上手-艺术家/组长-客户端篇](./wiki/2.-快速上手#25快速上手-艺术家组长-客户端篇)
+[2.快速上手-艺术家/组长-客户端篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#25快速上手-艺术家组长-客户端篇)
 
-[3.strack使用逻辑-客户端](./wiki/3.-通用使用逻辑#35strack使用逻辑-客户端)
+[3.strack使用逻辑-客户端](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑#35strack使用逻辑-客户端)
 
-[4.使用者手册-艺术家/组长篇](./wiki/4.-用户手册#43使用者手册-艺术家组长篇)
+[4.使用者手册-艺术家/组长篇](https://github.com/cgpipline/strack/wiki/4.-用户手册#43使用者手册-艺术家组长篇)
 
-**TD的学习路线图：**
+## TD的学习路线图
 
-[1.快速上手-IT篇](./wiki/2.-快速上手#21快速上手-it篇)
+[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#21快速上手-it篇)
 
-[2.strack使用逻辑](./wiki/3.-通用使用逻辑)
+[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
 
-[3.TD开发者手册](./wiki/6.-TD开发者手册)  
-
-
-
-
+[3.TD开发者手册](https://github.com/cgpipline/strack/wiki/6.-TD开发者手册)
