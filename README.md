@@ -27,7 +27,7 @@ mychenjun | committer
 - [x] 重写log服务
 - [x] 编写一键部署文件
 - [ ] 黑盒功能性测试
-- [ ] 编写使用文档
+- [x] 编写使用文档
 - [ ] 整理 python api sdk 代码
 - [ ] 整理 python event 代码
 - [ ] 重写 PYQT client 客户端
