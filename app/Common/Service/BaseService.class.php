@@ -75,13 +75,24 @@ class BaseService
             $table = $moduleData["type"] === "entity" ? $moduleData["type"] : $moduleData["code"];
             $moduleCode = $moduleData["code"];
             $horizontalService = new HorizontalService();
+
+            // 获取自定义字段
+            $variableId = !empty($param['variable_id']) ? (int)$param['variable_id'] : 0;
+
             switch ($param['module_type']) {
                 case "horizontal_relationship":
-                    $dstLinkIds = $horizontalService->getModuleRelationIds([
+
+                    $horizontalRelationshipFilter = [
                         'src_module_id' => $param['parent_module_id'],
                         'src_link_id' => $param['item_id'],
                         'dst_module_id' => $param["module_id"]
-                    ], "dst_link_id");
+                    ];
+
+                    if($variableId > 0){
+                        $horizontalRelationshipFilter['variable_id'] = $variableId;
+                    }
+
+                    $dstLinkIds = $horizontalService->getModuleRelationIds($horizontalRelationshipFilter, "dst_link_id");
 
                     $horizontalValue = !empty($dstLinkIds) ? join(',', $dstLinkIds) : 0;
                     $condition = !empty($dstLinkIds) ? "IN" : "EQ";
@@ -99,11 +110,19 @@ class BaseService
                     array_push($param['filter']['request'], $request);
                     break;
                 case "be_horizontal_relationship":
-                    $dstLinkIds = $horizontalService->getModuleRelationIds([
+
+                    $beHorizontalRelationshipFilter = [
                         'src_module_id' => $param['module_id'],
                         'dst_link_id' => $param['item_id'],
                         'dst_module_id' => $param["parent_module_id"]
-                    ], "src_link_id");
+                    ];
+
+
+                    if($variableId > 0){
+                        $beHorizontalRelationshipFilter['variable_id'] = $variableId;
+                    }
+
+                    $dstLinkIds = $horizontalService->getModuleRelationIds($beHorizontalRelationshipFilter, "src_link_id");
 
                     $horizontalValue = !empty($dstLinkIds) ? join(',', $dstLinkIds) : 0;
                     $condition = !empty($dstLinkIds) ? "IN" : "EQ";

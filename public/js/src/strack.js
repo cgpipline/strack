@@ -2723,6 +2723,7 @@ var Strack = {
             schema_page: param["schema_page"],
             module_id: param["module_id"],
             project_id: grid_param["project_id"],
+            variable_id: tab_param["variable_id"] ? tab_param["variable_id"] : 0,
             item_id: grid_param["item_id"],
             module_code: tab_param["module_code"],
             module_type: tab_param["type"],

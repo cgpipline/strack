@@ -1055,23 +1055,15 @@ class WidgetController extends VerifyController
      */
     public function getDetailGridData()
     {
-        $filterData = $param = $this->request->formatGridParam($this->request->param());
+        $filterData = $this->request->formatGridParam($this->request->param());
 
         switch ($filterData["module_type"]) {
             case "entity":
-                $entityService = new EntityService();
-                $resData = $entityService->getDetailGridData($filterData);
-                break;
             case "entity_child":
                 $entityService = new EntityService();
                 $resData = $entityService->getDetailGridData($filterData);
                 break;
             case "horizontal_relationship":
-                $moduleCode = $filterData['horizontal_type'] === 'entity' ? 'entity' : 'base';
-                $class = '\\Common\\Service\\' . string_initial_letter($moduleCode) . 'Service';
-                $serviceObj = new $class();
-                $resData = $serviceObj->getDetailGridData($filterData);
-                break;
             case "be_horizontal_relationship":
                 $moduleCode = $filterData['horizontal_type'] === 'entity' ? 'entity' : 'base';
                 $class = '\\Common\\Service\\' . string_initial_letter($moduleCode) . 'Service';

@@ -630,7 +630,11 @@ $(function () {
                         horizontal_param["rule_side_thumb_modify"] = param["rule_horizontal_relationship_modify_thumb"];
                         horizontal_param["rule_side_thumb_clear"] = param["rule_horizontal_relationship_clear_thumb"];
 
-                        set_horizontal_relationship_bnt_param("single", horizontal_param, tab_param.type);
+                        if($.inArray(tab_param.tab_id, ['base_executor', 'base_assignor']) >= 0){
+                            $("#single_related_horizontal_bnt,#single_grid_create_horizontal,#single_grid_create_bnt").hide();
+                        }else {
+                            set_horizontal_relationship_bnt_param("single", horizontal_param, tab_param.type);
+                        }
 
                         $single_grid_page.show();
 
@@ -1043,6 +1047,7 @@ $(function () {
                 schema_page: schema_page,
                 module_id: tab_param["module_id"],
                 project_id: param["project_id"],
+                variable_id: tab_param["variable_id"] ? tab_param["variable_id"] : 0,
                 item_id: param["item_id"],
                 module_code: tab_param["tab_id"],
                 module_type: tab_param["type"],
