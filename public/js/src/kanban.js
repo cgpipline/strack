@@ -316,10 +316,11 @@
                     status_color = '#'+this.config.paramConfig.status_config[issue.base_status_id]['color'];
                 }
 
+                console.log(this.config.paramConfig.formula_config)
                 var progress_param = Strack.calculation_progress_bar(
-                    Strack.translate_timespinner_val(issue[this.config.paramConfig.formula_config['estimate_working_hours']['field']]),
+                    0,
                     Strack.translate_timespinner_val(issue['base_plan_duration']),
-                    Strack.translate_timespinner_val(issue[this.config.paramConfig.formula_config['actual_time_consuming']['field']])
+                    0
                 );
 
                 // 判断截止时间紧急程度
@@ -367,8 +368,8 @@
                     '<li class="', cardClass, '" ', draggable, 'id="', this.config.name, '-issue-', issue.id, '" data-id="', issue.id, '">',
                     '<div class="kanban-card-title" style="overflow: hidden">',
                     '<div class="aign-left"><div class="kanban-card-status" style="background-color: '+status_color+'"></div></div>',
-                    '<div class="issue-name aign-left">'+issue.title+'</div>',
-                    '<div class="issue-assignee aign-left">',
+                    '<div class="issue-name text-ellipsis aign-left">'+issue.title+'</div>',
+                    '<div class="issue-assignee text-ellipsis aign-left">',
                     '<div>分派人：'+Strack.generate_grid_user(issue[this.config.paramConfig.formula_config['reviewed_by']['field']])+'</div>',
                     '<div>执行人：'+Strack.generate_grid_user(issue[this.config.paramConfig.formula_config['assignee_field']['field']])+'</div>',
                     '</div>',
@@ -381,23 +382,23 @@
                     '<div class="card-end-time" style="background-color: '+time_color+'">'+issue.base_end_time+'</div>',
                     '</div>',
                     '</div>',
-                    '<div class="kanban-card-time">',
-                    '<div class="" style="overflow: hidden;margin-bottom: 5px;">' ,
-                    '<div class="card-item aign-left">预估工时</div>',
-                    '<div class="card-progress aign-left">' ,
-                    '<div class="card-progress-est color-progress-est" style="width: calc('+progress_param.est_progress.per+' - 22px);" title="预估工时：'+progress_param.est_progress.show_val+'">'+progress_param.est_progress.show_val+'</div>',
-                    '</div>',
-                    '</div>',
-                    '<div class="card-item aign-left">实际/计划工时</div>',
-                    '<div class="card-progress aign-left">' ,
-                    '<div class="card-progress-plan" style="width: calc('+progress_param.actual_plan_progress.per+' - 10px)">' ,
-                    '<div class="progress-item color-progress-plan aign-left" style="width: calc('+progress_param.actual_plan_progress.left.per+');padding-left: '+progress_param.actual_plan_progress.left.padding+'" title="实际工时：'+progress_param.actual_plan_progress.left.show_val+'">'+progress_param.actual_plan_progress.left.show_val+'</div>',
-                    '<div class="progress-pre" style="left: calc('+progress_param.actual_plan_progress.left.per+');">',
-                    progress_param.actual_plan_progress.left.show_per ,
-                    '</div>',
-                    '<div class="progress-item color-progress-'+progress_param.actual_plan_progress.right.css_name+' aign-left" style="width: calc('+progress_param.actual_plan_progress.right.per+');padding-right: '+progress_param.actual_plan_progress.right.padding+'" title="'+progress_param.actual_plan_progress.right.over_name+'：'+progress_param.actual_plan_progress.right.show_val+'">'+progress_param.actual_plan_progress.right.show_val+'</div>',
-                    '</div>',
-                    '</div>',
+                    // '<div class="kanban-card-time">',
+                    // '<div class="" style="overflow: hidden;margin-bottom: 5px;">' ,
+                    // '<div class="card-item aign-left">预估工时</div>',
+                    // '<div class="card-progress aign-left">' ,
+                    // '<div class="card-progress-est color-progress-est" style="width: calc('+progress_param.est_progress.per+' - 22px);" title="预估工时：'+progress_param.est_progress.show_val+'">'+progress_param.est_progress.show_val+'</div>',
+                    // '</div>',
+                    // '</div>',
+                    // '<div class="card-item aign-left">实际/计划工时</div>',
+                    // '<div class="card-progress aign-left">' ,
+                    // '<div class="card-progress-plan" style="width: calc('+progress_param.actual_plan_progress.per+' - 10px)">' ,
+                    // '<div class="progress-item color-progress-plan aign-left" style="width: calc('+progress_param.actual_plan_progress.left.per+');padding-left: '+progress_param.actual_plan_progress.left.padding+'" title="实际工时：'+progress_param.actual_plan_progress.left.show_val+'">'+progress_param.actual_plan_progress.left.show_val+'</div>',
+                    // '<div class="progress-pre" style="left: calc('+progress_param.actual_plan_progress.left.per+');">',
+                    // progress_param.actual_plan_progress.left.show_per ,
+                    // '</div>',
+                    // '<div class="progress-item color-progress-'+progress_param.actual_plan_progress.right.css_name+' aign-left" style="width: calc('+progress_param.actual_plan_progress.right.per+');padding-right: '+progress_param.actual_plan_progress.right.padding+'" title="'+progress_param.actual_plan_progress.right.over_name+'：'+progress_param.actual_plan_progress.right.show_val+'">'+progress_param.actual_plan_progress.right.show_val+'</div>',
+                    // '</div>',
+                    // '</div>',
                     '</div>',
                     '</li>'
                 ].join('');

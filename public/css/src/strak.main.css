@@ -11849,17 +11849,17 @@ a.group-choice {
 
 .kanban-card-title{
     padding: 5px;
-    height: 37px;
+    height: 50px;
 }
 
 .kanban-card-title .issue-name{
-    width: 185px;
+    width: 165px;
     margin-left: 5px;
     font-weight: 600;
 }
 
 .kanban-card-title .issue-assignee{
-    width: 90px;
+    width: 110px;
     font-size: 10px;
 }
 

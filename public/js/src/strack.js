@@ -5281,7 +5281,7 @@ var Strack = {
             link_id : event.item_id, //关联任务id
             start_time : start_time, // 计划开始时间
             end_time : end_time, //计划结束时间
-            estimate_append :  event.estimate_working_hours_val,
+            estimate_append : 0,
             operation : 'add'
         };
 
