@@ -1024,13 +1024,13 @@ class ViewService
      */
     public function checkTableFieldAuth($field, $baseHorizontalUserData = [])
     {
-        if ($this->checkFieldPermission($field['module_code'], $field["fields"], "view", $baseHorizontalUserData)) {
+        if ($field['show'] === 'yes' && $this->checkFieldPermission($field['module_code'], $field["fields"], "view", $baseHorizontalUserData)) {
             $field['show'] = 'yes';
         } else {
             $field['show'] = 'no';
         }
 
-        if ($field['show'] === 'yes' && $this->checkFieldPermission($field['module_code'], $field["fields"], "modify", $baseHorizontalUserData)) {
+        if ($field['edit'] === 'allow' && $field['show'] === 'yes' && $this->checkFieldPermission($field['module_code'], $field["fields"], "modify", $baseHorizontalUserData)) {
             $field['edit'] = 'allow';
         } else {
             $field['edit'] = 'deny';
@@ -1255,7 +1255,7 @@ class ViewService
                 }
 
                 // 可创建字段
-                if ($this->checkFieldPermission($key, $builtInField["fields"], "create", $baseHorizontalUserData)) {
+                if ($builtInField['edit'] === 'allow' &&  $this->checkFieldPermission($key, $builtInField["fields"], "create", $baseHorizontalUserData)) {
                     array_push($allowFieldData['create_list'][$key]['built_in']['fields'], $builtInField);
                 }
             }
@@ -1389,7 +1389,7 @@ class ViewService
                 }
 
                 // 可创建字段
-                if ($this->checkFieldPermission($key, $customField["fields"], "create", $baseHorizontalUserData)) {
+                if ($customField['edit'] === 'allow' && $this->checkFieldPermission($key, $customField["fields"], "create", $baseHorizontalUserData)) {
                     array_push($allowFieldData['create_list'][$key]['custom']['fields'], $customField);
                 }
             }
