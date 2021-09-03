@@ -118,38 +118,38 @@ docker-compose up -d
 
 ## IT的学习路线图
 
-[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#21快速上手-it篇)
+[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#21快速上手-it篇)
 
-[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
+[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/2.-通用使用逻辑)
 
-[3.IT管理者手册](https://github.com/cgpipline/strack/wiki/5.-IT管理者手册)
+[3.IT管理者手册](https://github.com/cgpipline/strack/wiki/4.-IT管理者手册)
 
 ## 制片/协调的学习路线图
 
-[1.快速上手-制片/协调篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#22快速上手-制片协调篇)
+[1.快速上手-制片/协调篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#22快速上手-制片协调篇)
 
-[2.strack使用逻辑-网页端](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
+[2.strack使用逻辑-网页端](https://github.com/cgpipline/strack/wiki/2.-通用使用逻辑)
 
-[3.使用者手册-制片/协调篇](https://github.com/cgpipline/strack/wiki/4.-用户手册#41使用者手册-制片协调篇)
+[3.使用者手册-制片/协调篇](https://github.com/cgpipline/strack/wiki/3.-用户手册#41使用者手册-制片协调篇)
 
 ## 客户（导演）/总监的学习路线图
 
-[1.快速上手-客户（导演）/总监篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#23快速上手-客户导演总监篇)
+[1.快速上手-客户（导演）/总监篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#23快速上手-客户导演总监篇)
 
 ## 艺术家/组长的学习路线图
 
-[1.快速上手-艺术家/组长-网页篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#24快速上手-艺术家组长-网页篇)
+[1.快速上手-艺术家/组长-网页篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#24快速上手-艺术家组长-网页篇)
 
-[2.快速上手-艺术家/组长-客户端篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#25快速上手-艺术家组长-客户端篇)
+[2.快速上手-艺术家/组长-客户端篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#25快速上手-艺术家组长-客户端篇)
 
-[3.strack使用逻辑-客户端](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑#35strack使用逻辑-客户端)
+[3.strack使用逻辑-客户端](https://github.com/cgpipline/strack/wiki/2.-通用使用逻辑#35strack使用逻辑-客户端)
 
-[4.使用者手册-艺术家/组长篇](https://github.com/cgpipline/strack/wiki/4.-用户手册#43使用者手册-艺术家组长篇)
+[4.使用者手册-艺术家/组长篇](https://github.com/cgpipline/strack/wiki/3.-用户手册#43使用者手册-艺术家组长篇)
 
 ## TD的学习路线图
 
-[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/2.-快速上手#21快速上手-it篇)
+[1.快速上手-IT篇](https://github.com/cgpipline/strack/wiki/1.-快速上手#21快速上手-it篇)
 
-[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/3.-通用使用逻辑)
+[2.strack使用逻辑](https://github.com/cgpipline/strack/wiki/2.-通用使用逻辑)
 
-[3.TD开发者手册](https://github.com/cgpipline/strack/wiki/6.-TD开发者手册)
+[3.TD开发者手册](https://github.com/cgpipline/strack/wiki/5.-TD开发者手册)
