@@ -176,6 +176,9 @@ class FillDefaultUserMember extends AbstractMigration
     {
         // 并执行sql文件
         $this->executeRawSql("strack_user_member_data");
+
+        // 并执行sql文件
+        $this->executeRawSql("strack_role_user");
     }
 
     /**
