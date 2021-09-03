@@ -1139,7 +1139,7 @@ class CommonService
         $baseService = new BaseService();
         $baseHorizontalUserData = $baseService->getBaseHorizontalUserAuthData(check_param_int_empty($param, 'item_id'));
 
-        foreach ($schemaFieldsConfig as $key => $fieldItem) {
+        foreach ($schemaFieldsConfig as $fieldItem) {
             $valueShowKey = $schemaService->getFieldColumnName($fieldItem, $param["module_code"]);
             $fieldItem["value_show"] = $valueShowKey;
             $fieldItem["lang"] = $fieldItem["field_type"] === "built_in" ? L($fieldItem["lang"]) : $fieldItem["lang"];
