@@ -466,6 +466,15 @@ class EventService
     {
         // 获取当前模块数据
         $moduleData = $this->getModuleData($belongModuleFilter);
+
+        if(empty($moduleData)){
+            return [
+                'name' => "",
+                'module_name' => "",
+                'url' => ""
+            ];
+        }
+
         $belongData = $this->getModelObjectDataByModuleCode($moduleData['code'], $belongId);
 
         return [
