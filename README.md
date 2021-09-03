@@ -70,9 +70,11 @@ docker-compose --version
 
 ## 2. 下载一键安装脚本到上面准备好的服务器
 
+**脚本下载地址**
+
+[https://github.com/cgpipline/strack-install](https://github.com/cgpipline/strack-install)
+
 ```shell
-# 脚本下载地址
-https://github.com/cgpipline/strack-install
 
 # 打开 install.sh
 
@@ -92,6 +94,24 @@ http://你的服务器ip:19801
 
 管理员账户: strack
 管理员密码: strack
+```
+
+## 4. 更新Strack
+
+```shell
+# 进入安装根目录
+cd /docker_strack
+
+# 停止并删除strack服务
+docker-compose down
+
+# 下载strack最新代码覆盖下面目录
+
+/docker_strack/install/strack/core
+
+# 启动strack服务
+
+docker-compose up -d
 ```
 
 # 学习路线图
