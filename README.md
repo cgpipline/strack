@@ -39,68 +39,65 @@ mychenjun | committer
 
 ![image](doc/strack_structure.png)
 
-# 安装
-
-## 1. 自己准备一台干净的linux操作系统
-
-```shell
-# centos 安装docker 和 docker-compose 案例
-
-# 更新系统
-yum update
-
-# 使用yum安装docker
-yum -y install docker
-
-# 启动
-systemctl start docker.service
-
-# 设置为开机自启动
-systemctl enable docker.service
-
-# 下载docker-compose
-sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-# 添加可执行权限(这里不懂可以看一下菜鸟教程-linux教程-文件权限)
-sudo chmod +x /usr/local/bin/docker-compose
-
-# 查看docker-compose版本
-docker-compose --version
-
-```
-
-## 2. 下载一键安装脚本到上面准备好的服务器
+# docker-compose 一键部署
 
 **脚本下载地址**
 
 [https://github.com/cgpipline/strack-install](https://github.com/cgpipline/strack-install)
 
+## 1. 环境要求
+
+这部分自行安装解决
+
+|环境|说明
+|---|---
+|Linux系统| 推荐使用 centos7+（RockyLinux8）或者 Ubuntu18+
+|docker | 容器
+|docker-compose | 容器编排工具
+
+## 2. 下载一键安装脚本到上面准备好的服务器
+
 ```shell
 
 # 打开 install.sh
+# 如果使用域名端口号需要自行处理
 
 LOCAL_HOSTNAME=改成当前服务器外网ip或者域名
 WS_HOSTNAME=改成当前服务器外网ip或者域名
 
-# 进入到strack-install根目录执行
+# 进入到 strack-install 根目录执行
+
+# 赋予执行权限
 chmod -R 777 ./install.sh
+
+# 执行安装
 ./install.sh
 
-```
+# 安装提示done之后此时服务并没有完全正常启动
+# 服务之间会等待依赖服务完全启动才会进入 ready 状态
+# 整个过程大约 3-5 分钟
 
-## 3. 默认访问
+# 默认访问地址
 
-```shell
 http://你的服务器ip:19801
 
-管理员账户: strack
-管理员密码: strack
+# 或者
+
+http://你的域名:19801（端口号自行处理）
 ```
+
+## 3. 默认账户
+
+|名称| 值
+|---|---
+|管理员账户 | strack
+|管理员密码  | strack
+
 
 ## 4. 更新Strack
 
 ```shell
-# 进入安装根目录
+# 进入安装根目录（如果更改过路径就是你改后的）
 cd /docker_strack
 
 # 停止并删除strack服务
