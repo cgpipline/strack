@@ -289,13 +289,14 @@ class EventService
     /**
      * 获取消息接收者用户信息数据
      * @param $userId
-     * @return mixed
+     * @param string $type
+     * @return array|false|mixed|string|null
      */
-    protected function getReceiverUserData($userId)
+    protected function getReceiverUserData($userId, $type = 'cc')
     {
         $userModel = new UserModel();
         $userData = $userModel->field("id,login_name,name,email,uuid")->where(["id" => $userId])->find();
-        $userData["belong_type"] = 'cc';
+        $userData["belong_type"] = !empty($type) ? $type : 'cc';
         $userData["belong_system"] = C('BELONG_SYSTEM');
 
         return $userData;
@@ -349,7 +350,7 @@ class EventService
         $memberService = new MemberService();
         $memberList = $memberService->getMemberList(["link_id" => $linkIds, "module_id" => $moduleId], "link_id,user_id,type");
         foreach ($memberList["rows"] as $item) {
-            $userData = $this->getReceiverUserData($item["user_id"]);
+            $userData = $this->getReceiverUserData($item["user_id"], $item['type']);
             if (!in_array($userData["id"], $userIdList)) {
                 $memberListData[$item["link_id"]][] = $userData;
 
