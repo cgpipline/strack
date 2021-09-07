@@ -75,6 +75,14 @@ Entity表为动态表，可以由此注册实例化多个动态模块
 
 [https://github.com/cgpipline/strack-install](https://github.com/cgpipline/strack-install)
 
+下载本仓库代码到自己服务器，进入strack-install根目录
+
+|命令|说明|
+|---|---|
+|./run.sh install| 全新安装strack，一键安装过了会卸载重新安装|
+|./run.sh update| 同步strack最新仓库代码，更新strack|
+|./run.sh uninstall| 卸载strack|
+
 ## 1. 环境要求
 
 这部分自行安装解决
@@ -89,7 +97,7 @@ Entity表为动态表，可以由此注册实例化多个动态模块
 
 ```shell
 
-# 打开 install.sh
+# 打开 run.sh
 # 如果使用域名端口号需要自行处理
 
 LOCAL_HOSTNAME=改成当前服务器外网ip或者域名
@@ -98,10 +106,10 @@ WS_HOSTNAME=改成当前服务器外网ip或者域名
 # 进入到 strack-install 根目录执行
 
 # 赋予执行权限
-chmod -R 777 ./install.sh
+chmod -R 777 ./run.sh
 
 # 执行安装
-./install.sh
+./run.sh install
 
 # 安装提示done之后此时服务并没有完全正常启动
 # 服务之间会等待依赖服务完全启动才会进入 ready 状态
@@ -137,24 +145,6 @@ http://你的域名:19801（端口号自行处理）
 |---|---
 |组员账户 | demo3
 |组员密码  | strack@Demo
-
-## 4. 更新Strack
-
-```shell
-# 进入安装根目录（如果更改过路径就是你改后的）
-cd /docker_strack
-
-# 停止并删除strack服务
-docker-compose down
-
-# 下载strack最新代码覆盖下面目录
-
-/docker_strack/install/strack/core
-
-# 启动strack服务
-
-docker-compose up -d
-```
 
 # 学习路线图
 
