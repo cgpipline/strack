@@ -535,11 +535,13 @@ class ExportExcelService
             $download = download_remote_picture($value, $fileLocation, 1000);
             if (!$download) {
                 copy($defaultPicture, $fileLocation);
+            }else{
+                //裁剪图片
+                $image->open($fileLocation);
+                $image->thumb($width, $height, Image::IMAGE_THUMB_FILLED);
+                $image->save($fileLocation, 'jpg', 100);
             }
-            //裁剪图片
-            $image->open($fileLocation);
-            $image->thumb($width, $height, Image::IMAGE_THUMB_FILLED);
-            $image->save($fileLocation, 'jpg', 100);
+
             $value = $fileLocation;
         });
 

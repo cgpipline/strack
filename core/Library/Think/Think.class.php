@@ -51,7 +51,7 @@ class Think
         }
 
         // 引入 composer 第三方包自加载
-        require ROOT_PATH.'vendor/autoload.php';
+        require ROOT_PATH . 'vendor/autoload.php';
 
         // 加载应用模式配置文件
         foreach ($mode['config'] as $key => $file) {
@@ -258,7 +258,9 @@ class Think
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
             case E_USER_ERROR:
-                ob_end_clean();
+                if (ob_get_contents()) {
+                    ob_end_clean();
+                }
                 $errorStr = "$errstr " . $errfile . " 第 $errline 行.";
                 if (C('LOG_RECORD')) {
                     Log::write("[$errno] " . $errorStr, Log::ERR);
@@ -284,7 +286,9 @@ class Think
                 case E_CORE_ERROR:
                 case E_COMPILE_ERROR:
                 case E_USER_ERROR:
-                    ob_end_clean();
+                    if (ob_get_contents()) {
+                        ob_end_clean();
+                    }
                     self::halt($e);
                     break;
             }

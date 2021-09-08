@@ -34,7 +34,9 @@ class Download extends Response
             throw new Exception('file not exists:' . $data);
         }
 
-        ob_end_clean();
+        if(ob_get_contents()){
+            ob_end_clean();
+        }
 
         if (!empty($this->name)) {
             $name = $this->name;

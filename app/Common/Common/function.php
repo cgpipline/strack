@@ -3545,6 +3545,11 @@ function object_to_array(&$object)
  */
 function download_remote_picture($fileUrl, $saveTo, $timeout = 1000, $types = "'.gif|.jpeg|.jpg.|.png|.bmp'")
 {
+
+    if(empty($fileUrl)){
+        return false;
+    }
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $fileUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
