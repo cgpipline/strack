@@ -29,7 +29,7 @@ mychenjun | committer
 - [ ] 黑盒功能性测试
 - [x] 编写使用文档
 - [ ] 增加demo项目
-- [ ] 整理 python api sdk 代码
+- [x] 整理 python api sdk 代码 https://github.com/cgpipline/strack-python-api
 - [ ] 整理 python event 代码
 - [ ] 重写 PYQT client 客户端
 - [ ] 增加 Minio + Filetash 自建网盘管理外包文件
