@@ -476,7 +476,8 @@ class EventService
             ];
         }
 
-        $belongData = $this->getModelObjectDataByModuleCode($moduleData['code'], $belongId);
+        $moduleCode = $moduleData['type'] === 'entity' ? 'entity' : $moduleData['code'];
+        $belongData = $this->getModelObjectDataByModuleCode($moduleCode, $belongId);
 
         return [
             'name' => $belongData['name'],
@@ -1108,7 +1109,10 @@ class EventService
             // 判断是否有master数据没有重新取下
             if ($this->messageOperate === 'update'
                 && empty($deleteOperationMapData[$primaryId]['master'])) {
-                $deleteOperationMapData[$primaryId]['master'] = $this->getModelObjectDataByModuleCode($moduleData['code'], $primaryId);
+
+
+                $moduleCode = $moduleData['type'] === 'entity' ? 'entity' : $moduleData['code'];
+                $deleteOperationMapData[$primaryId]['master'] = $this->getModelObjectDataByModuleCode($moduleCode, $primaryId);
             }
 
             // TODO 更新项说明 update_data
