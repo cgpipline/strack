@@ -188,7 +188,9 @@ class Handle
 
         //保留一层
         while (ob_get_level() > 1) {
-            ob_end_clean();
+            if(ob_get_contents()){
+                ob_end_clean();
+            }
         }
 
         $data['echo'] = ob_get_clean();
