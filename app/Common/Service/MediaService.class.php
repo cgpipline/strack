@@ -16,8 +16,8 @@ use Common\Model\ModuleModel;
 use Common\Model\ReviewLinkModel;
 use Think\Request as TPRequest;
 use Yurun\Util\HttpRequest;
-use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 use Yurun\Util\YurunHttp\Http\Psr7\Consts\MediaType;
+use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 
 class MediaService
 {
@@ -217,9 +217,9 @@ class MediaService
 
         $moduleModel = new ModuleModel();
         $moduleId = 0;
-        if(!empty($param["module_id"])){
+        if (!empty($param["module_id"])) {
             $moduleId = $param["module_id"];
-        }else if(!empty($param["module_code"])){
+        } else if (!empty($param["module_code"])) {
             $moduleId = $moduleModel->where(['code' => $param["module_code"]])->getField('id');
         }
 
@@ -241,7 +241,11 @@ class MediaService
         ];
 
         // 缓存消息所需要参数
-        TPRequest::$serviceOperationParam = $addData;
+        if (empty(TPRequest::$serviceOperationParam)) {
+            TPRequest::$serviceOperationParam = $addData;
+        } else {
+            TPRequest::$serviceOperationParam = array_merge(TPRequest::$serviceOperationParam, $addData);
+        }
 
         $resData = [];
         // 判断当前缩略图处理模式
@@ -300,7 +304,7 @@ class MediaService
 
         if (!empty($mediaItem)) {
             // 获取媒体服务器信息
-            $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
+            $mediaServerData = $this->getMediaServerItem(['id' => $mediaItem['media_server_id']]);
             $url = $mediaServerData['request_url'] . "media/get";
 
             // 获取媒体
@@ -389,7 +393,7 @@ class MediaService
     {
         if (!empty($mediaServiceId) && is_array($md5NameList)) {
             // 获取媒体服务器信息
-            $mediaServerData = $this->getMediaServerItem(['id'=>$mediaServiceId]);
+            $mediaServerData = $this->getMediaServerItem(['id' => $mediaServiceId]);
             $url = $mediaServerData['request_url'] . "media/select";
 
             // 获取媒体
@@ -455,7 +459,7 @@ class MediaService
                 $mediaSelectData = $mediaModel->selectData(["filter" => ["md5_name" => $mediaItem["md5_name"]]]);
                 if ($mediaSelectData["rows"] == 0) {
                     try {
-                        $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
+                        $mediaServerData = $this->getMediaServerItem(['id' => $mediaItem['media_server_id']]);
                         $url = $mediaServerData['request_url'] . "media/remove";
                         // 清除媒体
                         $this->_headers['token'] = $mediaServerData['token'];
@@ -489,7 +493,7 @@ class MediaService
             $mediaData = $mediaModel->selectData(["filter" => ["md5_name" => $mediaItem['md5_name']]]);
             if ($mediaData["total"] == 0) {
                 // 获取媒体服务器信息
-                $mediaServerData = $this->getMediaServerItem(['id'=>$mediaItem['media_server_id']]);
+                $mediaServerData = $this->getMediaServerItem(['id' => $mediaItem['media_server_id']]);
                 $url = $mediaServerData['request_url'] . "media/remove";
                 // 清除媒体
                 $this->_headers['token'] = $mediaServerData['token'];
