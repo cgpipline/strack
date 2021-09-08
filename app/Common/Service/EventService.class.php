@@ -1009,10 +1009,12 @@ class EventService
         $userIdList = [];
         $horizontalUserData = $this->getHorizontalReceiverData($memberListData, $userIdList, $linkId, $moduleId);
 
-        foreach ($horizontalUserData['member_data'][$linkId] as $horizontalItem) {
-            if (!in_array($horizontalItem['id'], $exitUserId)) {
-                $memberData[] = $horizontalItem;
-                $exitUserId[] = $horizontalItem['id'];
+        if(!empty($horizontalUserData['member_data'][$linkId])){
+            foreach ($horizontalUserData['member_data'][$linkId] as $horizontalItem) {
+                if (!in_array($horizontalItem['id'], $exitUserId)) {
+                    $memberData[] = $horizontalItem;
+                    $exitUserId[] = $horizontalItem['id'];
+                }
             }
         }
     }
