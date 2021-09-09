@@ -444,6 +444,7 @@ class WidgetController extends VerifyController
 
                         // 自动关联
                         $horizontalService = new HorizontalService();
+
                         $relatedParam = [
                             'param' => [
                                 'dst_module_id' => $param['module_id'],
@@ -454,7 +455,7 @@ class WidgetController extends VerifyController
                                 'project_id' => $param['project_id'],
                                 'src_link_id' => $param['from_item_id'],
                                 'src_module_id' => $param['from_module_id'],
-                                'variable_id' => $param['variable_id']
+                                'variable_id' => (int)$param['variable_id'] > 0 ? $param['variable_id'] : 0
                             ],
                             'up_data' => [
                                 'add' => [$resData['data']['id']],

@@ -566,7 +566,16 @@ class ViewService
             $param["module_id"] = $param["from_module_id"];
             $page = $param['from_schema_page'];
         } else {
-            $page = $param["type"] === "add_entity_task_panel" ? "project_base" : $param['schema_page'];
+            if ($param["type"] === "add_entity_task_panel") {
+                $page = "project_base";
+            } else {
+                if (strpos($param['schema_page'], 'correlation_base') !== false) {
+                    $page = "project_base";
+                } else {
+                    $page = $param['schema_page'];
+                }
+            }
+
             $param["module_id"] = $page === "project_base" ? C("MODULE_ID")["base"] : $param["module_id"];
         }
 
@@ -721,7 +730,7 @@ class ViewService
         switch ($param["type"]) {
             case "add_panel":
             case "add_entity_task_panel":
-                if (in_array($param["page"], ['my_scheduler', 'project_base'])) {
+                if (in_array($param["page"], ['my_scheduler'])) {
                     // 日程页面必须
                     $allowModuleList = $param["page"] === 'my_scheduler' ? [
                         'project_id', // 项目ID
@@ -1255,7 +1264,7 @@ class ViewService
                 }
 
                 // 可创建字段
-                if ($builtInField['edit'] === 'allow' &&  $this->checkFieldPermission($key, $builtInField["fields"], "create", $baseHorizontalUserData)) {
+                if ($builtInField['edit'] === 'allow' && $this->checkFieldPermission($key, $builtInField["fields"], "create", $baseHorizontalUserData)) {
                     array_push($allowFieldData['create_list'][$key]['built_in']['fields'], $builtInField);
                 }
             }

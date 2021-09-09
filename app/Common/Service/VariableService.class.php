@@ -950,6 +950,10 @@ class VariableService
      */
     public function getVariableConfig($variableId)
     {
+        if(!($variableId > 0 )){
+            return [];
+        }
+
         $variableModel = new VariableModel();
         $variableData = $variableModel->findData([
             "filter" => [
