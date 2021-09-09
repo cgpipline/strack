@@ -198,7 +198,7 @@
                     <a href="javascript:;" id="grid_slider_datagrid_related_bnt" class="easyui-linkbutton" iconCls="icon-related" plain="true" onclick="Strack.related_grid_slider_item(this);">
                         {$Think.lang.Add_Related}
                     </a>
-                    <a href="javascript:;" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="Strack.delete_grid_slider_item(this);">
+                    <a href="javascript:;" id="grid_slider_datagrid_delete_bnt"  class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="Strack.delete_grid_slider_item(this);">
                         {$Think.lang.Delete}
                     </a>
                 </div>

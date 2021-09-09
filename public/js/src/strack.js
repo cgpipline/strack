@@ -2071,6 +2071,7 @@ var Strack = {
             var grid_param = Strack.deep_copy(Strack.G.gridSliderParam);
             var $grid_slider_datagrid_add_bnt = $("#grid_slider_datagrid_add_bnt");
             var $grid_slider_datagrid_related_bnt = $("#grid_slider_datagrid_related_bnt");
+            var $grid_slider_datagrid_delete_bnt = $("#grid_slider_datagrid_delete_bnt");
             $grid_slider_datagrid_add_bnt.show();
             $grid_slider_datagrid_related_bnt.hide();
             switch (tab_param.type) {
@@ -2188,11 +2189,22 @@ var Strack = {
                 case "be_horizontal_relationship":
                     $tab_page = $("#grid_slider_tab_table");
                     $tab_page.show();
-                    if(tab_param.type === "be_horizontal_relationship"){
+
+                    if($.inArray(tab_param.tab_id, ['base_executor', 'base_assignor']) >= 0){
                         $grid_slider_datagrid_add_bnt.hide();
+                        $grid_slider_datagrid_related_bnt.hide();
+                        $grid_slider_datagrid_delete_bnt.hide();
                     }else {
-                        $grid_slider_datagrid_related_bnt.show();
+                        if(tab_param.type === "be_horizontal_relationship"){
+                            $grid_slider_datagrid_add_bnt.hide();
+                        }else if(tab_param.type === "entity_child"){
+                            $grid_slider_datagrid_add_bnt.hide();
+                            $grid_slider_datagrid_related_bnt.show();
+                        }else {
+                            $grid_slider_datagrid_related_bnt.show();
+                        }
                     }
+
                     Strack.load_grid_slider_grid_data(grid_param, tab_param, request_filter);
                     break;
                 case "other_page":
@@ -2237,7 +2249,7 @@ var Strack = {
                     field_list_type: ['edit'],
                     from_item_id: grid_param['item_id'],
                     from_module_id: tab_param["module_id"],
-                    module_id: tab_param["dst_module_id"],
+                    module_id: tab_param["module_id"],
                     project_id: grid_param["project_id"],
                     horizontal_type : tab_param["horizontal_type"],
                     variable_id : tab_param["variable_id"],
@@ -2258,12 +2270,24 @@ var Strack = {
         var tab_param = Strack.G.gridSliderActiveTab;
         var grid_param = Strack.deep_copy(Strack.G.gridSliderParam);
 
+        var src_module_id = 0;
+        var dst_module_id = 0;
+        if(tab_param.type  === "entity_child"){
+            src_module_id = tab_param["dst_module_id"];
+            dst_module_id = tab_param["module_id"];
+        }else {
+            src_module_id = tab_param["module_id"];
+            dst_module_id = tab_param["dst_module_id"];
+        }
+
+        console.log(tab_param);
+
         var param = {
             project_id : grid_param['project_id'],
             grid_id : "grid_slider_datagrid_box",
             variable_id : tab_param["variable_id"],
-            src_module_id : tab_param["module_id"],
-            dst_module_id : tab_param["dst_module_id"],
+            src_module_id : src_module_id,
+            dst_module_id : dst_module_id,
             src_link_id : grid_param['item_id'],
             horizontal_type : tab_param["horizontal_type"],
             link_data: [],
@@ -6715,7 +6739,7 @@ var Strack = {
     tab_item_dom: function (id, data) {
         var dom = '';
         var tab_name = data["type"] === "be_horizontal_relationship" ? '<i class="icon-uniE692 icon-left"></i>'+ data["name"] : data["name"];
-        dom += '<a href="javascript:;" id="' + data["tab_id"] + '" class="item tab_item" onclick="Strack.select_tab_item(this);"  data-parentid="' + id + '" data-horizontaltype="' + data["horizontal_type"] + '" data-table="' + data["table"] + '" data-tabid="' + data["tab_id"] + '" data-group="' + data["group"] + '" data-type="' + data["type"] + '" data-moduleid="' + data["module_id"] + '"  data-dstmoduleid="' + data["dst_module_id"] + '"  data-dstmodulecode="' + data["dst_module_code"] + '" data-variableid="'+data["variable_id"]+'" data-modulecode="' + data["module_code"] + '" data-moduletype="' + data["module_type"] + '">' + tab_name + '</a>';
+        dom += '<a href="javascript:;" id="' + data["tab_id"] + '" class="item tab_item" onclick="Strack.select_tab_item(this);"  data-parentid="' + id + '" data-horizontaltype="' + data["type"] + '" data-table="' + data["table"] + '" data-tabid="' + data["tab_id"] + '" data-group="' + data["group"] + '" data-type="' + data["type"] + '" data-moduleid="' + data["module_id"] + '"  data-dstmoduleid="' + data["dst_module_id"] + '"  data-dstmodulecode="' + data["dst_module_code"] + '" data-variableid="'+data["variable_id"]+'" data-modulecode="' + data["module_code"] + '" data-moduletype="' + data["module_type"] + '">' + tab_name + '</a>';
         return dom;
     },
     //tab标签配置按钮dom
