@@ -2233,7 +2233,7 @@ var Strack = {
                     from_module_id: grid_param["module_id"],
                     module_id: tab_param["module_id"],
                     project_id: grid_param["project_id"],
-                    page: grid_param["page"],
+                    page: "grid_slider_"+grid_param["page"],
                     schema_page: 'project_'+tab_param["module_code"],
                     type: "add_panel",
                     keep_panel: true
@@ -2280,8 +2280,6 @@ var Strack = {
             dst_module_id = tab_param["dst_module_id"];
         }
 
-        console.log(tab_param);
-
         var param = {
             project_id : grid_param['project_id'],
             grid_id : "grid_slider_datagrid_box",
@@ -2302,12 +2300,13 @@ var Strack = {
         var grid_param = Strack.deep_copy(Strack.G.gridSliderParam);
         var lang = 'Delete_' + Strack.string_ucwords(tab_param["module_code"]) + '_Notice';
         var module_id,module_code,from_item_id=0,from_module_id=0;
+
         if(tab_param["type"] === "fixed"){
             module_id = tab_param["module_id"];
             module_code = tab_param["module_code"];
         }else {
-            module_id = tab_param["dst_module_id"];
-            module_code = tab_param["dst_module_code"];
+            module_id = tab_param["module_id"];
+            module_code = tab_param["module_code"];
             from_item_id = grid_param["item_id"];
             from_module_id = grid_param["module_id"];
         }
@@ -2317,8 +2316,8 @@ var Strack = {
             lang: tab_param["name"],
             module_code: module_code,
             module_id: module_id,
-            module_type: tab_param["type"],
-            page: grid_param["page"],
+            module_type: tab_param["module_type"],
+            page: "grid_slider_"+tab_param["type"]+"_"+grid_param["page"],
             project_id: grid_param['project_id'],
             rule_side_thumb_clear: grid_param['rule_side_thumb_clear'],
             rule_side_thumb_modify: grid_param['rule_side_thumb_modify'],
@@ -6804,6 +6803,7 @@ var Strack = {
                     type: type,
                     group: group,
                     module_id: module_id,
+                    module_type: module_type,
                     dst_module_id: dst_module_id,
                     dst_module_code: dst_module_code,
                     module_code: module_code,
