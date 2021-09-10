@@ -63,7 +63,7 @@
                 </a>
             </li>
         </if>
-        <if condition="$admin_menu.fieldSettings == 'yes' AND $show_theme eq 'jgy'">
+        <if condition="$admin_menu.fieldSettings == 'yes' AND $show_theme eq 'fdc'">
             <li id="admin_fieldSettings">
                 <a href="{:U('/admin/fieldSettings')}" onclick="Strack.click_admin_menu(this)">
                     <span class="icon-uniE70D"></span>

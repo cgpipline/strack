@@ -5,7 +5,6 @@
 				<a href="{:U('/project/index')}">
 					<switch name="show_theme">
 						<case value="oem"><img src="__PUBLIC__/images/strack_logo_top_oem.png"></case>
-						<case value="jgy"><img src="__PUBLIC__/images/strack_logo_top_jgy.png"></case>
 						<default /><img src="__COM_IMG__/strack_logo_top.png">
 					</switch>
 				</a>

@@ -31,7 +31,6 @@
           <div class="login-container-title">
             <switch name="show_theme">
               <case value="oem"><img src="__PUBLIC__/images/strack_logo_oem.png"></case>
-              <case value="jgy"><img src="__PUBLIC__/images/strack_logo_jgy.png"></case>
               <default /><img src="__PUBLIC__/images/strack_logo_2.0.png">
             </switch>
           </div>
